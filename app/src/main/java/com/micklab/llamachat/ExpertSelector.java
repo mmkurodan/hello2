@@ -10,6 +10,14 @@ public final class ExpertSelector {
     private static final String[] WEB_KEYWORDS = new String[]{
             "web", "ウェブ", "インターネット", "検索", "ググる", "調べて"
     };
+    private static final String[] MEMORY_SAVE_KEYWORDS = new String[]{
+            "覚えておいて", "覚えておく", "記録しておいて", "メモしておいて", "記憶しておいて",
+            "メモして", "記録して", "記憶して"
+    };
+    private static final String[] MEMORY_RECALL_KEYWORDS = new String[]{
+            "思い出して", "覚えてる", "覚えていた", "記憶にある", "記録を見せて",
+            "メモを見せて", "記憶を調べて", "覚えていますか", "記録はある", "メモを確認"
+    };
     private static final String[] CALENDAR_CREATE_KEYWORDS = new String[]{
             "予定を入れたい",
             "予定したい",
@@ -56,6 +64,20 @@ public final class ExpertSelector {
         String normalized = normalize(userInput);
         if (normalized.isEmpty()) {
             return new SelectionResult(Collections.emptyList(), buildEmptyDebugText(userInput, normalized));
+        }
+
+        // 記憶キーワードは他エキスパートより優先（早期リターン）
+        KeywordMatch memorySaveMatch = firstKeywordMatch(normalized, MEMORY_SAVE_KEYWORDS);
+        if (memorySaveMatch != null) {
+            return new SelectionResult(
+                    Collections.singletonList(ExpertType.MEMORY_SAVE),
+                    "memory_save keyword: \"" + memorySaveMatch.keyword + "\"");
+        }
+        KeywordMatch memoryRecallMatch = firstKeywordMatch(normalized, MEMORY_RECALL_KEYWORDS);
+        if (memoryRecallMatch != null) {
+            return new SelectionResult(
+                    Collections.singletonList(ExpertType.MEMORY_RECALL),
+                    "memory_recall keyword: \"" + memoryRecallMatch.keyword + "\"");
         }
 
         List<MatchedExpert> matches = new ArrayList<>();

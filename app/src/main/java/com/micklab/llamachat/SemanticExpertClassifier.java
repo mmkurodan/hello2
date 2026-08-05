@@ -153,7 +153,7 @@ public final class SemanticExpertClassifier {
         if (isCalendar(type)) {
             return cal;
         }
-        return true; // NONE は常に候補
+        return true; // NONE, MEMORY_SAVE, MEMORY_RECALL は常に候補
     }
 
     private static boolean isCalendar(ExpertType t) {
@@ -218,6 +218,22 @@ public final class SemanticExpertClassifier {
                 "その予定を消して",
                 "予定を取り消して",
                 "歯医者の予約を取りやめて"
+        });
+        m.put(ExpertType.MEMORY_SAVE, new String[]{
+                "これを覚えておいて",
+                "メモしておいて",
+                "記録しておいて",
+                "覚えておいてください",
+                "今日のランチはカレーだったことを記憶して",
+                "大切なことをメモして"
+        });
+        m.put(ExpertType.MEMORY_RECALL, new String[]{
+                "さっき言ったこと思い出して",
+                "前に覚えてもらったことを教えて",
+                "記録を確認して",
+                "覚えてる？",
+                "メモを見せて",
+                "記憶を呼び戻して"
         });
         m.put(ExpertType.NONE, new String[]{
                 "こんにちは",

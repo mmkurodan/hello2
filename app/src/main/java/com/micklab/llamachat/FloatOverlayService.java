@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.CountDownLatch;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -266,6 +267,12 @@ public class FloatOverlayService extends Service {
     private boolean foregroundStarted = false;
     private boolean overlayInitialized = false;
     private boolean openingAppFromOverlay = false;
+    // クラッシュ回復: ユーザが意図的に停止した場合はtrueにしてonDestroyでの再起動を抑制する。
+    private boolean intentionalStop = false;
+    private static final long RESTART_DELAY_MS = 6_000L;
+    private MemoryRepository memoryRepository;
+    private EmbeddingClient embeddingClient;
+    private WebSearchRagHelper webSearchRagHelper;
     private String latestNotificationResponse = "";
     private int thinkingDotStep = 0;
     private String thinkingLabel = "";
@@ -345,10 +352,17 @@ public class FloatOverlayService extends Service {
             DebugLogger.log(this, "Preparing notification service");
             ensureForegroundNotification();
 
+            memoryRepository = new MemoryRepository(this);
+            embeddingClient = new EmbeddingClient(client, ollamaBaseUrl, EmbeddingClient.DEFAULT_MODEL);
+            webSearchRagHelper = new WebSearchRagHelper(embeddingClient, client, ollamaBaseUrl, selectedModel);
+
             startProactiveScheduler();
 
             DebugLogger.log(this, "=== FloatOverlayService onCreate SUCCESS ===");
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            // Throwable で OOM 等の Error も捕捉する。
+            // 初期化失敗は再起動ループを防ぐため意図的停止とみなす。
+            intentionalStop = true;
             DebugLogger.log(this, "=== FloatOverlayService onCreate FAILED ===");
             DebugLogger.log(this, "Exception: " + e.getMessage());
             DebugLogger.log(this, "StackTrace: " + android.util.Log.getStackTraceString(e));
@@ -375,6 +389,7 @@ public class FloatOverlayService extends Service {
 
     @Override
     public void onDestroy() {
+        DebugLogger.log(this, "onDestroy: intentionalStop=" + intentionalStop);
         stopProactiveScheduler();
         if (currentCall != null) {
             currentCall.cancel();
@@ -404,7 +419,28 @@ public class FloatOverlayService extends Service {
         avatarC1Bitmap = null;
         avatarC2Bitmap = null;
         avatarC3Bitmap = null;
+        if (!intentionalStop) {
+            scheduleServiceRestart();
+        }
         super.onDestroy();
+    }
+
+    private void scheduleServiceRestart() {
+        try {
+            Intent restartIntent = new Intent(this, ServiceRestartReceiver.class);
+            restartIntent.setAction(ServiceRestartReceiver.ACTION_RESTART);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this, 9901, restartIntent,
+                    PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + RESTART_DELAY_MS, pendingIntent);
+                DebugLogger.log(this, "scheduleServiceRestart: restart scheduled in " + RESTART_DELAY_MS + "ms");
+            }
+        } catch (Exception e) {
+            DebugLogger.log(this, "scheduleServiceRestart failed: " + e.getMessage());
+        }
     }
 
     @Override
@@ -979,6 +1015,10 @@ public class FloatOverlayService extends Service {
             } else {
                 performCalendarExpertFlow(userMessage, calType, requestToken);
             }
+        } else if (flowResult.getExpertType() == ExpertType.MEMORY_SAVE) {
+            performMemorySaveFlow(userMessage, requestToken);
+        } else if (flowResult.getExpertType() == ExpertType.MEMORY_RECALL) {
+            performMemoryRecallFlow(userMessage, requestToken);
         } else {
             sendChat(null, false, requestToken);
         }
@@ -1204,6 +1244,11 @@ public class FloatOverlayService extends Service {
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);
                     String searchResults = callWebSearchApi(keywords);
                     if (!TextUtils.isEmpty(searchResults)) {
+                        // RAG: 埋め込みでクエリ関連度の高いチャンクのみ抽出
+                        if (webSearchRagHelper != null) {
+                            updateThinkingLabel(t("Ranking results...", "結果を絞り込み中..."), requestToken);
+                            searchResults = webSearchRagHelper.rerankSearchResults(userMsg, searchResults);
+                        }
                         augmentedMessage = buildSearchAugmentedUserMessage(userMsg, searchResults);
                     }
                 }
@@ -1213,6 +1258,96 @@ public class FloatOverlayService extends Service {
             String finalAugmented = augmentedMessage;
             mainHandler.post(() -> sendChat(finalAugmented, finalAugmented != null, requestToken));
         }).start();
+    }
+
+    private void performMemorySaveFlow(String userMsg, int requestToken) {
+        if (memoryRepository == null) {
+            finishResponse(t("Memory is unavailable.", "記憶機能が利用できません。"), requestToken);
+            return;
+        }
+        String content = extractMemoryContent(userMsg);
+        if (TextUtils.isEmpty(content)) {
+            finishResponse(t("What would you like me to remember?", "何を覚えておけば良いですか？"), requestToken);
+            return;
+        }
+        memoryRepository.save(content, null);
+        finishResponse(t("Remembered: 「", "覚えました：「") + content + "」", requestToken);
+    }
+
+    private void performMemoryRecallFlow(String userMsg, int requestToken) {
+        if (memoryRepository == null) {
+            sendChat(null, false, requestToken);
+            return;
+        }
+        new Thread(() -> {
+            try {
+                String searchQuery = extractMemorySearchQuery(userMsg);
+                List<MemoryRecord> records = TextUtils.isEmpty(searchQuery)
+                        ? memoryRepository.getRecent(10)
+                        : memoryRepository.search(searchQuery);
+                String memoryContext = buildMemoryContext(records);
+                String augmentedMessage = TextUtils.isEmpty(memoryContext) ? null
+                        : "MEMORIES:\n" + memoryContext + "\n\nUser: " + userMsg;
+                mainHandler.post(() -> sendChat(augmentedMessage, !TextUtils.isEmpty(memoryContext), requestToken));
+            } catch (Exception e) {
+                DebugLogger.log(this, "performMemoryRecallFlow error: " + e.getMessage());
+                mainHandler.post(() -> sendChat(null, false, requestToken));
+            }
+        }).start();
+    }
+
+    private String extractMemoryContent(String userMsg) {
+        if (TextUtils.isEmpty(userMsg)) return "";
+        String result = userMsg;
+        String[] triggers = {
+                "覚えておいてください", "覚えておいて", "覚えておく",
+                "記録しておいてください", "記録しておいて",
+                "メモしておいてください", "メモしておいて",
+                "記憶しておいてください", "記憶しておいて",
+                "メモして", "記録して", "記憶して"
+        };
+        for (String trigger : triggers) {
+            result = result.replace(trigger, "").trim();
+        }
+        // "〇〇を" → "〇〇" の末尾助詞を除去
+        if (result.endsWith("を") || result.endsWith("が") || result.endsWith("は")) {
+            result = result.substring(0, result.length() - 1).trim();
+        }
+        return result.trim();
+    }
+
+    private String extractMemorySearchQuery(String userMsg) {
+        if (TextUtils.isEmpty(userMsg)) return "";
+        String result = userMsg;
+        String[] triggers = {
+                "思い出してください", "思い出して",
+                "覚えていますか", "覚えてる？", "覚えてる",
+                "覚えていた？", "覚えていた",
+                "記憶にある？", "記憶にある",
+                "記録を見せてください", "記録を見せて",
+                "メモを見せてください", "メモを見せて",
+                "記憶を調べてください", "記憶を調べて",
+                "記録はある？", "記録はある",
+                "メモを確認して"
+        };
+        for (String trigger : triggers) {
+            result = result.replace(trigger, "").trim();
+        }
+        // "について", "のことを", "のこと", "を" などの末尾接続詞を除去
+        result = result.replaceAll("について$|のことを$|のこと$|を$|が$|は$", "").trim();
+        return result.trim();
+    }
+
+    private String buildMemoryContext(List<MemoryRecord> records) {
+        if (records == null || records.isEmpty()) return "";
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault());
+        StringBuilder sb = new StringBuilder();
+        for (MemoryRecord r : records) {
+            if (sb.length() > 0) sb.append("\n");
+            sb.append("[").append(sdf.format(new Date(r.createdAt))).append("] ")
+              .append(r.content);
+        }
+        return sb.toString();
     }
 
     private String callWebSearchApi(String keywords) {
