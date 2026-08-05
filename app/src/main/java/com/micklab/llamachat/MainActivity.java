@@ -230,7 +230,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private TextView tvChatterSpeechLangLabel, tvChatterSpeechRateLabel, tvChatterSpeechPitchLabel, tvChatterSystemPromptLabel, tvChatterAvatarTitle;
     private View sectionGeneralHeader, sectionChatHeader, sectionExpertHeader;
     private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchCalendarExpertMode, switchDebug, switchJsonMode;
-    private Switch switchProactiveNotify, switchNewsMode;
+    private Switch switchProactiveNotify, switchNewsMode, switchMemoryEnabled;
+    private Button btnManageMemories;
     private EditText etOllamaUrl, etSpeechLang, etSpeechRate, etSpeechPitch, etSystemPrompt;
     private EditText etChatterSpeechLang, etChatterSpeechRate, etChatterSpeechPitch, etChatterSystemPrompt;
     private EditText etBaseName, etChatterName;
@@ -255,6 +256,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean autoVoiceInputEnabled = false;
     private boolean webSearchEnabled = false;
     private boolean calendarExpertModeEnabled = false;
+    private boolean memoryEnabled = false;
     // お知らせ機能（フロート常駐時に予定/ニュースをポップアップ通知）。
     private boolean proactiveNotifyEnabled = false;
     private String morningBriefingTime = "07:00";
@@ -874,6 +876,15 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         switchWebSearch = findViewById(R.id.switchWebSearch);
         switchProactiveNotify = findViewById(R.id.switchProactiveNotify);
         switchNewsMode = findViewById(R.id.switchNewsMode);
+        switchMemoryEnabled = findViewById(R.id.switchMemoryEnabled);
+        btnManageMemories = findViewById(R.id.btnManageMemories);
+        if (btnManageMemories != null) {
+            btnManageMemories.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(this, MemoryManagerActivity.class);
+                intent.putExtra("appLanguage", appLanguage);
+                startActivity(intent);
+            });
+        }
         etMorningBriefingTime = findViewById(R.id.etMorningBriefingTime);
         etNewsBriefingTimes = findViewById(R.id.etNewsBriefingTimes);
         tvLabelNotifications = findViewById(R.id.tvLabelNotifications);
@@ -1491,6 +1502,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (switchVoiceInput != null) switchVoiceInput.setText(t("Voice Input (on empty send)", "音声入力（空送信）"));
         if (switchAutoVoiceInput != null) switchAutoVoiceInput.setText(t("Auto Voice Input (after response)", "自動音声入力（応答後）"));
         if (switchWebSearch != null) switchWebSearch.setText(t("Web Search", "Web検索"));
+        if (switchMemoryEnabled != null) switchMemoryEnabled.setText(t("Memory Feature", "記憶機能"));
+        if (btnManageMemories != null) btnManageMemories.setText(t("Manage Memories", "記録を管理"));
         if (tvLabelNotifications != null) tvLabelNotifications.setText(t("Notifications", "お知らせ"));
         if (switchProactiveNotify != null) switchProactiveNotify.setText(t("Schedule Notifications", "予定のお知らせ"));
         if (tvLabelMorningBriefingTime != null) tvLabelMorningBriefingTime.setText(t("Morning briefing time (HH:mm)", "朝のお知らせ時刻 (HH:mm)"));
@@ -2630,6 +2643,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         s.put("floatDisplayMode", floatDisplayMode);
         s.put("webSearchEnabled", webSearchEnabled);
         s.put("calendarExpertModeEnabled", calendarExpertModeEnabled);
+        s.put("memoryEnabled", memoryEnabled);
         s.put("proactiveNotifyEnabled", proactiveNotifyEnabled);
         s.put("morningBriefingTime", morningBriefingTime);
         s.put("newsModeEnabled", newsModeEnabled);
@@ -2682,6 +2696,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         floatDisplayMode = normalizeFloatDisplayMode(s.optString("floatDisplayMode", floatDisplayMode));
         webSearchEnabled = s.optBoolean("webSearchEnabled", webSearchEnabled);
         calendarExpertModeEnabled = s.optBoolean("calendarExpertModeEnabled", calendarExpertModeEnabled);
+        memoryEnabled = s.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = s.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);
         morningBriefingTime = s.optString("morningBriefingTime", morningBriefingTime);
         newsModeEnabled = s.optBoolean("newsModeEnabled", newsModeEnabled);
@@ -3004,6 +3019,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (autoChatterSeconds < 0) autoChatterSeconds = 0;
         webSearchEnabled = switchWebSearch.isChecked();
         calendarExpertModeEnabled = switchCalendarExpertMode != null && switchCalendarExpertMode.isChecked();
+        memoryEnabled = switchMemoryEnabled != null && switchMemoryEnabled.isChecked();
         if (spinnerRoutingMode != null) {
             int pos = spinnerRoutingMode.getSelectedItemPosition();
             routingMode = normalizeRoutingMode(routingModeFromSpinnerPos(pos));
@@ -3116,6 +3132,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         switchWebSearch.setChecked(webSearchEnabled);
         if (switchCalendarExpertMode != null) {
             switchCalendarExpertMode.setChecked(calendarExpertModeEnabled);
+        }
+        if (switchMemoryEnabled != null) {
+            switchMemoryEnabled.setChecked(memoryEnabled);
         }
         if (spinnerRoutingMode != null) {
             spinnerRoutingMode.setSelection(spinnerPosFromRoutingMode(routingMode));

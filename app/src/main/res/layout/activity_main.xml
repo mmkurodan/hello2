@@ -966,6 +966,28 @@
                          android:textColor="#444444"
                          android:textSize="12sp" />
 
+                     <!-- Memory Feature -->
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Memory"
+                         android:textStyle="bold"
+                         android:layout_marginTop="16dp" />
+
+                     <Switch
+                         android:id="@+id/switchMemoryEnabled"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:text="Memory Feature" />
+
+                     <Button
+                         android:id="@+id/btnManageMemories"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:text="Manage Memories" />
+
                      <TextView
                          android:id="@+id/tvLabelNotifications"
                          android:layout_width="wrap_content" android:layout_height="wrap_content"

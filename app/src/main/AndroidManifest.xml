@@ -36,6 +36,10 @@
            android:name=".PromptEditorActivity"
            android:exported="false"
            android:windowSoftInputMode="adjustResize" />
+       <activity
+           android:name=".MemoryManagerActivity"
+           android:exported="false"
+           android:windowSoftInputMode="adjustResize" />
         <service
             android:name=".FloatOverlayService"
             android:exported="false"

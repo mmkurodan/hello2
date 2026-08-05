@@ -9,7 +9,7 @@ configurations.all {
 
 android {
     namespace "com.micklab.llamachat"
-    compileSdk 35
+    compileSdk 36
 
     buildFeatures {
         buildConfig true
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId "com.micklab.llamachat"
         minSdk 24
-        targetSdk 35
+        targetSdk 36
 
         // GitHub Actions のビルド番号を versionCode に自動反映
         versionCode System.getenv("GITHUB_RUN_NUMBER")?.toInteger() ?: 1
@@ -43,8 +43,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
         }
     }
 

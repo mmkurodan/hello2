@@ -273,6 +273,7 @@ public class FloatOverlayService extends Service {
     private MemoryRepository memoryRepository;
     private EmbeddingClient embeddingClient;
     private WebSearchRagHelper webSearchRagHelper;
+    private boolean memoryEnabled = false;
     private String latestNotificationResponse = "";
     private int thinkingDotStep = 0;
     private String thinkingLabel = "";
@@ -1261,8 +1262,8 @@ public class FloatOverlayService extends Service {
     }
 
     private void performMemorySaveFlow(String userMsg, int requestToken) {
-        if (memoryRepository == null) {
-            finishResponse(t("Memory is unavailable.", "記憶機能が利用できません。"), requestToken);
+        if (!memoryEnabled || memoryRepository == null) {
+            finishResponse(t("Memory feature is disabled.", "記憶機能は無効です。"), requestToken);
             return;
         }
         String content = extractMemoryContent(userMsg);
@@ -1275,17 +1276,25 @@ public class FloatOverlayService extends Service {
     }
 
     private void performMemoryRecallFlow(String userMsg, int requestToken) {
-        if (memoryRepository == null) {
+        if (!memoryEnabled || memoryRepository == null) {
             sendChat(null, false, requestToken);
             return;
         }
+        updateThinkingLabel(t("Searching memory...", "記録を検索中..."), requestToken);
         new Thread(() -> {
             try {
                 String searchQuery = extractMemorySearchQuery(userMsg);
-                List<MemoryRecord> records = TextUtils.isEmpty(searchQuery)
-                        ? memoryRepository.getRecent(10)
+                // 広めに候補を取得してからRAGで絞る
+                List<MemoryRecord> candidates = TextUtils.isEmpty(searchQuery)
+                        ? memoryRepository.getRecent(30)
                         : memoryRepository.search(searchQuery);
-                String memoryContext = buildMemoryContext(records);
+                List<MemoryRecord> ranked = candidates;
+                if (candidates.size() > 5 && embeddingClient != null) {
+                    updateThinkingLabel(t("Ranking memories...", "記録をランク付け中..."), requestToken);
+                    ranked = rerankMemoriesWithEmbedding(userMsg, candidates);
+                }
+                int takeCount = Math.min(10, ranked.size());
+                String memoryContext = buildMemoryContext(ranked.subList(0, takeCount));
                 String augmentedMessage = TextUtils.isEmpty(memoryContext) ? null
                         : "MEMORIES:\n" + memoryContext + "\n\nUser: " + userMsg;
                 mainHandler.post(() -> sendChat(augmentedMessage, !TextUtils.isEmpty(memoryContext), requestToken));
@@ -1294,6 +1303,37 @@ public class FloatOverlayService extends Service {
                 mainHandler.post(() -> sendChat(null, false, requestToken));
             }
         }).start();
+    }
+
+    private List<MemoryRecord> rerankMemoriesWithEmbedding(String userMsg, List<MemoryRecord> records) {
+        try {
+            float[] queryVec = EmbeddingClient.l2Normalize(embeddingClient.embed(userMsg));
+            List<String> contents = new ArrayList<>();
+            for (MemoryRecord r : records) contents.add(r.content);
+            List<float[]> vecs = embeddingClient.embedBatch(contents);
+            List<ScoredMemory> scored = new ArrayList<>();
+            for (int i = 0; i < vecs.size() && i < records.size(); i++) {
+                float sim = EmbeddingClient.cosineSimilarity(
+                        queryVec, EmbeddingClient.l2Normalize(vecs.get(i)));
+                scored.add(new ScoredMemory(records.get(i), sim));
+            }
+            Collections.sort(scored, (a, b) -> Float.compare(b.score, a.score));
+            List<MemoryRecord> result = new ArrayList<>(scored.size());
+            for (ScoredMemory sm : scored) result.add(sm.record);
+            return result;
+        } catch (Exception e) {
+            DebugLogger.log(this, "rerankMemoriesWithEmbedding error: " + e.getMessage());
+            return records;
+        }
+    }
+
+    private static final class ScoredMemory {
+        final MemoryRecord record;
+        final float score;
+        ScoredMemory(MemoryRecord record, float score) {
+            this.record = record;
+            this.score = score;
+        }
     }
 
     private String extractMemoryContent(String userMsg) {
@@ -2132,6 +2172,7 @@ public class FloatOverlayService extends Service {
         webSearchApiKey = settings.optString("webSearchApiKey", webSearchApiKey);
         expertModel = settings.optString("expertModel", settings.optString("webSearchModel", expertModel));
         calendarExpertModeEnabled = settings.optBoolean("calendarExpertModeEnabled", calendarExpertModeEnabled);
+        memoryEnabled = settings.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = settings.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);
         morningBriefingTime = settings.optString("morningBriefingTime", morningBriefingTime);
         newsModeEnabled = settings.optBoolean("newsModeEnabled", newsModeEnabled);
@@ -2195,6 +2236,7 @@ public class FloatOverlayService extends Service {
             newsModeEnabled = s.optBoolean("newsModeEnabled", newsModeEnabled);
             newsBriefingTimes = s.optString("newsBriefingTimes", newsBriefingTimes);
             ttsEnabled = s.optBoolean("ttsEnabled", ttsEnabled);
+            memoryEnabled = s.optBoolean("memoryEnabled", memoryEnabled);
         } catch (Exception ignored) {
         }
     }
