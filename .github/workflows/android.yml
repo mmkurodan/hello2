@@ -2,7 +2,7 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "no-calendar" ]
   pull_request:
   workflow_dispatch:
 
@@ -43,17 +43,17 @@ jobs:
     - name: Upload debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: app-debug-${{ github.ref_name }}
         path: app/build/outputs/apk/debug/app-debug.apk
 
     - name: Upload release APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-release
+        name: app-release-${{ github.ref_name }}
         path: app/build/outputs/apk/release/app-release.apk
 
     - name: Upload AAB
       uses: actions/upload-artifact@v4
       with:
-        name: app-release-aab
+        name: app-release-aab-${{ github.ref_name }}
         path: app/build/outputs/bundle/release/app-release.aab
