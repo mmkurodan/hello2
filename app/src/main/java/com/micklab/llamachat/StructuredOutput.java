@@ -41,30 +41,6 @@ public final class StructuredOutput {
 
     // ===== リクエストボディへの適用 =====
 
-    /**
-     * カレンダー判定（CalendarActionJson 形）の strict JSON 制約を付与する。
-     * UPDATE / DELETE は targetQuery が必須（対象イベントの検索キーに使う）。
-     * CREATE / QUERY は targetQuery 不要なのでオプション扱い。
-     */
-    public static void applyCalendar(JSONObject body, Mode mode, ExpertType expertType)
-            throws JSONException {
-        if (body == null || mode == null) {
-            return;
-        }
-        boolean requireTargetQuery = expertType == ExpertType.CALENDAR_UPDATE
-                || expertType == ExpertType.CALENDAR_DELETE;
-        if (mode == Mode.SCHEMA) {
-            body.put("format", calendarActionSchema(requireTargetQuery));
-        } else if (mode == Mode.GBNF) {
-            body.put("grammar", calendarActionGbnf(requireTargetQuery));
-        }
-    }
-
-    /** 後方互換ラッパー（ExpertType 不明時は targetQuery をオプション扱い）。 */
-    public static void applyCalendar(JSONObject body, Mode mode) throws JSONException {
-        applyCalendar(body, mode, null);
-    }
-
     /** 任意の JSON 値を強制する汎用制約を付与する（汎用 JSON モード用）。 */
     public static void applyGenericJson(JSONObject body, Mode mode) throws JSONException {
         if (body == null || mode == null) {
@@ -77,106 +53,7 @@ public final class StructuredOutput {
         }
     }
 
-    // ===== JSON Schema（Ollama format） =====
-
-    /** CalendarActionJson に対応する JSON Schema。 */
-    public static JSONObject calendarActionSchema() throws JSONException {
-        return calendarActionSchema(false);
-    }
-
-    public static JSONObject calendarActionSchema(boolean requireTargetQuery) throws JSONException {
-        JSONObject props = new JSONObject();
-        props.put("action", enumProp("NONE", "QUERY", "CREATE", "UPDATE", "DELETE"));
-        props.put("title", nullableStringProp());
-        props.put("start", nullableStringProp());
-        props.put("end", nullableStringProp());
-        props.put("eventId", nullableStringProp());
-
-        JSONObject addProps = new JSONObject();
-        addProps.put("rawText", stringProp());
-        addProps.put("targetQuery", nullableStringProp());
-        addProps.put("notes", stringProp());
-        JSONObject additional = new JSONObject();
-        additional.put("type", "object");
-        additional.put("properties", addProps);
-        JSONArray req = new JSONArray().put("rawText").put("notes");
-        if (requireTargetQuery) {
-            req.put("targetQuery"); // UPDATE/DELETE: 対象イベント検索に必須
-        }
-        additional.put("required", req);
-        props.put("additional", additional);
-
-        JSONObject schema = new JSONObject();
-        schema.put("type", "object");
-        schema.put("properties", props);
-        schema.put("required", new JSONArray()
-                .put("action").put("title").put("start").put("end").put("eventId").put("additional"));
-        return schema;
-    }
-
-    private static JSONObject enumProp(String... values) throws JSONException {
-        JSONArray arr = new JSONArray();
-        for (String v : values) {
-            arr.put(v);
-        }
-        return new JSONObject().put("type", "string").put("enum", arr);
-    }
-
-    private static JSONObject stringProp() throws JSONException {
-        return new JSONObject().put("type", "string");
-    }
-
-    private static JSONObject nullableStringProp() throws JSONException {
-        return new JSONObject().put("type", new JSONArray().put("string").put("null"));
-    }
-
     // ===== GBNF =====
-
-    /** CalendarActionJson 形だけを許す GBNF。 */
-    public static String calendarActionGbnf() {
-        return calendarActionGbnf(false);
-    }
-
-    public static String calendarActionGbnf(boolean requireTargetQuery) {
-        StringBuilder g = new StringBuilder();
-        g.append("root ::= ").append(lit("{")).append(" ws ")
-                .append(key("action")).append(" ws action ws ").append(lit(",")).append(" ws ")
-                .append(key("title")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                .append(key("start")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                .append(key("end")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                .append(key("eventId")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                .append(key("additional")).append(" ws additional ws ")
-                .append(lit("}")).append("\n");
-        if (requireTargetQuery) {
-            // UPDATE/DELETE: targetQuery は必須（対象イベント検索に使う）。
-            g.append("additional ::= ").append(lit("{")).append(" ws ")
-                    .append(key("rawText")).append(" ws string ws ").append(lit(",")).append(" ws ")
-                    .append(key("targetQuery")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                    .append(key("notes")).append(" ws string ws ")
-                    .append(lit("}")).append("\n");
-        } else {
-            // CREATE/QUERY: targetQuery はオプション。2分岐で GBNF の曖昧性を排除。
-            g.append("additional ::= additional-with-tq | additional-no-tq\n");
-            g.append("additional-with-tq ::= ").append(lit("{")).append(" ws ")
-                    .append(key("rawText")).append(" ws string ws ").append(lit(",")).append(" ws ")
-                    .append(key("targetQuery")).append(" ws strnull ws ").append(lit(",")).append(" ws ")
-                    .append(key("notes")).append(" ws string ws ")
-                    .append(lit("}")).append("\n");
-            g.append("additional-no-tq ::= ").append(lit("{")).append(" ws ")
-                    .append(key("rawText")).append(" ws string ws ").append(lit(",")).append(" ws ")
-                    .append(key("notes")).append(" ws string ws ")
-                    .append(lit("}")).append("\n");
-        }
-        g.append("action ::= ")
-                .append(lit("\"NONE\"")).append(" | ")
-                .append(lit("\"QUERY\"")).append(" | ")
-                .append(lit("\"CREATE\"")).append(" | ")
-                .append(lit("\"UPDATE\"")).append(" | ")
-                .append(lit("\"DELETE\"")).append("\n");
-        g.append("strnull ::= string | ").append(lit("null")).append("\n");
-        appendCommonRules(g);
-        return g.toString();
-    }
 
     /** 任意の JSON 値を許す標準 GBNF（json.gbnf 相当）。 */
     public static String genericJsonGbnf() {

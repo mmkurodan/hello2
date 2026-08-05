@@ -149,16 +149,8 @@ public final class SemanticExpertClassifier {
 
     private static boolean isAvailable(ExpertType type, boolean web, boolean cal, boolean memory) {
         if (type == ExpertType.WEB) return web;
-        if (isCalendar(type)) return cal;
         if (type == ExpertType.MEMORY_SAVE || type == ExpertType.MEMORY_RECALL) return memory;
         return true; // NONE は常に候補
-    }
-
-    private static boolean isCalendar(ExpertType t) {
-        return t == ExpertType.CALENDAR_CREATE
-                || t == ExpertType.CALENDAR_QUERY
-                || t == ExpertType.CALENDAR_UPDATE
-                || t == ExpertType.CALENDAR_DELETE;
     }
 
     private static float maxCosine(float[] q, float[][] examples) {
@@ -186,36 +178,6 @@ public final class SemanticExpertClassifier {
                 "最近の出来事について教えて",
                 "ウェブで確認して",
                 "検索して最新情報を出して"
-        });
-        m.put(ExpertType.CALENDAR_CREATE, new String[]{
-                "明日の15時に会議を入れて",
-                "予定を登録して",
-                "来週の打ち合わせを追加して",
-                "金曜の夜に予定を入れたい",
-                "カレンダーに予定を作成して",
-                "土曜に歯医者の予約を入れて"
-        });
-        m.put(ExpertType.CALENDAR_QUERY, new String[]{
-                "今日の予定を教えて",
-                "明日のスケジュールを確認して",
-                "今週の予定はある",
-                "カレンダーを見せて",
-                "次の予定は何",
-                "空いている時間を教えて"
-        });
-        m.put(ExpertType.CALENDAR_UPDATE, new String[]{
-                "会議の時間を変更して",
-                "予定を1時間ずらして",
-                "打ち合わせを午後に移動して",
-                "予定の時刻を変えて",
-                "明日の会議を3時に直して"
-        });
-        m.put(ExpertType.CALENDAR_DELETE, new String[]{
-                "明日の予定を削除して",
-                "会議をキャンセルして",
-                "その予定を消して",
-                "予定を取り消して",
-                "歯医者の予約を取りやめて"
         });
         m.put(ExpertType.MEMORY_SAVE, new String[]{
                 "これを覚えておいて",

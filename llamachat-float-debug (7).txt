@@ -1,0 +1,311 @@
+2026-06-26 05:37:53.930 | === MainActivity onCreate ===
+2026-06-26 05:37:54.049 | === FloatOverlayService onCreate START ===
+2026-06-26 05:37:54.049 | Getting ViewConfiguration
+2026-06-26 05:37:54.049 | touchSlop=26
+2026-06-26 05:37:54.049 | Loading settings
+2026-06-26 05:37:54.049 | Settings loaded. floatDisplayMode=icon
+2026-06-26 05:37:54.049 | Loading avatar bitmaps
+2026-06-26 05:37:54.050 | Avatar bitmaps loaded
+2026-06-26 05:37:54.050 | Initializing conversation history
+2026-06-26 05:37:54.050 | Conversation history initialized
+2026-06-26 05:37:54.050 | Preparing notification service
+2026-06-26 05:37:54.052 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=false, latestText=
+2026-06-26 05:37:54.054 | notification: ServiceCompat.startForeground with DATA_SYNC type success
+2026-06-26 05:37:54.054 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:37:54.054 | === FloatOverlayService onCreate SUCCESS ===
+2026-06-26 05:37:54.054 | onStartCommand called
+2026-06-26 05:37:54.054 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:37:54.055 | notification: manager.notify success
+2026-06-26 05:37:54.055 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:37:54.055 | onStartCommand called
+2026-06-26 05:37:54.056 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:37:54.056 | notification: manager.notify success
+2026-06-26 05:37:54.056 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:38:02.383 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:38:02.417 | VoiceInput.onReadyForSpeech gen=1
+2026-06-26 05:38:04.428 | VoiceInput.onResults best="おはようございます" gen=1
+2026-06-26 05:38:49.638 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:38:49.672 | VoiceInput.onReadyForSpeech gen=3
+2026-06-26 05:38:51.988 | VoiceInput.onResults best="今日もいい天気ですね" gen=3
+2026-06-26 05:40:13.753 | onStartCommand called
+2026-06-26 05:40:13.784 | initOverlay: Starting
+2026-06-26 05:40:13.784 | initOverlay: WindowManager obtained
+2026-06-26 05:40:13.838 | initOverlay: Overlay layout inflated
+2026-06-26 05:40:13.838 | initOverlay: All views found
+2026-06-26 05:40:13.838 | initOverlay: LayoutParams configured
+2026-06-26 05:40:13.846 | initOverlay: Float visual updated
+2026-06-26 05:40:13.846 | initOverlay: Adding real overlay view to window manager
+2026-06-26 05:40:13.848 | initOverlay: Real overlay view added successfully
+2026-06-26 05:40:13.849 | Overlay initialized successfully
+2026-06-26 05:40:13.849 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:13.850 | notification: manager.notify success
+2026-06-26 05:40:13.850 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:19.221 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:40:19.261 | VoiceInput.onReadyForSpeech gen=1
+2026-06-26 05:40:27.493 | VoiceInput.onError error=7 gen=1
+2026-06-26 05:40:32.853 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:40:32.888 | VoiceInput.onReadyForSpeech gen=3
+2026-06-26 05:40:41.125 | VoiceInput.onError error=7 gen=3
+2026-06-26 05:40:44.736 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:40:44.765 | VoiceInput.onReadyForSpeech gen=5
+2026-06-26 05:40:52.993 | VoiceInput.onError error=7 gen=5
+2026-06-26 05:40:58.660 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:58.673 | notification: manager.notify success
+2026-06-26 05:40:58.673 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:58.708 | onStartCommand called
+2026-06-26 05:40:58.708 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:58.713 | notification: manager.notify success
+2026-06-26 05:40:58.713 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:58.713 | onStartCommand called
+2026-06-26 05:40:58.713 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:40:58.716 | notification: manager.notify success
+2026-06-26 05:40:58.717 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:02.108 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:41:02.141 | VoiceInput.onReadyForSpeech gen=6
+2026-06-26 05:41:03.975 | VoiceInput.onResults best="元気ですか" gen=6
+2026-06-26 05:41:34.231 | onStartCommand called
+2026-06-26 05:41:34.268 | initOverlay: Starting
+2026-06-26 05:41:34.269 | initOverlay: WindowManager obtained
+2026-06-26 05:41:34.324 | initOverlay: Overlay layout inflated
+2026-06-26 05:41:34.324 | initOverlay: All views found
+2026-06-26 05:41:34.324 | initOverlay: LayoutParams configured
+2026-06-26 05:41:34.332 | initOverlay: Float visual updated
+2026-06-26 05:41:34.332 | initOverlay: Adding real overlay view to window manager
+2026-06-26 05:41:34.335 | initOverlay: Real overlay view added successfully
+2026-06-26 05:41:34.336 | Overlay initialized successfully
+2026-06-26 05:41:34.336 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:34.337 | notification: manager.notify success
+2026-06-26 05:41:34.337 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.802 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.816 | notification: manager.notify success
+2026-06-26 05:41:35.816 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.844 | onStartCommand called
+2026-06-26 05:41:35.845 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.849 | notification: manager.notify success
+2026-06-26 05:41:35.849 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.849 | onStartCommand called
+2026-06-26 05:41:35.850 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:35.851 | notification: manager.notify success
+2026-06-26 05:41:35.852 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:37.204 | onStartCommand called
+2026-06-26 05:41:37.229 | initOverlay: Starting
+2026-06-26 05:41:37.229 | initOverlay: WindowManager obtained
+2026-06-26 05:41:37.262 | initOverlay: Overlay layout inflated
+2026-06-26 05:41:37.262 | initOverlay: All views found
+2026-06-26 05:41:37.262 | initOverlay: LayoutParams configured
+2026-06-26 05:41:37.263 | initOverlay: Float visual updated
+2026-06-26 05:41:37.263 | initOverlay: Adding real overlay view to window manager
+2026-06-26 05:41:37.267 | initOverlay: Real overlay view added successfully
+2026-06-26 05:41:37.269 | Overlay initialized successfully
+2026-06-26 05:41:37.269 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:37.271 | notification: manager.notify success
+2026-06-26 05:41:37.271 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-26 05:41:39.941 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:41:39.977 | VoiceInput.onReadyForSpeech gen=7
+2026-06-26 05:41:42.411 | VoiceInput.onResults best="それは良かったです" gen=7
+2026-06-26 05:41:42.422 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:42.425 | notification: manager.notify success
+2026-06-26 05:41:42.425 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:42.426 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:42.428 | notification: manager.notify success
+2026-06-26 05:41:42.429 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:42.430 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-26 05:41:42.431 | notification: manager.notify success
+2026-06-26 05:41:42.431 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-26 05:41:42.787 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:42.790 | notification: manager.notify success
+2026-06-26 05:41:42.791 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:43.153 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:43.156 | notification: manager.notify success
+2026-06-26 05:41:43.157 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:43.762 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:43.769 | notification: manager.notify success
+2026-06-26 05:41:43.769 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:44.287 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:44.291 | notification: manager.notify success
+2026-06-26 05:41:44.291 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:44.653 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:44.656 | notification: manager.notify success
+2026-06-26 05:41:44.657 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:45.017 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:45.021 | notification: manager.notify success
+2026-06-26 05:41:45.022 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:45.384 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:45.389 | notification: manager.notify success
+2026-06-26 05:41:45.389 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:45.750 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:45.754 | notification: manager.notify success
+2026-06-26 05:41:45.754 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:46.116 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:46.120 | notification: manager.notify success
+2026-06-26 05:41:46.120 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 05:41:46.481 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:46.484 | notification: manager.notify success
+2026-06-26 05:41:46.485 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 05:41:46.846 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:46.850 | notification: manager.notify success
+2026-06-26 05:41:46.851 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 05:41:47.096 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:41:47.097 | notification: manager.notify success
+2026-06-26 05:41:47.097 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:41:47.098 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:41:47.099 | notification: manager.notify success
+2026-06-26 05:41:47.099 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:41:55.231 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:41:55.262 | VoiceInput.onReadyForSpeech gen=9
+2026-06-26 05:42:03.491 | VoiceInput.onError error=7 gen=9
+2026-06-26 05:59:15.578 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:59:15.614 | VoiceInput.onReadyForSpeech gen=11
+2026-06-26 05:59:23.844 | VoiceInput.onError error=7 gen=11
+2026-06-26 05:59:27.476 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:59:27.506 | VoiceInput.onReadyForSpeech gen=13
+2026-06-26 05:59:35.728 | VoiceInput.onError error=7 gen=13
+2026-06-26 05:59:38.435 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:59:38.463 | VoiceInput.onReadyForSpeech gen=15
+2026-06-26 05:59:42.081 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:59:42.115 | VoiceInput.onReadyForSpeech gen=17
+2026-06-26 05:59:48.392 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 05:59:48.430 | VoiceInput.onReadyForSpeech gen=19
+2026-06-26 05:59:55.554 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:55.559 | notification: manager.notify success
+2026-06-26 05:59:55.559 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:55.612 | onStartCommand called
+2026-06-26 05:59:55.612 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:55.617 | notification: manager.notify success
+2026-06-26 05:59:55.618 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:55.618 | onStartCommand called
+2026-06-26 05:59:55.618 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:55.622 | notification: manager.notify success
+2026-06-26 05:59:55.622 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 05:59:56.611 | VoiceInput.onError error=7 gen=19
+2026-06-26 06:00:05.770 | onStartCommand called
+2026-06-26 06:00:05.806 | initOverlay: Starting
+2026-06-26 06:00:05.807 | initOverlay: WindowManager obtained
+2026-06-26 06:00:05.809 | initOverlay: Overlay layout inflated
+2026-06-26 06:00:05.809 | initOverlay: All views found
+2026-06-26 06:00:05.809 | initOverlay: LayoutParams configured
+2026-06-26 06:00:05.809 | initOverlay: Float visual updated
+2026-06-26 06:00:05.810 | initOverlay: Adding real overlay view to window manager
+2026-06-26 06:00:05.815 | initOverlay: Real overlay view added successfully
+2026-06-26 06:00:05.819 | Overlay initialized successfully
+2026-06-26 06:00:05.819 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 06:00:05.821 | notification: manager.notify success
+2026-06-26 06:00:05.821 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=ありがとうございます！何かお困りのことがありましたら、いつでも教えてください。今日は特にイタリアンレストランに行きたいなと思います。あなたは向いているところでしょうか？
+2026-06-26 06:00:08.040 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 06:00:08.069 | VoiceInput.onReadyForSpeech gen=21
+2026-06-26 06:00:11.735 | VoiceInput.onResults best="だいぶ良くなった" gen=21
+2026-06-26 06:00:11.753 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:11.755 | notification: manager.notify success
+2026-06-26 06:00:11.755 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:11.755 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:11.756 | notification: manager.notify success
+2026-06-26 06:00:11.756 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:11.756 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-26 06:00:11.757 | notification: manager.notify success
+2026-06-26 06:00:11.757 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-26 06:00:12.116 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:12.119 | notification: manager.notify success
+2026-06-26 06:00:12.120 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:12.482 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:12.486 | notification: manager.notify success
+2026-06-26 06:00:12.487 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:13.117 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:13.121 | notification: manager.notify success
+2026-06-26 06:00:13.121 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:13.695 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:13.700 | notification: manager.notify success
+2026-06-26 06:00:13.700 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:14.062 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:14.065 | notification: manager.notify success
+2026-06-26 06:00:14.066 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:14.427 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:14.431 | notification: manager.notify success
+2026-06-26 06:00:14.431 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:14.793 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:14.797 | notification: manager.notify success
+2026-06-26 06:00:14.798 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:15.159 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:15.164 | notification: manager.notify success
+2026-06-26 06:00:15.164 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:15.526 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:15.530 | notification: manager.notify success
+2026-06-26 06:00:15.530 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:15.892 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:15.894 | notification: manager.notify success
+2026-06-26 06:00:15.895 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-26 06:00:16.255 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:16.259 | notification: manager.notify success
+2026-06-26 06:00:16.260 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-26 06:00:16.621 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:16.623 | notification: manager.notify success
+2026-06-26 06:00:16.624 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-26 06:00:16.911 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:16.913 | notification: manager.notify success
+2026-06-26 06:00:16.913 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:16.913 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:16.914 | notification: manager.notify success
+2026-06-26 06:00:16.915 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:19.802 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 06:00:19.837 | VoiceInput.onReadyForSpeech gen=23
+2026-06-26 06:00:28.030 | VoiceInput.onError error=7 gen=23
+2026-06-26 06:00:32.850 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 06:00:32.881 | VoiceInput.onReadyForSpeech gen=25
+2026-06-26 06:00:40.643 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:40.654 | notification: manager.notify success
+2026-06-26 06:00:40.654 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:40.692 | onStartCommand called
+2026-06-26 06:00:40.692 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:40.696 | notification: manager.notify success
+2026-06-26 06:00:40.697 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:40.697 | onStartCommand called
+2026-06-26 06:00:40.697 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:40.700 | notification: manager.notify success
+2026-06-26 06:00:40.700 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:00:41.066 | VoiceInput.onError error=7 gen=25
+2026-06-26 06:00:51.731 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 06:00:51.768 | VoiceInput.onReadyForSpeech gen=11
+2026-06-26 06:00:53.784 | VoiceInput.onResults best="ありがとうございます" gen=11
+2026-06-26 06:01:20.062 | onStartCommand called
+2026-06-26 06:01:20.084 | initOverlay: Starting
+2026-06-26 06:01:20.084 | initOverlay: WindowManager obtained
+2026-06-26 06:01:20.106 | initOverlay: Overlay layout inflated
+2026-06-26 06:01:20.106 | initOverlay: All views found
+2026-06-26 06:01:20.106 | initOverlay: LayoutParams configured
+2026-06-26 06:01:20.106 | initOverlay: Float visual updated
+2026-06-26 06:01:20.106 | initOverlay: Adding real overlay view to window manager
+2026-06-26 06:01:20.109 | initOverlay: Real overlay view added successfully
+2026-06-26 06:01:20.112 | Overlay initialized successfully
+2026-06-26 06:01:20.112 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:01:20.113 | notification: manager.notify success
+2026-06-26 06:01:20.114 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.930 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.942 | notification: manager.notify success
+2026-06-26 06:04:26.943 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.983 | onStartCommand called
+2026-06-26 06:04:26.983 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.988 | notification: manager.notify success
+2026-06-26 06:04:26.989 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.989 | onStartCommand called
+2026-06-26 06:04:26.989 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:26.991 | notification: manager.notify success
+2026-06-26 06:04:26.991 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:33.127 | onStartCommand called
+2026-06-26 06:04:33.127 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:33.128 | notification: manager.notify success
+2026-06-26 06:04:33.128 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:33.800 | onStartCommand called
+2026-06-26 06:04:33.816 | initOverlay: Starting
+2026-06-26 06:04:33.817 | initOverlay: WindowManager obtained
+2026-06-26 06:04:33.834 | initOverlay: Overlay layout inflated
+2026-06-26 06:04:33.834 | initOverlay: All views found
+2026-06-26 06:04:33.834 | initOverlay: LayoutParams configured
+2026-06-26 06:04:33.834 | initOverlay: Float visual updated
+2026-06-26 06:04:33.834 | initOverlay: Adding real overlay view to window manager
+2026-06-26 06:04:33.839 | initOverlay: Real overlay view added successfully
+2026-06-26 06:04:33.840 | Overlay initialized successfully
+2026-06-26 06:04:33.840 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:33.841 | notification: manager.notify success
+2026-06-26 06:04:33.841 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=素晴らしいですね！良かったです。何か他にお手伝いできることがありましたら、お知らせくださいね。その後の予定や必要な情報があれば教えてください。
+2026-06-26 06:04:42.996 | VoiceInput.start: isListening=false preferOffline=true
+2026-06-26 06:04:43.042 | VoiceInput.onReadyForSpeech gen=27
+2026-06-26 06:04:51.232 | VoiceInput.onError error=7 gen=27

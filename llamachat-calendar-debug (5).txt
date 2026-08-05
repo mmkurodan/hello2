@@ -1,0 +1,74 @@
+2026-06-25 21:27:38.092 | === MainActivity onCreate ===
+2026-06-25 21:27:47.508 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:28:02.246 | calendarJudge validated action=QUERY, title=null, start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, eventId=null
+2026-06-25 21:28:02.246 | queryEvents start title=(null), start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, maxResults=10
+2026-06-25 21:28:02.246 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:28:02.992 | queryEvents success count=2
+2026-06-25 21:29:05.020 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:29:21.690 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:29:21.688Z","response":"{\"action\":\"QUERY\",\"title\":\"2027年4月の予定\",\"start\":\"2027-04-01T00:00:00+09:00\",\"end\":\"2027-05-01T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"2027年4月の予定を教えて\",\"notes\":\"\"}}","done":true,"total_duration":47438671000,"load_duration":31266160000,"prompt_eval_count":738,"prompt_eval_duration":7492619000,"eval_count":99,"eval_duration":8679892000}
+2026-06-25 21:29:21.690 | calendarJudge validation failed attempt=1, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:29:21.690 | calendarJudge attempt=2, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:29:39.127 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:29:39.126Z","response":"{\"action\":\"QUERY\",\"title\":null,\"start\":\"2027-04-01T00:00:00+09:00\",\"end\":\"2027-05-01T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"2027年4月の予定を教えて\",\"notes\":\"\"}}","done":true,"total_duration":48209469000,"load_duration":31266160000,"prompt_eval_count":786,"prompt_eval_duration":8147660000,"eval_count":90,"eval_duration":8795649000}
+2026-06-25 21:29:39.128 | calendarJudge validated action=QUERY, title=null, start=2027-04-01T00:00:00+09:00, end=2027-05-01T00:00:00+09:00, eventId=null
+2026-06-25 21:29:39.128 | extractCalendarAction final action=QUERY, title=null, start=2027-04-01T00:00:00+09:00, end=2027-05-01T00:00:00+09:00, eventId=null
+2026-06-25 21:29:39.129 | queryEvents start title=(null), start=2027-04-01T00:00:00+09:00, end=2027-05-01T00:00:00+09:00, maxResults=10
+2026-06-25 21:29:39.129 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:29:39.534 | queryEvents success count=0
+2026-06-25 21:29:39.535 | handleCalendarDebugResult result action=QUERY, success=true, errorType=null, errorDetail=null
+2026-06-25 21:29:39.540 | sendCalendarExplanation model=Qwen, action=QUERY, success=true
+2026-06-25 21:30:09.299 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:30:30.312 | calendarJudge validation failed attempt=1, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:30:30.312 | calendarJudge attempt=2, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:30:51.608 | calendarJudge validated action=QUERY, title=null, start=2027-02-01T00:00:00+09:00, end=2027-03-01T00:00:00+09:00, eventId=null
+2026-06-25 21:30:51.608 | queryEvents start title=(null), start=2027-02-01T00:00:00+09:00, end=2027-03-01T00:00:00+09:00, maxResults=10
+2026-06-25 21:30:51.608 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:30:51.933 | queryEvents success count=2
+2026-06-25 21:49:04.137 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:49:18.524 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:49:18.523Z","response":"{\"action\":\"QUERY\",\"title\":null,\"start\":\"2026-06-25T00:00:00+09:00\",\"end\":\"2026-06-26T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"今日の予定教えて\",\"notes\":\"\"}}","done":true,"total_duration":45245851000,"load_duration":31266160000,"prompt_eval_count":731,"prompt_eval_duration":6862014000,"eval_count":83,"eval_duration":7117677000}
+2026-06-25 21:49:18.525 | calendarJudge validated action=QUERY, title=null, start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, eventId=null
+2026-06-25 21:49:18.525 | extractCalendarAction final action=QUERY, title=null, start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, eventId=null
+2026-06-25 21:49:18.525 | queryEvents start title=(null), start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, maxResults=10
+2026-06-25 21:49:18.526 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:49:18.888 | queryEvents success count=2
+2026-06-25 21:49:18.901 | handleCalendarDebugResult result action=QUERY, success=true, errorType=null, errorDetail=null
+2026-06-25 21:49:18.904 | sendCalendarExplanation model=Qwen, action=QUERY, success=true
+2026-06-25 21:50:29.144 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:50:43.261 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:50:43.260Z","response":"{\"action\":\"QUERY\",\"title\":\"予定\",\"start\":\"2026-06-29T00:00:00+09:00\",\"end\":\"2026-07-01T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"6月29日の予定教えて\",\"notes\":\"\"}}","done":true,"total_duration":44954493000,"load_duration":31266160000,"prompt_eval_count":734,"prompt_eval_duration":6322640000,"eval_count":87,"eval_duration":7365693000}
+2026-06-25 21:50:43.262 | calendarJudge validation failed attempt=1, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:50:43.262 | calendarJudge attempt=2, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:50:59.142 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:50:59.141Z","response":"{\"action\":\"QUERY\",\"title\":null,\"start\":\"2026-06-29T00:00:00+09:00\",\"end\":\"2026-07-01T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"6月29日の予定教えて\",\"notes\":\"\"}}","done":true,"total_duration":46693056000,"load_duration":31266160000,"prompt_eval_count":782,"prompt_eval_duration":7656371000,"eval_count":86,"eval_duration":7770525000}
+2026-06-25 21:50:59.143 | calendarJudge validated action=QUERY, title=null, start=2026-06-29T00:00:00+09:00, end=2026-07-01T00:00:00+09:00, eventId=null
+2026-06-25 21:50:59.143 | extractCalendarAction final action=QUERY, title=null, start=2026-06-29T00:00:00+09:00, end=2026-07-01T00:00:00+09:00, eventId=null
+2026-06-25 21:50:59.143 | queryEvents start title=(null), start=2026-06-29T00:00:00+09:00, end=2026-07-01T00:00:00+09:00, maxResults=10
+2026-06-25 21:50:59.143 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:50:59.451 | queryEvents success count=2
+2026-06-25 21:50:59.453 | handleCalendarDebugResult result action=QUERY, success=true, errorType=null, errorDetail=null
+2026-06-25 21:50:59.457 | sendCalendarExplanation model=Qwen, action=QUERY, success=true
+2026-06-25 21:51:38.325 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:51:53.942 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:51:53.941Z","response":"{\"action\":\"QUERY\",\"title\":null,\"start\":\"2026-06-25T00:00:00+09:00\",\"end\":\"2026-06-26T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"今日の予定教えて\",\"notes\":\"\"}}","done":true,"total_duration":46488346000,"load_duration":31266160000,"prompt_eval_count":731,"prompt_eval_duration":7502105000,"eval_count":83,"eval_duration":7720081000}
+2026-06-25 21:51:53.943 | calendarJudge validated action=QUERY, title=null, start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, eventId=null
+2026-06-25 21:51:53.943 | extractCalendarAction final action=QUERY, title=null, start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, eventId=null
+2026-06-25 21:51:53.943 | queryEvents start title=(null), start=2026-06-25T00:00:00+09:00, end=2026-06-26T00:00:00+09:00, maxResults=10
+2026-06-25 21:51:53.943 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:51:54.334 | queryEvents success count=2
+2026-06-25 21:51:54.335 | handleCalendarDebugResult result action=QUERY, success=true, errorType=null, errorDetail=null
+2026-06-25 21:51:54.340 | sendCalendarExplanation model=Qwen, action=QUERY, success=true
+2026-06-25 21:56:39.019 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:56:53.892 | calendarJudge validation failed attempt=1, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:56:53.893 | calendarJudge attempt=2, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:57:10.413 | calendarJudge validation failed attempt=2, reasons=Judge output must be exactly one JSON object.
+2026-06-25 21:57:10.414 | calendarJudge attempt=3, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:57:27.411 | calendarJudge validation failed attempt=3, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:57:27.411 | calendarJudge fallback NONE reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:58:24.481 | calendarJudge attempt=1, retry=false, expertType=CALENDAR_QUERY
+2026-06-25 21:58:45.354 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:58:45.354Z","response":"{\"action\":\"QUERY\",\"title\":\"2027年2月の予定\",\"start\":\"2027-02-01T00:00:00+09:00\",\"end\":\"2027-03-01T00:00:00+09:00\",\"eventId\":null,\"additional\":{\"rawText\":\"2027年2月の予定を教えて\",\"notes\":\"\"}}","done":true,"total_duration":51591059000,"load_duration":31266160000,"prompt_eval_count":738,"prompt_eval_duration":9415047000,"eval_count":99,"eval_duration":10909852000}
+2026-06-25 21:58:45.355 | calendarJudge validation failed attempt=1, reasons=title に禁止語「予定」が含まれています
+2026-06-25 21:58:45.356 | calendarJudge attempt=2, retry=true, expertType=CALENDAR_QUERY
+2026-06-25 21:59:09.015 | requestCalendarJudgeResponse raw response: {"model":"Qwen","created_at":"2026-06-25T12:59:09.014Z","response":"{\n  \"action\": \"QUERY\",\n  \"title\": null,\n  \"start\": \"2027-02-01T00:00:00+09:00\",\n  \"end\": \"2027-03-01T00:00:00+09:00\",\n  \"eventId\": null,\n  \"additional\": {\n    \"rawText\": \"2027年2月の予定を教えて\",\n    \"notes\": \"\"\n  }\n}","done":true,"total_duration":54354925000,"load_duration":31266160000,"prompt_eval_count":786,"prompt_eval_duration":10304255000,"eval_count":114,"eval_duration":12784510000}
+2026-06-25 21:59:09.015 | calendarJudge validated action=QUERY, title=null, start=2027-02-01T00:00:00+09:00, end=2027-03-01T00:00:00+09:00, eventId=null
+2026-06-25 21:59:09.015 | extractCalendarAction final action=QUERY, title=null, start=2027-02-01T00:00:00+09:00, end=2027-03-01T00:00:00+09:00, eventId=null
+2026-06-25 21:59:09.016 | queryEvents start title=(null), start=2027-02-01T00:00:00+09:00, end=2027-03-01T00:00:00+09:00, maxResults=10
+2026-06-25 21:59:09.016 | createService(read): account=mmkuroda@gmail.com, scopes=[https://www.googleapis.com/auth/calendar.readonly], grantedScopes=[email, https://www.googleapis.com/auth/calendar.events, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/userinfo.profile, openid, profile]
+2026-06-25 21:59:09.539 | queryEvents success count=2
+2026-06-25 21:59:09.540 | handleCalendarDebugResult result action=QUERY, success=true, errorType=null, errorDetail=null
+2026-06-25 21:59:09.544 | sendCalendarExplanation model=Qwen, action=QUERY, success=true

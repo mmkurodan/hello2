@@ -1,0 +1,1158 @@
+2026-06-25 21:27:38.091 | === MainActivity onCreate ===
+2026-06-25 21:27:38.267 | === FloatOverlayService onCreate START ===
+2026-06-25 21:27:38.267 | Getting ViewConfiguration
+2026-06-25 21:27:38.267 | touchSlop=26
+2026-06-25 21:27:38.267 | Loading settings
+2026-06-25 21:27:38.267 | Settings loaded. floatDisplayMode=icon
+2026-06-25 21:27:38.267 | Loading avatar bitmaps
+2026-06-25 21:27:38.267 | Avatar bitmaps loaded
+2026-06-25 21:27:38.268 | Initializing conversation history
+2026-06-25 21:27:38.268 | Conversation history initialized
+2026-06-25 21:27:38.268 | Preparing notification service
+2026-06-25 21:27:38.268 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=false, latestText=
+2026-06-25 21:27:38.269 | notification: ServiceCompat.startForeground with DATA_SYNC type success
+2026-06-25 21:27:38.270 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:38.270 | === FloatOverlayService onCreate SUCCESS ===
+2026-06-25 21:27:38.270 | onStartCommand called
+2026-06-25 21:27:38.270 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:38.271 | notification: manager.notify success
+2026-06-25 21:27:38.271 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:38.271 | onStartCommand called
+2026-06-25 21:27:38.271 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:38.271 | notification: manager.notify success
+2026-06-25 21:27:38.271 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:41.303 | onStartCommand called
+2026-06-25 21:27:41.321 | initOverlay: Starting
+2026-06-25 21:27:41.322 | initOverlay: WindowManager obtained
+2026-06-25 21:27:41.356 | initOverlay: Overlay layout inflated
+2026-06-25 21:27:41.356 | initOverlay: All views found
+2026-06-25 21:27:41.356 | initOverlay: LayoutParams configured
+2026-06-25 21:27:41.363 | initOverlay: Float visual updated
+2026-06-25 21:27:41.363 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:27:41.365 | initOverlay: Real overlay view added successfully
+2026-06-25 21:27:41.365 | Overlay initialized successfully
+2026-06-25 21:27:41.365 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:41.366 | notification: manager.notify success
+2026-06-25 21:27:41.366 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=
+2026-06-25 21:27:47.515 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:47.516 | notification: manager.notify success
+2026-06-25 21:27:47.516 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:47.516 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:47.517 | notification: manager.notify success
+2026-06-25 21:27:47.518 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:47.518 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:27:47.519 | notification: manager.notify success
+2026-06-25 21:27:47.519 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:27:47.877 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:47.878 | notification: manager.notify success
+2026-06-25 21:27:47.879 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:48.241 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:48.243 | notification: manager.notify success
+2026-06-25 21:27:48.243 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:48.604 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:48.606 | notification: manager.notify success
+2026-06-25 21:27:48.606 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:48.967 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:48.970 | notification: manager.notify success
+2026-06-25 21:27:48.971 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:49.332 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:49.335 | notification: manager.notify success
+2026-06-25 21:27:49.335 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:49.697 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:49.701 | notification: manager.notify success
+2026-06-25 21:27:49.701 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:50.312 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:50.315 | notification: manager.notify success
+2026-06-25 21:27:50.316 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:50.707 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:50.711 | notification: manager.notify success
+2026-06-25 21:27:50.712 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:51.072 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:51.075 | notification: manager.notify success
+2026-06-25 21:27:51.076 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:51.534 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:51.538 | notification: manager.notify success
+2026-06-25 21:27:51.539 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:51.927 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:51.929 | notification: manager.notify success
+2026-06-25 21:27:51.929 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:52.290 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:52.293 | notification: manager.notify success
+2026-06-25 21:27:52.294 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:52.905 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:52.909 | notification: manager.notify success
+2026-06-25 21:27:52.910 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:53.330 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:53.334 | notification: manager.notify success
+2026-06-25 21:27:53.334 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:53.695 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:53.698 | notification: manager.notify success
+2026-06-25 21:27:53.699 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:54.060 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:54.061 | notification: manager.notify success
+2026-06-25 21:27:54.061 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:54.561 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:54.565 | notification: manager.notify success
+2026-06-25 21:27:54.565 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:54.926 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:54.928 | notification: manager.notify success
+2026-06-25 21:27:54.928 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:55.289 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:55.291 | notification: manager.notify success
+2026-06-25 21:27:55.292 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:55.653 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:55.657 | notification: manager.notify success
+2026-06-25 21:27:55.657 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:56.019 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:56.022 | notification: manager.notify success
+2026-06-25 21:27:56.022 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:56.383 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:56.385 | notification: manager.notify success
+2026-06-25 21:27:56.386 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:56.746 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:56.748 | notification: manager.notify success
+2026-06-25 21:27:56.748 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:57.109 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:57.111 | notification: manager.notify success
+2026-06-25 21:27:57.111 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:57.472 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:57.474 | notification: manager.notify success
+2026-06-25 21:27:57.475 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:57.835 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:57.838 | notification: manager.notify success
+2026-06-25 21:27:57.838 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:58.200 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:58.203 | notification: manager.notify success
+2026-06-25 21:27:58.203 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:58.565 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:58.568 | notification: manager.notify success
+2026-06-25 21:27:58.568 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:58.930 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:58.933 | notification: manager.notify success
+2026-06-25 21:27:58.934 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:27:59.295 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:59.298 | notification: manager.notify success
+2026-06-25 21:27:59.298 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:27:59.659 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:27:59.663 | notification: manager.notify success
+2026-06-25 21:27:59.663 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:00.024 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:00.026 | notification: manager.notify success
+2026-06-25 21:28:00.027 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:00.388 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:00.392 | notification: manager.notify success
+2026-06-25 21:28:00.393 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:00.754 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:00.757 | notification: manager.notify success
+2026-06-25 21:28:00.758 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:01.118 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:01.120 | notification: manager.notify success
+2026-06-25 21:28:01.121 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:01.482 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:01.485 | notification: manager.notify success
+2026-06-25 21:28:01.485 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:01.846 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:01.847 | notification: manager.notify success
+2026-06-25 21:28:01.848 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:02.208 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:02.210 | notification: manager.notify success
+2026-06-25 21:28:02.210 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:28:02.571 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:02.573 | notification: manager.notify success
+2026-06-25 21:28:02.574 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:28:02.935 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:02.937 | notification: manager.notify success
+2026-06-25 21:28:02.938 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:28:02.995 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:02.998 | notification: manager.notify success
+2026-06-25 21:28:02.998 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:02.999 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:03.001 | notification: manager.notify success
+2026-06-25 21:28:03.001 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:03.359 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:03.363 | notification: manager.notify success
+2026-06-25 21:28:03.363 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:03.724 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:03.726 | notification: manager.notify success
+2026-06-25 21:28:03.726 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:04.087 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:04.088 | notification: manager.notify success
+2026-06-25 21:28:04.088 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:04.449 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:04.452 | notification: manager.notify success
+2026-06-25 21:28:04.453 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:04.813 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:04.815 | notification: manager.notify success
+2026-06-25 21:28:04.815 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:05.176 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:05.179 | notification: manager.notify success
+2026-06-25 21:28:05.179 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:05.540 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:05.542 | notification: manager.notify success
+2026-06-25 21:28:05.543 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:05.903 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:05.906 | notification: manager.notify success
+2026-06-25 21:28:05.906 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:06.267 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:06.269 | notification: manager.notify success
+2026-06-25 21:28:06.269 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:28:06.629 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:06.631 | notification: manager.notify success
+2026-06-25 21:28:06.632 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:28:06.992 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:06.993 | notification: manager.notify success
+2026-06-25 21:28:06.993 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:28:07.016 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:07.017 | notification: manager.notify success
+2026-06-25 21:28:07.018 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:07.018 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:07.019 | notification: manager.notify success
+2026-06-25 21:28:07.019 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.757 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.760 | notification: manager.notify success
+2026-06-25 21:28:42.761 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.786 | onStartCommand called
+2026-06-25 21:28:42.786 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.792 | notification: manager.notify success
+2026-06-25 21:28:42.792 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.792 | onStartCommand called
+2026-06-25 21:28:42.792 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:28:42.796 | notification: manager.notify success
+2026-06-25 21:28:42.797 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:50.548 | onStartCommand called
+2026-06-25 21:29:50.580 | initOverlay: Starting
+2026-06-25 21:29:50.580 | initOverlay: WindowManager obtained
+2026-06-25 21:29:50.621 | initOverlay: Overlay layout inflated
+2026-06-25 21:29:50.622 | initOverlay: All views found
+2026-06-25 21:29:50.622 | initOverlay: LayoutParams configured
+2026-06-25 21:29:50.629 | initOverlay: Float visual updated
+2026-06-25 21:29:50.629 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:29:50.631 | initOverlay: Real overlay view added successfully
+2026-06-25 21:29:50.632 | Overlay initialized successfully
+2026-06-25 21:29:50.632 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:50.633 | notification: manager.notify success
+2026-06-25 21:29:50.633 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.274 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.276 | notification: manager.notify success
+2026-06-25 21:29:57.277 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.292 | onStartCommand called
+2026-06-25 21:29:57.293 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.294 | notification: manager.notify success
+2026-06-25 21:29:57.294 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.294 | onStartCommand called
+2026-06-25 21:29:57.294 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:29:57.295 | notification: manager.notify success
+2026-06-25 21:29:57.295 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:30:02.291 | onStartCommand called
+2026-06-25 21:30:02.317 | initOverlay: Starting
+2026-06-25 21:30:02.317 | initOverlay: WindowManager obtained
+2026-06-25 21:30:02.340 | initOverlay: Overlay layout inflated
+2026-06-25 21:30:02.340 | initOverlay: All views found
+2026-06-25 21:30:02.341 | initOverlay: LayoutParams configured
+2026-06-25 21:30:02.341 | initOverlay: Float visual updated
+2026-06-25 21:30:02.341 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:30:02.344 | initOverlay: Real overlay view added successfully
+2026-06-25 21:30:02.345 | Overlay initialized successfully
+2026-06-25 21:30:02.345 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:30:02.346 | notification: manager.notify success
+2026-06-25 21:30:02.346 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=今日のあなたの予定は、おやつと内調査があります。
+2026-06-25 21:30:09.313 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:09.315 | notification: manager.notify success
+2026-06-25 21:30:09.315 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:09.315 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:09.316 | notification: manager.notify success
+2026-06-25 21:30:09.316 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:09.316 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:30:09.317 | notification: manager.notify success
+2026-06-25 21:30:09.317 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:30:09.677 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:09.680 | notification: manager.notify success
+2026-06-25 21:30:09.680 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:10.041 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:10.044 | notification: manager.notify success
+2026-06-25 21:30:10.044 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:10.614 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:10.616 | notification: manager.notify success
+2026-06-25 21:30:10.617 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:11.114 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:11.117 | notification: manager.notify success
+2026-06-25 21:30:11.118 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:11.494 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:11.498 | notification: manager.notify success
+2026-06-25 21:30:11.498 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:11.885 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:11.888 | notification: manager.notify success
+2026-06-25 21:30:11.888 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:12.250 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:12.253 | notification: manager.notify success
+2026-06-25 21:30:12.253 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:12.728 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:12.731 | notification: manager.notify success
+2026-06-25 21:30:12.732 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:13.202 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:13.206 | notification: manager.notify success
+2026-06-25 21:30:13.207 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:13.634 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:13.637 | notification: manager.notify success
+2026-06-25 21:30:13.637 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:14.144 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:14.148 | notification: manager.notify success
+2026-06-25 21:30:14.149 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:14.616 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:14.619 | notification: manager.notify success
+2026-06-25 21:30:14.619 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:15.097 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:15.100 | notification: manager.notify success
+2026-06-25 21:30:15.101 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:15.461 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:15.465 | notification: manager.notify success
+2026-06-25 21:30:15.465 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:15.866 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:15.870 | notification: manager.notify success
+2026-06-25 21:30:15.872 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:16.441 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:16.444 | notification: manager.notify success
+2026-06-25 21:30:16.444 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:17.009 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:17.013 | notification: manager.notify success
+2026-06-25 21:30:17.013 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:17.375 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:17.379 | notification: manager.notify success
+2026-06-25 21:30:17.379 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:17.764 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:17.773 | notification: manager.notify success
+2026-06-25 21:30:17.774 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:18.288 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:18.292 | notification: manager.notify success
+2026-06-25 21:30:18.292 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:18.815 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:18.820 | notification: manager.notify success
+2026-06-25 21:30:18.820 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:19.181 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:19.183 | notification: manager.notify success
+2026-06-25 21:30:19.183 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:19.545 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:19.548 | notification: manager.notify success
+2026-06-25 21:30:19.549 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:19.909 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:19.913 | notification: manager.notify success
+2026-06-25 21:30:19.913 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:20.275 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:20.278 | notification: manager.notify success
+2026-06-25 21:30:20.279 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:20.641 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:20.644 | notification: manager.notify success
+2026-06-25 21:30:20.645 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:21.006 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:21.010 | notification: manager.notify success
+2026-06-25 21:30:21.011 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:21.371 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:21.373 | notification: manager.notify success
+2026-06-25 21:30:21.373 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:21.734 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:21.737 | notification: manager.notify success
+2026-06-25 21:30:21.738 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:22.098 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:22.100 | notification: manager.notify success
+2026-06-25 21:30:22.101 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:22.461 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:22.464 | notification: manager.notify success
+2026-06-25 21:30:22.465 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:22.845 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:22.848 | notification: manager.notify success
+2026-06-25 21:30:22.849 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:23.209 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:23.212 | notification: manager.notify success
+2026-06-25 21:30:23.212 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:23.573 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:23.576 | notification: manager.notify success
+2026-06-25 21:30:23.576 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:23.937 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:23.940 | notification: manager.notify success
+2026-06-25 21:30:23.941 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:24.302 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:24.304 | notification: manager.notify success
+2026-06-25 21:30:24.304 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:24.665 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:24.667 | notification: manager.notify success
+2026-06-25 21:30:24.667 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:25.029 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:25.033 | notification: manager.notify success
+2026-06-25 21:30:25.033 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:25.394 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:25.398 | notification: manager.notify success
+2026-06-25 21:30:25.398 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:25.759 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:25.761 | notification: manager.notify success
+2026-06-25 21:30:25.761 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:26.122 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:26.125 | notification: manager.notify success
+2026-06-25 21:30:26.125 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:26.488 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:26.490 | notification: manager.notify success
+2026-06-25 21:30:26.491 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:26.852 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:26.855 | notification: manager.notify success
+2026-06-25 21:30:26.855 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:27.216 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:27.219 | notification: manager.notify success
+2026-06-25 21:30:27.219 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:27.580 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:27.582 | notification: manager.notify success
+2026-06-25 21:30:27.583 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:27.943 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:27.945 | notification: manager.notify success
+2026-06-25 21:30:27.946 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:28.307 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:28.310 | notification: manager.notify success
+2026-06-25 21:30:28.311 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:28.672 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:28.674 | notification: manager.notify success
+2026-06-25 21:30:28.675 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:29.036 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:29.038 | notification: manager.notify success
+2026-06-25 21:30:29.038 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:29.400 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:29.404 | notification: manager.notify success
+2026-06-25 21:30:29.404 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:29.765 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:29.767 | notification: manager.notify success
+2026-06-25 21:30:29.767 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:30.128 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:30.131 | notification: manager.notify success
+2026-06-25 21:30:30.131 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:30.493 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:30.495 | notification: manager.notify success
+2026-06-25 21:30:30.496 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:30.890 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:30.896 | notification: manager.notify success
+2026-06-25 21:30:30.896 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:31.284 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:31.287 | notification: manager.notify success
+2026-06-25 21:30:31.287 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:31.659 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:31.662 | notification: manager.notify success
+2026-06-25 21:30:31.662 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:32.023 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:32.025 | notification: manager.notify success
+2026-06-25 21:30:32.026 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:32.391 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:32.395 | notification: manager.notify success
+2026-06-25 21:30:32.396 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:32.777 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:32.780 | notification: manager.notify success
+2026-06-25 21:30:32.781 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:33.143 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:33.146 | notification: manager.notify success
+2026-06-25 21:30:33.147 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:33.526 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:33.530 | notification: manager.notify success
+2026-06-25 21:30:33.530 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:34.000 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:34.003 | notification: manager.notify success
+2026-06-25 21:30:34.004 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:34.481 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:34.485 | notification: manager.notify success
+2026-06-25 21:30:34.486 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:34.848 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:34.851 | notification: manager.notify success
+2026-06-25 21:30:34.851 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:35.338 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:35.342 | notification: manager.notify success
+2026-06-25 21:30:35.342 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:35.795 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:35.799 | notification: manager.notify success
+2026-06-25 21:30:35.800 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:36.274 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:36.277 | notification: manager.notify success
+2026-06-25 21:30:36.278 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:36.877 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:36.880 | notification: manager.notify success
+2026-06-25 21:30:36.881 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:37.451 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:37.454 | notification: manager.notify success
+2026-06-25 21:30:37.455 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:38.021 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:38.024 | notification: manager.notify success
+2026-06-25 21:30:38.025 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:38.386 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:38.388 | notification: manager.notify success
+2026-06-25 21:30:38.388 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:38.945 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:38.949 | notification: manager.notify success
+2026-06-25 21:30:38.950 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:39.534 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:39.537 | notification: manager.notify success
+2026-06-25 21:30:39.538 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:40.089 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:40.093 | notification: manager.notify success
+2026-06-25 21:30:40.094 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:40.455 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:40.458 | notification: manager.notify success
+2026-06-25 21:30:40.459 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:40.819 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:40.822 | notification: manager.notify success
+2026-06-25 21:30:40.822 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:41.183 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:41.185 | notification: manager.notify success
+2026-06-25 21:30:41.185 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:41.546 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:41.549 | notification: manager.notify success
+2026-06-25 21:30:41.549 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:41.910 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:41.912 | notification: manager.notify success
+2026-06-25 21:30:41.912 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:42.273 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:42.275 | notification: manager.notify success
+2026-06-25 21:30:42.276 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:42.636 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:42.639 | notification: manager.notify success
+2026-06-25 21:30:42.640 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:43.001 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:43.003 | notification: manager.notify success
+2026-06-25 21:30:43.003 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:43.365 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:43.369 | notification: manager.notify success
+2026-06-25 21:30:43.369 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:43.730 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:43.734 | notification: manager.notify success
+2026-06-25 21:30:43.735 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:44.096 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:44.098 | notification: manager.notify success
+2026-06-25 21:30:44.098 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:44.459 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:44.461 | notification: manager.notify success
+2026-06-25 21:30:44.462 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:44.824 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:44.832 | notification: manager.notify success
+2026-06-25 21:30:44.833 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:45.194 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:45.197 | notification: manager.notify success
+2026-06-25 21:30:45.197 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:45.559 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:45.562 | notification: manager.notify success
+2026-06-25 21:30:45.563 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:45.925 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:45.927 | notification: manager.notify success
+2026-06-25 21:30:45.927 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:46.288 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:46.291 | notification: manager.notify success
+2026-06-25 21:30:46.291 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:46.652 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:46.654 | notification: manager.notify success
+2026-06-25 21:30:46.654 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:47.016 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:47.018 | notification: manager.notify success
+2026-06-25 21:30:47.019 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:47.380 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:47.382 | notification: manager.notify success
+2026-06-25 21:30:47.382 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:47.743 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:47.747 | notification: manager.notify success
+2026-06-25 21:30:47.747 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:48.108 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:48.110 | notification: manager.notify success
+2026-06-25 21:30:48.110 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:48.471 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:48.474 | notification: manager.notify success
+2026-06-25 21:30:48.474 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:48.835 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:48.837 | notification: manager.notify success
+2026-06-25 21:30:48.838 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:49.198 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:49.200 | notification: manager.notify success
+2026-06-25 21:30:49.201 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:49.561 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:49.563 | notification: manager.notify success
+2026-06-25 21:30:49.564 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:49.924 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:49.926 | notification: manager.notify success
+2026-06-25 21:30:49.927 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:50.287 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:50.290 | notification: manager.notify success
+2026-06-25 21:30:50.290 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:50.652 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:50.655 | notification: manager.notify success
+2026-06-25 21:30:50.656 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:51.016 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:51.020 | notification: manager.notify success
+2026-06-25 21:30:51.020 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:30:51.381 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:51.384 | notification: manager.notify success
+2026-06-25 21:30:51.384 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:30:51.745 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:51.747 | notification: manager.notify success
+2026-06-25 21:30:51.748 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:30:51.938 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:51.942 | notification: manager.notify success
+2026-06-25 21:30:51.943 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:51.943 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:51.945 | notification: manager.notify success
+2026-06-25 21:30:51.946 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:52.303 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:52.306 | notification: manager.notify success
+2026-06-25 21:30:52.306 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:52.705 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:52.708 | notification: manager.notify success
+2026-06-25 21:30:52.709 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:53.081 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:53.084 | notification: manager.notify success
+2026-06-25 21:30:53.084 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:53.445 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:53.448 | notification: manager.notify success
+2026-06-25 21:30:53.448 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:53.809 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:53.811 | notification: manager.notify success
+2026-06-25 21:30:53.812 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:54.405 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:54.409 | notification: manager.notify success
+2026-06-25 21:30:54.409 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:54.770 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:54.773 | notification: manager.notify success
+2026-06-25 21:30:54.773 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:55.134 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:55.135 | notification: manager.notify success
+2026-06-25 21:30:55.136 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:55.496 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:55.498 | notification: manager.notify success
+2026-06-25 21:30:55.498 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:55.860 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:55.863 | notification: manager.notify success
+2026-06-25 21:30:55.864 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:56.225 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:56.227 | notification: manager.notify success
+2026-06-25 21:30:56.227 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:56.589 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:56.593 | notification: manager.notify success
+2026-06-25 21:30:56.593 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:56.955 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:56.957 | notification: manager.notify success
+2026-06-25 21:30:56.958 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:57.318 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:57.320 | notification: manager.notify success
+2026-06-25 21:30:57.320 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中...
+2026-06-25 21:30:57.689 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:57.691 | notification: manager.notify success
+2026-06-25 21:30:57.692 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中.
+2026-06-25 21:30:58.052 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:58.054 | notification: manager.notify success
+2026-06-25 21:30:58.055 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=Calendar説明生成中..
+2026-06-25 21:30:58.391 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:30:58.392 | notification: manager.notify success
+2026-06-25 21:30:58.393 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:30:58.393 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:30:58.394 | notification: manager.notify success
+2026-06-25 21:30:58.394 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.951 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.953 | notification: manager.notify success
+2026-06-25 21:48:44.953 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.975 | onStartCommand called
+2026-06-25 21:48:44.976 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.980 | notification: manager.notify success
+2026-06-25 21:48:44.981 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.981 | onStartCommand called
+2026-06-25 21:48:44.982 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:48:44.983 | notification: manager.notify success
+2026-06-25 21:48:44.984 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:30.593 | onStartCommand called
+2026-06-25 21:49:30.628 | initOverlay: Starting
+2026-06-25 21:49:30.629 | initOverlay: WindowManager obtained
+2026-06-25 21:49:30.676 | initOverlay: Overlay layout inflated
+2026-06-25 21:49:30.676 | initOverlay: All views found
+2026-06-25 21:49:30.676 | initOverlay: LayoutParams configured
+2026-06-25 21:49:30.683 | initOverlay: Float visual updated
+2026-06-25 21:49:30.683 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:49:30.685 | initOverlay: Real overlay view added successfully
+2026-06-25 21:49:30.686 | Overlay initialized successfully
+2026-06-25 21:49:30.686 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:30.687 | notification: manager.notify success
+2026-06-25 21:49:30.687 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.731 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.732 | notification: manager.notify success
+2026-06-25 21:49:45.733 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.751 | onStartCommand called
+2026-06-25 21:49:45.751 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.755 | notification: manager.notify success
+2026-06-25 21:49:45.756 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.756 | onStartCommand called
+2026-06-25 21:49:45.756 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:45.759 | notification: manager.notify success
+2026-06-25 21:49:45.759 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:47.971 | onStartCommand called
+2026-06-25 21:49:48.007 | initOverlay: Starting
+2026-06-25 21:49:48.007 | initOverlay: WindowManager obtained
+2026-06-25 21:49:48.009 | initOverlay: Overlay layout inflated
+2026-06-25 21:49:48.010 | initOverlay: All views found
+2026-06-25 21:49:48.010 | initOverlay: LayoutParams configured
+2026-06-25 21:49:48.010 | initOverlay: Float visual updated
+2026-06-25 21:49:48.010 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:49:48.017 | initOverlay: Real overlay view added successfully
+2026-06-25 21:49:48.021 | Overlay initialized successfully
+2026-06-25 21:49:48.021 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:49:48.023 | notification: manager.notify success
+2026-06-25 21:49:48.024 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.939 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.945 | notification: manager.notify success
+2026-06-25 21:50:04.945 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.961 | onStartCommand called
+2026-06-25 21:50:04.961 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.964 | notification: manager.notify success
+2026-06-25 21:50:04.964 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.964 | onStartCommand called
+2026-06-25 21:50:04.964 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:50:04.967 | notification: manager.notify success
+2026-06-25 21:50:04.968 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:56:26.217 | onStartCommand called
+2026-06-25 21:56:26.218 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:56:26.221 | notification: manager.notify success
+2026-06-25 21:56:26.221 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:56:32.894 | onStartCommand called
+2026-06-25 21:56:32.928 | initOverlay: Starting
+2026-06-25 21:56:32.928 | initOverlay: WindowManager obtained
+2026-06-25 21:56:32.979 | initOverlay: Overlay layout inflated
+2026-06-25 21:56:32.979 | initOverlay: All views found
+2026-06-25 21:56:32.979 | initOverlay: LayoutParams configured
+2026-06-25 21:56:32.986 | initOverlay: Float visual updated
+2026-06-25 21:56:32.986 | initOverlay: Adding real overlay view to window manager
+2026-06-25 21:56:32.988 | initOverlay: Real overlay view added successfully
+2026-06-25 21:56:32.988 | Overlay initialized successfully
+2026-06-25 21:56:32.988 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:56:32.989 | notification: manager.notify success
+2026-06-25 21:56:32.989 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=2027年2月の予定は、22日に人間ドックと、24日に人間ドックがあります。
+2026-06-25 21:56:39.025 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:39.030 | notification: manager.notify success
+2026-06-25 21:56:39.030 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:39.030 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:39.031 | notification: manager.notify success
+2026-06-25 21:56:39.031 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:39.031 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:56:39.032 | notification: manager.notify success
+2026-06-25 21:56:39.032 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=応答を生成中...
+2026-06-25 21:56:39.391 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:39.393 | notification: manager.notify success
+2026-06-25 21:56:39.393 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:39.754 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:39.756 | notification: manager.notify success
+2026-06-25 21:56:39.756 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:40.117 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:40.119 | notification: manager.notify success
+2026-06-25 21:56:40.120 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:40.480 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:40.481 | notification: manager.notify success
+2026-06-25 21:56:40.482 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:40.842 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:40.843 | notification: manager.notify success
+2026-06-25 21:56:40.844 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:41.204 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:41.207 | notification: manager.notify success
+2026-06-25 21:56:41.207 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:41.770 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:41.773 | notification: manager.notify success
+2026-06-25 21:56:41.774 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:42.159 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:42.161 | notification: manager.notify success
+2026-06-25 21:56:42.161 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:42.522 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:42.525 | notification: manager.notify success
+2026-06-25 21:56:42.525 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:42.886 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:42.888 | notification: manager.notify success
+2026-06-25 21:56:42.888 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:43.302 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:43.306 | notification: manager.notify success
+2026-06-25 21:56:43.306 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:43.668 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:43.671 | notification: manager.notify success
+2026-06-25 21:56:43.671 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:44.339 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:44.342 | notification: manager.notify success
+2026-06-25 21:56:44.342 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:44.764 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:44.768 | notification: manager.notify success
+2026-06-25 21:56:44.768 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:45.129 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:45.133 | notification: manager.notify success
+2026-06-25 21:56:45.133 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:45.494 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:45.498 | notification: manager.notify success
+2026-06-25 21:56:45.499 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:45.952 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:45.956 | notification: manager.notify success
+2026-06-25 21:56:45.956 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:46.327 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:46.330 | notification: manager.notify success
+2026-06-25 21:56:46.331 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:46.691 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:46.694 | notification: manager.notify success
+2026-06-25 21:56:46.694 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:47.055 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:47.058 | notification: manager.notify success
+2026-06-25 21:56:47.059 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:47.420 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:47.422 | notification: manager.notify success
+2026-06-25 21:56:47.422 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:47.783 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:47.786 | notification: manager.notify success
+2026-06-25 21:56:47.786 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:48.147 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:48.149 | notification: manager.notify success
+2026-06-25 21:56:48.150 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:48.510 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:48.512 | notification: manager.notify success
+2026-06-25 21:56:48.512 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:48.873 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:48.876 | notification: manager.notify success
+2026-06-25 21:56:48.877 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:49.239 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:49.242 | notification: manager.notify success
+2026-06-25 21:56:49.242 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:49.604 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:49.608 | notification: manager.notify success
+2026-06-25 21:56:49.609 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:49.970 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:49.973 | notification: manager.notify success
+2026-06-25 21:56:49.973 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:50.335 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:50.338 | notification: manager.notify success
+2026-06-25 21:56:50.339 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:50.699 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:50.702 | notification: manager.notify success
+2026-06-25 21:56:50.702 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:51.063 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:51.066 | notification: manager.notify success
+2026-06-25 21:56:51.066 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:51.426 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:51.429 | notification: manager.notify success
+2026-06-25 21:56:51.429 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:51.790 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:51.792 | notification: manager.notify success
+2026-06-25 21:56:51.793 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:52.154 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:52.157 | notification: manager.notify success
+2026-06-25 21:56:52.157 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:52.518 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:52.521 | notification: manager.notify success
+2026-06-25 21:56:52.521 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:52.882 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:52.884 | notification: manager.notify success
+2026-06-25 21:56:52.884 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:53.244 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:53.245 | notification: manager.notify success
+2026-06-25 21:56:53.246 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:53.606 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:53.608 | notification: manager.notify success
+2026-06-25 21:56:53.608 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:53.969 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:53.970 | notification: manager.notify success
+2026-06-25 21:56:53.970 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:54.331 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:54.334 | notification: manager.notify success
+2026-06-25 21:56:54.335 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:54.696 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:54.700 | notification: manager.notify success
+2026-06-25 21:56:54.702 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:55.063 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:55.068 | notification: manager.notify success
+2026-06-25 21:56:55.068 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:55.429 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:55.432 | notification: manager.notify success
+2026-06-25 21:56:55.433 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:55.794 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:55.796 | notification: manager.notify success
+2026-06-25 21:56:55.796 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:56.157 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:56.161 | notification: manager.notify success
+2026-06-25 21:56:56.162 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:56.602 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:56.606 | notification: manager.notify success
+2026-06-25 21:56:56.606 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:56.992 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:56.996 | notification: manager.notify success
+2026-06-25 21:56:56.996 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:57.357 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:57.361 | notification: manager.notify success
+2026-06-25 21:56:57.361 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:57.805 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:57.808 | notification: manager.notify success
+2026-06-25 21:56:57.808 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:58.196 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:58.197 | notification: manager.notify success
+2026-06-25 21:56:58.198 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:58.559 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:58.563 | notification: manager.notify success
+2026-06-25 21:56:58.563 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:56:59.213 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:59.218 | notification: manager.notify success
+2026-06-25 21:56:59.218 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:56:59.660 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:56:59.664 | notification: manager.notify success
+2026-06-25 21:56:59.664 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:00.027 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:00.030 | notification: manager.notify success
+2026-06-25 21:57:00.030 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:00.474 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:00.477 | notification: manager.notify success
+2026-06-25 21:57:00.478 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:00.905 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:00.909 | notification: manager.notify success
+2026-06-25 21:57:00.909 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:01.362 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:01.365 | notification: manager.notify success
+2026-06-25 21:57:01.365 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:01.726 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:01.729 | notification: manager.notify success
+2026-06-25 21:57:01.729 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:02.090 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:02.091 | notification: manager.notify success
+2026-06-25 21:57:02.091 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:02.452 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:02.456 | notification: manager.notify success
+2026-06-25 21:57:02.456 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:02.817 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:02.818 | notification: manager.notify success
+2026-06-25 21:57:02.819 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:03.179 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:03.182 | notification: manager.notify success
+2026-06-25 21:57:03.182 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:03.551 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:03.553 | notification: manager.notify success
+2026-06-25 21:57:03.553 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:03.914 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:03.916 | notification: manager.notify success
+2026-06-25 21:57:03.916 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:04.277 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:04.281 | notification: manager.notify success
+2026-06-25 21:57:04.281 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:04.642 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:04.645 | notification: manager.notify success
+2026-06-25 21:57:04.645 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:05.006 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:05.009 | notification: manager.notify success
+2026-06-25 21:57:05.010 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:05.370 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:05.372 | notification: manager.notify success
+2026-06-25 21:57:05.372 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:05.734 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:05.736 | notification: manager.notify success
+2026-06-25 21:57:05.737 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:06.098 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:06.101 | notification: manager.notify success
+2026-06-25 21:57:06.101 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:06.463 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:06.465 | notification: manager.notify success
+2026-06-25 21:57:06.465 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:06.826 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:06.829 | notification: manager.notify success
+2026-06-25 21:57:06.829 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:07.190 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:07.193 | notification: manager.notify success
+2026-06-25 21:57:07.193 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:07.555 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:07.558 | notification: manager.notify success
+2026-06-25 21:57:07.558 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:07.920 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:07.923 | notification: manager.notify success
+2026-06-25 21:57:07.923 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:08.284 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:08.287 | notification: manager.notify success
+2026-06-25 21:57:08.287 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:08.648 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:08.650 | notification: manager.notify success
+2026-06-25 21:57:08.650 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:09.011 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:09.015 | notification: manager.notify success
+2026-06-25 21:57:09.015 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:09.378 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:09.381 | notification: manager.notify success
+2026-06-25 21:57:09.382 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:09.743 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:09.746 | notification: manager.notify success
+2026-06-25 21:57:09.747 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:10.108 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:10.110 | notification: manager.notify success
+2026-06-25 21:57:10.111 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:10.472 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:10.473 | notification: manager.notify success
+2026-06-25 21:57:10.473 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:10.834 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:10.838 | notification: manager.notify success
+2026-06-25 21:57:10.838 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:11.199 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:11.201 | notification: manager.notify success
+2026-06-25 21:57:11.201 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:11.562 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:11.564 | notification: manager.notify success
+2026-06-25 21:57:11.565 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:11.926 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:11.929 | notification: manager.notify success
+2026-06-25 21:57:11.929 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:12.290 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:12.292 | notification: manager.notify success
+2026-06-25 21:57:12.292 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:12.653 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:12.656 | notification: manager.notify success
+2026-06-25 21:57:12.656 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:13.041 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:13.043 | notification: manager.notify success
+2026-06-25 21:57:13.043 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:13.415 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:13.419 | notification: manager.notify success
+2026-06-25 21:57:13.419 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:13.796 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:13.799 | notification: manager.notify success
+2026-06-25 21:57:13.799 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:14.160 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:14.163 | notification: manager.notify success
+2026-06-25 21:57:14.164 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:14.572 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:14.576 | notification: manager.notify success
+2026-06-25 21:57:14.577 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:14.938 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:14.941 | notification: manager.notify success
+2026-06-25 21:57:14.942 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:15.573 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:15.577 | notification: manager.notify success
+2026-06-25 21:57:15.577 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:16.027 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:16.031 | notification: manager.notify success
+2026-06-25 21:57:16.032 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:16.474 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:16.477 | notification: manager.notify success
+2026-06-25 21:57:16.478 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:16.839 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:16.842 | notification: manager.notify success
+2026-06-25 21:57:16.842 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:17.564 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:17.567 | notification: manager.notify success
+2026-06-25 21:57:17.567 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:18.013 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:18.016 | notification: manager.notify success
+2026-06-25 21:57:18.016 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:18.378 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:18.381 | notification: manager.notify success
+2026-06-25 21:57:18.381 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:18.743 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:18.746 | notification: manager.notify success
+2026-06-25 21:57:18.746 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:19.107 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:19.110 | notification: manager.notify success
+2026-06-25 21:57:19.111 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:19.472 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:19.476 | notification: manager.notify success
+2026-06-25 21:57:19.476 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:19.838 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:19.840 | notification: manager.notify success
+2026-06-25 21:57:19.841 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:20.202 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:20.204 | notification: manager.notify success
+2026-06-25 21:57:20.204 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:20.565 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:20.567 | notification: manager.notify success
+2026-06-25 21:57:20.567 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:20.928 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:20.930 | notification: manager.notify success
+2026-06-25 21:57:20.930 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:21.292 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:21.296 | notification: manager.notify success
+2026-06-25 21:57:21.297 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:21.658 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:21.660 | notification: manager.notify success
+2026-06-25 21:57:21.660 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:22.022 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:22.024 | notification: manager.notify success
+2026-06-25 21:57:22.024 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:22.386 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:22.388 | notification: manager.notify success
+2026-06-25 21:57:22.388 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:22.749 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:22.750 | notification: manager.notify success
+2026-06-25 21:57:22.751 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:23.112 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:23.114 | notification: manager.notify success
+2026-06-25 21:57:23.115 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:23.475 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:23.477 | notification: manager.notify success
+2026-06-25 21:57:23.477 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:23.839 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:23.841 | notification: manager.notify success
+2026-06-25 21:57:23.841 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:24.202 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:24.204 | notification: manager.notify success
+2026-06-25 21:57:24.204 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:24.565 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:24.568 | notification: manager.notify success
+2026-06-25 21:57:24.568 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:24.929 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:24.931 | notification: manager.notify success
+2026-06-25 21:57:24.932 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:25.292 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:25.294 | notification: manager.notify success
+2026-06-25 21:57:25.295 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:25.655 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:25.657 | notification: manager.notify success
+2026-06-25 21:57:25.658 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:26.018 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:26.021 | notification: manager.notify success
+2026-06-25 21:57:26.022 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:26.383 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:26.385 | notification: manager.notify success
+2026-06-25 21:57:26.386 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:26.748 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:26.750 | notification: manager.notify success
+2026-06-25 21:57:26.750 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:27.111 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:27.113 | notification: manager.notify success
+2026-06-25 21:57:27.113 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:27.474 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:27.475 | notification: manager.notify success
+2026-06-25 21:57:27.476 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:27.836 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:27.838 | notification: manager.notify success
+2026-06-25 21:57:27.838 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:28.199 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:28.202 | notification: manager.notify success
+2026-06-25 21:57:28.202 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:28.564 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:28.566 | notification: manager.notify success
+2026-06-25 21:57:28.566 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:28.927 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:28.929 | notification: manager.notify success
+2026-06-25 21:57:28.930 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:29.290 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:29.292 | notification: manager.notify success
+2026-06-25 21:57:29.292 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:29.660 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:29.662 | notification: manager.notify success
+2026-06-25 21:57:29.663 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:30.023 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:30.025 | notification: manager.notify success
+2026-06-25 21:57:30.026 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:30.386 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:30.389 | notification: manager.notify success
+2026-06-25 21:57:30.389 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:30.750 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:30.753 | notification: manager.notify success
+2026-06-25 21:57:30.753 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中.
+2026-06-25 21:57:31.114 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:31.116 | notification: manager.notify success
+2026-06-25 21:57:31.117 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中..
+2026-06-25 21:57:31.478 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:31.480 | notification: manager.notify success
+2026-06-25 21:57:31.480 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=思考中...
+2026-06-25 21:57:31.622 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:31.625 | notification: manager.notify success
+2026-06-25 21:57:31.625 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:31.625 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:31.627 | notification: manager.notify success
+2026-06-25 21:57:31.627 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.777 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.784 | notification: manager.notify success
+2026-06-25 21:57:56.784 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.810 | onStartCommand called
+2026-06-25 21:57:56.810 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.814 | notification: manager.notify success
+2026-06-25 21:57:56.815 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.815 | onStartCommand called
+2026-06-25 21:57:56.815 | notification state [ensureForegroundNotification:start] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
+2026-06-25 21:57:56.817 | notification: manager.notify success
+2026-06-25 21:57:56.818 | notification state [ensureForegroundNotification:end] enabled=true, postPermission=true, foregroundStarted=true, latestText=申し訳ありませんが、6月29日の予定を教えていただけますか？ 当分の間はSEARCH_RESULTSを持っていないため、その日に関する具体的な情報はありません。
