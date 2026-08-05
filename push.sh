@@ -1,8 +1,14 @@
 #!/bin/bash
 set -e
 
-git add -u
-git commit -m "update"
-git push
+REMOTE="origin"
+LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REMOTE_BRANCH="${1:-$LOCAL_BRANCH}"
 
-echo "=== Changes pushed and GitHub Actions triggered ==="
+echo "=== Push: $LOCAL_BRANCH -> $REMOTE/$REMOTE_BRANCH ==="
+
+git add -u
+git commit -m "update" 2>/dev/null || echo "(nothing to commit, skipping)"
+git push "$REMOTE" "$LOCAL_BRANCH:$REMOTE_BRANCH"
+
+echo "=== Done: $REMOTE/$REMOTE_BRANCH — GitHub Actions triggered ==="
