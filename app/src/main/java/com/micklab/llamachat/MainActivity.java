@@ -3691,17 +3691,18 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if ("SEMANTIC_ONLY".equals(routingMode) && shouldUseSemanticRouting(webAvailable)) {
             ChatFlowController.ChatFlowResult empty = chatFlowController.buildResult(userMsg,
                     Collections.emptyList(), "routing mode: SEMANTIC_ONLY");
-            routeSemanticallyThenDispatch(userMsg, webAvailable, calendarExpertModeEnabled, empty);
+            routeSemanticallyThenDispatch(userMsg, webAvailable, calendarExpertModeEnabled, memoryEnabled, empty);
             return;
         }
         ChatFlowController.ChatFlowResult flowResult = chatFlowController.route(
                 userMsg,
                 webAvailable,
-                calendarExpertModeEnabled
+                calendarExpertModeEnabled,
+                memoryEnabled
         );
         // KEYWORD_THEN_SEMANTIC: fall back to embedding when keyword found nothing.
         if (flowResult.getSteps().isEmpty() && shouldUseSemanticRouting(webAvailable)) {
-            routeSemanticallyThenDispatch(userMsg, webAvailable, calendarExpertModeEnabled, flowResult);
+            routeSemanticallyThenDispatch(userMsg, webAvailable, calendarExpertModeEnabled, memoryEnabled, flowResult);
             return;
         }
         appendExpertRoutingDebug(flowResult);
@@ -3756,6 +3757,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private void routeSemanticallyThenDispatch(String userMsg,
                                                boolean webAvailable,
                                                boolean calendarAvailable,
+                                               boolean memoryAvailable,
                                                ChatFlowController.ChatFlowResult keywordResult) {
         isProcessing = true;
         updateSendButton();
@@ -3765,7 +3767,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             try {
                 EmbeddingClient embedder = new EmbeddingClient(client, ollamaBaseUrl, embModel);
                 result = semanticExpertClassifier.classify(
-                        userMsg, embedder::embed, webAvailable, calendarAvailable, embModel);
+                        userMsg, embedder::embed, webAvailable, calendarAvailable, memoryAvailable, embModel);
             } catch (Exception e) {
                 Log.w(TAG, "semantic routing error", e);
                 result = null;

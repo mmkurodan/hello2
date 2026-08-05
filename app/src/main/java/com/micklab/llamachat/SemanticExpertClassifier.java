@@ -76,6 +76,7 @@ public final class SemanticExpertClassifier {
                            Embedder embedder,
                            boolean webAvailable,
                            boolean calendarAvailable,
+                           boolean memoryAvailable,
                            String cacheKey) {
         if (userInput == null || userInput.trim().isEmpty() || embedder == null) {
             return new Result(ExpertType.NONE, 0f, "semantic: empty input or no embedder");
@@ -91,7 +92,7 @@ public final class SemanticExpertClassifier {
             float secondScore = -1f;
             for (Map.Entry<ExpertType, float[][]> e : cache.entrySet()) {
                 ExpertType type = e.getKey();
-                if (!isAvailable(type, webAvailable, calendarAvailable)) {
+                if (!isAvailable(type, webAvailable, calendarAvailable, memoryAvailable)) {
                     continue;
                 }
                 float s = maxCosine(q, e.getValue());
@@ -146,14 +147,11 @@ public final class SemanticExpertClassifier {
         cachedKey = key;
     }
 
-    private static boolean isAvailable(ExpertType type, boolean web, boolean cal) {
-        if (type == ExpertType.WEB) {
-            return web;
-        }
-        if (isCalendar(type)) {
-            return cal;
-        }
-        return true; // NONE, MEMORY_SAVE, MEMORY_RECALL は常に候補
+    private static boolean isAvailable(ExpertType type, boolean web, boolean cal, boolean memory) {
+        if (type == ExpertType.WEB) return web;
+        if (isCalendar(type)) return cal;
+        if (type == ExpertType.MEMORY_SAVE || type == ExpertType.MEMORY_RECALL) return memory;
+        return true; // NONE は常に候補
     }
 
     private static boolean isCalendar(ExpertType t) {

@@ -48,36 +48,38 @@ public final class ExpertSelector {
             "削除", "消す", "取り消す", "やめる"
     };
 
-    public ExpertType select(String userInput, boolean webAvailable, boolean calendarAvailable) {
-        List<ExpertType> ordered = selectAll(userInput, webAvailable, calendarAvailable);
+    public ExpertType select(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
+        List<ExpertType> ordered = selectAll(userInput, webAvailable, calendarAvailable, memoryAvailable);
         if (ordered.isEmpty()) {
             return ExpertType.NONE;
         }
         return ordered.get(0);
     }
 
-    public List<ExpertType> selectAll(String userInput, boolean webAvailable, boolean calendarAvailable) {
-        return selectDetailed(userInput, webAvailable, calendarAvailable).getOrderedExpertTypes();
+    public List<ExpertType> selectAll(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
+        return selectDetailed(userInput, webAvailable, calendarAvailable, memoryAvailable).getOrderedExpertTypes();
     }
 
-    public SelectionResult selectDetailed(String userInput, boolean webAvailable, boolean calendarAvailable) {
+    public SelectionResult selectDetailed(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
         String normalized = normalize(userInput);
         if (normalized.isEmpty()) {
             return new SelectionResult(Collections.emptyList(), buildEmptyDebugText(userInput, normalized));
         }
 
-        // 記憶キーワードは他エキスパートより優先（早期リターン）
-        KeywordMatch memorySaveMatch = firstKeywordMatch(normalized, MEMORY_SAVE_KEYWORDS);
-        if (memorySaveMatch != null) {
-            return new SelectionResult(
-                    Collections.singletonList(ExpertType.MEMORY_SAVE),
-                    "memory_save keyword: \"" + memorySaveMatch.keyword + "\"");
-        }
-        KeywordMatch memoryRecallMatch = firstKeywordMatch(normalized, MEMORY_RECALL_KEYWORDS);
-        if (memoryRecallMatch != null) {
-            return new SelectionResult(
-                    Collections.singletonList(ExpertType.MEMORY_RECALL),
-                    "memory_recall keyword: \"" + memoryRecallMatch.keyword + "\"");
+        // 記憶キーワードは有効時のみ検出（web/calendarと同様にゲート）
+        if (memoryAvailable) {
+            KeywordMatch memorySaveMatch = firstKeywordMatch(normalized, MEMORY_SAVE_KEYWORDS);
+            if (memorySaveMatch != null) {
+                return new SelectionResult(
+                        Collections.singletonList(ExpertType.MEMORY_SAVE),
+                        "memory_save keyword: \"" + memorySaveMatch.keyword + "\"");
+            }
+            KeywordMatch memoryRecallMatch = firstKeywordMatch(normalized, MEMORY_RECALL_KEYWORDS);
+            if (memoryRecallMatch != null) {
+                return new SelectionResult(
+                        Collections.singletonList(ExpertType.MEMORY_RECALL),
+                        "memory_recall keyword: \"" + memoryRecallMatch.keyword + "\"");
+            }
         }
 
         List<MatchedExpert> matches = new ArrayList<>();

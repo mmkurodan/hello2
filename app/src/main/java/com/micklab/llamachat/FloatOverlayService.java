@@ -1005,7 +1005,8 @@ public class FloatOverlayService extends Service {
         ChatFlowController.ChatFlowResult flowResult = chatFlowController.route(
                 userMessage,
                 isWebSearchExpertAvailable(),
-                calendarExpertModeEnabled
+                calendarExpertModeEnabled,
+                memoryEnabled
         );
         if (flowResult.getExpertType() == ExpertType.WEB) {
             performWebSearchFlow(userMessage, flowResult.getWebSearchQuery(), requestToken);
@@ -1262,8 +1263,8 @@ public class FloatOverlayService extends Service {
     }
 
     private void performMemorySaveFlow(String userMsg, int requestToken) {
-        if (!memoryEnabled || memoryRepository == null) {
-            finishResponse(t("Memory feature is disabled.", "記憶機能は無効です。"), requestToken);
+        if (memoryRepository == null) {
+            finishResponse(t("Memory is unavailable.", "記憶機能が利用できません。"), requestToken);
             return;
         }
         String content = extractMemoryContent(userMsg);
@@ -1271,12 +1272,17 @@ public class FloatOverlayService extends Service {
             finishResponse(t("What would you like me to remember?", "何を覚えておけば良いですか？"), requestToken);
             return;
         }
-        memoryRepository.save(content, null);
+        long id = memoryRepository.save(content, null);
+        DebugLogger.log(this, "memory save: content=\"" + content + "\" id=" + id);
+        if (id < 0) {
+            finishResponse(t("Failed to save to memory.", "記録の保存に失敗しました。"), requestToken);
+            return;
+        }
         finishResponse(t("Remembered: 「", "覚えました：「") + content + "」", requestToken);
     }
 
     private void performMemoryRecallFlow(String userMsg, int requestToken) {
-        if (!memoryEnabled || memoryRepository == null) {
+        if (memoryRepository == null) {
             sendChat(null, false, requestToken);
             return;
         }
