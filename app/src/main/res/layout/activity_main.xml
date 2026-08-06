@@ -825,21 +825,40 @@
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:text="Web Search" android:layout_marginTop="4dp"/>
 
-                    <TextView
-                        android:id="@+id/tvLabelWebSearchUrl"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Web Search API URL" android:layout_marginTop="4dp"/>
-                    <EditText android:id="@+id/etWebSearchUrl"
+                    <RadioGroup android:id="@+id/radioGroupWebSearchMode"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="textUri" android:singleLine="true"/>
+                        android:orientation="horizontal" android:layout_marginTop="4dp">
+                        <RadioButton android:id="@+id/radioWebSearchDdg"
+                            android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="DuckDuckGo (Free)" android:checked="true"/>
+                        <RadioButton android:id="@+id/radioWebSearchApi"
+                            android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Web API"/>
+                    </RadioGroup>
 
-                    <TextView
-                        android:id="@+id/tvLabelWebSearchApiKey"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Web Search API Key" android:layout_marginTop="4dp"/>
-                    <EditText android:id="@+id/etWebSearchApiKey"
+                    <LinearLayout android:id="@+id/layoutWebApiConfig"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="textPassword" android:singleLine="true"/>
+                        android:orientation="vertical" android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvLabelWebSearchUrl"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Web Search API URL" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etWebSearchUrl"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="textUri" android:singleLine="true"/>
+
+                        <TextView
+                            android:id="@+id/tvLabelWebSearchApiKey"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Web Search API Key" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etWebSearchApiKey"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="textPassword" android:singleLine="true"/>
+
+                    </LinearLayout>
 
                      <TextView
                          android:id="@+id/tvLabelWebSearchModel"

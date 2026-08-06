@@ -172,6 +172,7 @@ public class FloatOverlayService extends Service {
     private String floatDisplayMode = FLOAT_DISPLAY_MODE_AVATAR;
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
+    private String webSearchMode = "DDG";
     private String expertModel = "default";
     private String speechLang = "ja-JP";
     private int historyLimit = 10;
@@ -1005,7 +1006,9 @@ public class FloatOverlayService extends Service {
     }
 
     private boolean isWebSearchExpertAvailable() {
-        return webSearchEnabled && !webSearchApiKey.isEmpty();
+        if (!webSearchEnabled) return false;
+        if ("DDG".equals(webSearchMode)) return true;
+        return !webSearchApiKey.isEmpty();
     }
 
     private void applyOllamaOptions(JSONObject body) throws org.json.JSONException {
@@ -1100,9 +1103,16 @@ public class FloatOverlayService extends Service {
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (!TextUtils.isEmpty(keywords)) {
-                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
+                    String searchQuery = keywords;
+                    if ("DDG".equals(webSearchMode)) {
+                        updateThinkingLabel(t("Translating query...", "クエリを翻訳中..."), requestToken);
+                        searchQuery = DuckDuckGoSearchHelper.translateToEnglish(
+                                client, ollamaBaseUrl, expertModel, keywords);
+                        DebugLogger.log(this, "DDG translate: \"" + keywords + "\" -> \"" + searchQuery + "\"");
+                    }
+                    String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);
-                    String searchResults = callWebSearchApi(keywords);
+                    String searchResults = callWebSearchApi(searchQuery);
                     if (!TextUtils.isEmpty(searchResults)) {
                         // RAG: 埋め込みでクエリ関連度の高いチャンクのみ抽出
                         if (webSearchRagHelper != null) {
@@ -1168,6 +1178,9 @@ public class FloatOverlayService extends Service {
     }
 
     private String callWebSearchApi(String keywords) {
+        if ("DDG".equals(webSearchMode)) {
+            return DuckDuckGoSearchHelper.search(client, keywords);
+        }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);
         }
@@ -1947,6 +1960,7 @@ public class FloatOverlayService extends Service {
         webSearchEnabled = settings.optBoolean("webSearchEnabled", webSearchEnabled);
         webSearchUrl = settings.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = settings.optString("webSearchApiKey", webSearchApiKey);
+        webSearchMode = settings.optString("webSearchMode", "DDG");
         expertModel = settings.optString("expertModel", settings.optString("webSearchModel", expertModel));
         memoryEnabled = settings.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = settings.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);

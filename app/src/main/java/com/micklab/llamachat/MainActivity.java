@@ -205,6 +205,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private View sectionGeneralHeader, sectionChatHeader, sectionExpertHeader;
     private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchDebug, switchJsonMode;
     private Switch switchProactiveNotify, switchNewsMode, switchMemoryEnabled;
+    private android.widget.RadioGroup radioGroupWebSearchMode;
+    private android.widget.RadioButton radioWebSearchDdg, radioWebSearchApi;
+    private android.view.View layoutWebApiConfig;
     private Button btnManageMemories;
     private EditText etOllamaUrl, etSpeechLang, etSpeechRate, etSpeechPitch, etSystemPrompt;
     private EditText etChatterSpeechLang, etChatterSpeechRate, etChatterSpeechPitch, etChatterSystemPrompt;
@@ -229,6 +232,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean autoChatterEnabled = false;
     private boolean autoVoiceInputEnabled = false;
     private boolean webSearchEnabled = false;
+    private static final String WEB_MODE_DDG = "DDG";
+    private static final String WEB_MODE_API = "API";
+    private String webSearchMode = WEB_MODE_DDG;
     private boolean memoryEnabled = false;
     private MemoryRepository memoryRepository;
     // お知らせ機能（フロート常駐時に予定/ニュースをポップアップ通知）。
@@ -866,6 +872,18 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         switchJsonMode = findViewById(R.id.switchJsonMode);
         etWebSearchUrl = findViewById(R.id.etWebSearchUrl);
         etWebSearchApiKey = findViewById(R.id.etWebSearchApiKey);
+        radioGroupWebSearchMode = findViewById(R.id.radioGroupWebSearchMode);
+        radioWebSearchDdg = findViewById(R.id.radioWebSearchDdg);
+        radioWebSearchApi = findViewById(R.id.radioWebSearchApi);
+        layoutWebApiConfig = findViewById(R.id.layoutWebApiConfig);
+        if (radioGroupWebSearchMode != null) {
+            radioGroupWebSearchMode.setOnCheckedChangeListener((group, checkedId) -> {
+                boolean isApi = checkedId == R.id.radioWebSearchApi;
+                if (layoutWebApiConfig != null) {
+                    layoutWebApiConfig.setVisibility(isApi ? android.view.View.VISIBLE : android.view.View.GONE);
+                }
+            });
+        }
         spinnerWebSearchModel = findViewById(R.id.etWebSearchModel);
         spinnerEmbeddingModel = findViewById(R.id.spinnerEmbeddingModel);
         spinnerStructuredOutput = findViewById(R.id.spinnerStructuredOutput);
@@ -1419,6 +1437,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         }
         if (tvLabelHistoryLimit != null) tvLabelHistoryLimit.setText(t("History Limit", "履歴制限"));
         if (tvLabelChatterInterval != null) tvLabelChatterInterval.setText(t("Chatter Interval (sec)", "おしゃべり間隔（秒）"));
+        if (radioWebSearchDdg != null) radioWebSearchDdg.setText(t("DuckDuckGo (Free)", "DuckDuckGo（無料）"));
+        if (radioWebSearchApi != null) radioWebSearchApi.setText(t("Web API", "Web API"));
         if (tvLabelWebSearchUrl != null) tvLabelWebSearchUrl.setText(t("Web Search API URL", "Web検索 API URL"));
         if (tvLabelWebSearchApiKey != null) tvLabelWebSearchApiKey.setText(t("Web Search API Key", "Web検索 APIキー"));
         if (tvLabelWebSearchModel != null) tvLabelWebSearchModel.setText(t("Expert Model", "エキスパートモデル"));
@@ -2332,6 +2352,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         s.put("newsModeEnabled", newsModeEnabled);
         s.put("newsBriefingTimes", newsBriefingTimes);
         s.put("debugEnabled", debugEnabled);
+        s.put("webSearchMode", webSearchMode);
         s.put("webSearchUrl", webSearchUrl);
         s.put("webSearchApiKey", webSearchApiKey);
         s.put("expertModel", expertModel);
@@ -2378,6 +2399,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         appLanguage = s.optString("appLanguage", appLanguage);
         floatDisplayMode = normalizeFloatDisplayMode(s.optString("floatDisplayMode", floatDisplayMode));
         webSearchEnabled = s.optBoolean("webSearchEnabled", webSearchEnabled);
+        webSearchMode = s.optString("webSearchMode", WEB_MODE_DDG);
         memoryEnabled = s.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = s.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);
         morningBriefingTime = s.optString("morningBriefingTime", morningBriefingTime);
@@ -2700,6 +2722,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         }
         if (autoChatterSeconds < 0) autoChatterSeconds = 0;
         webSearchEnabled = switchWebSearch.isChecked();
+        if (radioGroupWebSearchMode != null) {
+            webSearchMode = (radioGroupWebSearchMode.getCheckedRadioButtonId() == R.id.radioWebSearchApi)
+                    ? WEB_MODE_API : WEB_MODE_DDG;
+        }
         memoryEnabled = switchMemoryEnabled != null && switchMemoryEnabled.isChecked();
         if (spinnerRoutingMode != null) {
             int pos = spinnerRoutingMode.getSelectedItemPosition();
@@ -2811,6 +2837,14 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         etHistoryLimit.setText(String.valueOf(historyLimit));
         etAutoChatterSeconds.setText(String.valueOf(autoChatterSeconds));
         switchWebSearch.setChecked(webSearchEnabled);
+        if (radioGroupWebSearchMode != null) {
+            boolean isApi = WEB_MODE_API.equals(webSearchMode);
+            if (radioWebSearchApi != null) radioWebSearchApi.setChecked(isApi);
+            if (radioWebSearchDdg != null) radioWebSearchDdg.setChecked(!isApi);
+            if (layoutWebApiConfig != null) {
+                layoutWebApiConfig.setVisibility(isApi ? android.view.View.VISIBLE : android.view.View.GONE);
+            }
+        }
         if (switchMemoryEnabled != null) {
             switchMemoryEnabled.setChecked(memoryEnabled);
         }
@@ -3552,7 +3586,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     }
 
     private boolean isWebSearchExpertAvailable() {
-        return webSearchEnabled && !webSearchApiKey.isEmpty();
+        if (!webSearchEnabled) return false;
+        if (WEB_MODE_DDG.equals(webSearchMode)) return true;
+        return !webSearchApiKey.isEmpty();
     }
 
     private void performOrderedExpertFlow(String userMsg, List<ChatFlowController.ChatFlowStep> steps) {
