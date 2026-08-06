@@ -19,16 +19,16 @@ public final class ExpertSelector {
             "メモを見せて", "記憶を調べて", "覚えていますか", "記録はある", "メモを確認"
     };
 
-    public ExpertType select(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
-        List<ExpertType> ordered = selectAll(userInput, webAvailable, calendarAvailable, memoryAvailable);
+    public ExpertType select(String userInput, boolean webAvailable, boolean memoryAvailable) {
+        List<ExpertType> ordered = selectAll(userInput, webAvailable, memoryAvailable);
         return ordered.isEmpty() ? ExpertType.NONE : ordered.get(0);
     }
 
-    public List<ExpertType> selectAll(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
-        return selectDetailed(userInput, webAvailable, calendarAvailable, memoryAvailable).getOrderedExpertTypes();
+    public List<ExpertType> selectAll(String userInput, boolean webAvailable, boolean memoryAvailable) {
+        return selectDetailed(userInput, webAvailable, memoryAvailable).getOrderedExpertTypes();
     }
 
-    public SelectionResult selectDetailed(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
+    public SelectionResult selectDetailed(String userInput, boolean webAvailable, boolean memoryAvailable) {
         String normalized = normalize(userInput);
         if (normalized.isEmpty()) {
             return new SelectionResult(Collections.emptyList(), buildEmptyDebugText(userInput, normalized));

@@ -1,7 +1,6 @@
 package com.micklab.llamachat;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -32,38 +31,6 @@ public class StructuredOutputTest {
     }
 
     @Test
-    public void calendarGbnf_hasExpectedRules() {
-        String g = StructuredOutput.calendarActionGbnf();
-        assertTrue(g.contains("root ::="));
-        assertTrue(g.contains("additional ::="));
-        assertTrue(g.contains("action ::="));
-        assertTrue(g.contains("strnull ::= string |"));
-        assertTrue(g.contains("string ::="));
-        assertTrue(g.contains("strchar ::="));
-        assertTrue(g.contains("ws ::="));
-    }
-
-    @Test
-    public void calendarGbnf_keysAndEnumProperlyEscaped() {
-        String g = StructuredOutput.calendarActionGbnf();
-        // GBNF 文字列リテラルとして "action": が正しく出る → ソース上は "\"action\":"
-        assertTrue(g.contains("\"\\\"action\\\":\""));
-        assertTrue(g.contains("\"\\\"additional\\\":\""));
-        assertTrue(g.contains("\"\\\"rawText\\\":\""));
-        // action の 5 値が "\"NONE\"" の形で出る
-        for (String a : new String[]{"NONE", "QUERY", "CREATE", "UPDATE", "DELETE"}) {
-            assertTrue(a, g.contains("\"\\\"" + a + "\\\"\""));
-        }
-    }
-
-    @Test
-    public void calendarGbnf_noBrokenTripleQuotes() {
-        // エスケープ崩れの典型（""" や "" の裸出現）が無いこと。
-        String g = StructuredOutput.calendarActionGbnf();
-        assertFalse(g.contains("\"\"\""));
-    }
-
-    @Test
     public void genericJson_hasStandardRules() {
         String g = StructuredOutput.genericJsonGbnf();
         assertTrue(g.contains("root ::="));
@@ -80,7 +47,6 @@ public class StructuredOutputTest {
     public void grammars_quotesAreBalanced() {
         // 非エスケープ二重引用符の個数が偶数（文字列リテラルが開閉している）。
         // 文字クラス [^"\\] と ["\\/bfnrt] の 2 個ぶんも偶数寄与なので全体は偶数のはず。
-        assertEquals(0, countUnescapedQuotes(StructuredOutput.calendarActionGbnf()) % 2);
         assertEquals(0, countUnescapedQuotes(StructuredOutput.genericJsonGbnf()) % 2);
     }
 

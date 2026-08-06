@@ -991,7 +991,6 @@ public class FloatOverlayService extends Service {
         ChatFlowController.ChatFlowResult flowResult = chatFlowController.route(
                 userMessage,
                 isWebSearchExpertAvailable(),
-                false,
                 memoryEnabled
         );
         if (flowResult.getExpertType() == ExpertType.WEB) {

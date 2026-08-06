@@ -13,9 +13,9 @@ public final class ChatFlowController {
         this.webSearchExpertHandler = webSearchExpertHandler;
     }
 
-    public ChatFlowResult route(String userInput, boolean webAvailable, boolean calendarAvailable, boolean memoryAvailable) {
+    public ChatFlowResult route(String userInput, boolean webAvailable, boolean memoryAvailable) {
         ExpertSelector.SelectionResult selectionResult =
-                expertSelector.selectDetailed(userInput, webAvailable, calendarAvailable, memoryAvailable);
+                expertSelector.selectDetailed(userInput, webAvailable, memoryAvailable);
         return buildResult(userInput, selectionResult.getOrderedExpertTypes(), selectionResult.getDebugText());
     }
 

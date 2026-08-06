@@ -2,7 +2,6 @@ package com.micklab.llamachat;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -11,50 +10,50 @@ public class ExpertSelectorTest {
     private final ExpertSelector selector = new ExpertSelector();
 
     @Test
-    public void selectAllReturnsExpertsInAppearanceOrder_webThenCalendar() {
+    public void selectAllReturnsWebForSearchKeyword() {
         assertEquals(
-                Arrays.asList(ExpertType.WEB, ExpertType.CALENDAR_CREATE),
-                selector.selectAll("天気を検索して、そのあと予定を入れて", true, true)
+                Collections.singletonList(ExpertType.WEB),
+                selector.selectAll("天気を検索して", true, true)
         );
     }
 
     @Test
-    public void selectAllReturnsExpertsInAppearanceOrder_calendarThenWeb() {
+    public void selectAllReturnsMemorySaveForSaveKeyword() {
         assertEquals(
-                Arrays.asList(ExpertType.CALENDAR_DELETE, ExpertType.WEB),
-                selector.selectAll("予定を削除してから検索して", true, true)
+                Collections.singletonList(ExpertType.MEMORY_SAVE),
+                selector.selectAll("これを覚えておいて", true, true)
         );
     }
 
     @Test
-    public void selectAllReturnsCreateWhenCreateKeywordAppearsFirst() {
+    public void selectAllReturnsMemoryRecallForRecallKeyword() {
         assertEquals(
-                Collections.singletonList(ExpertType.CALENDAR_CREATE),
-                selector.selectAll("明日の予定を入れて", false, true)
+                Collections.singletonList(ExpertType.MEMORY_RECALL),
+                selector.selectAll("さっきの話を思い出して", true, true)
         );
     }
 
     @Test
-    public void selectAllReturnsCalendarQueryForScheduleLookup() {
+    public void memoryKeywordTakesPriorityOverWeb() {
         assertEquals(
-                Collections.singletonList(ExpertType.CALENDAR_QUERY),
-                selector.selectAll("明日の予定を確認して", false, true)
+                Collections.singletonList(ExpertType.MEMORY_SAVE),
+                selector.selectAll("調べたことを覚えておいて", true, true)
         );
     }
 
     @Test
-    public void selectAllDoesNotTreatCalendarSearchAsWebSearch() {
+    public void selectAllIgnoresMemoryKeywordWhenMemoryDisabled() {
         assertEquals(
-                Collections.singletonList(ExpertType.CALENDAR_QUERY),
-                selector.selectAll("会議の予定を検索して", true, true)
+                Collections.emptyList(),
+                selector.selectAll("これを覚えておいて", true, false)
         );
     }
 
     @Test
-    public void selectAllReturnsCalendarUpdateForChangeRequest() {
+    public void selectAllIgnoresWebKeywordWhenWebDisabled() {
         assertEquals(
-                Collections.singletonList(ExpertType.CALENDAR_UPDATE),
-                selector.selectAll("会議の予定を変更して", false, true)
+                Collections.emptyList(),
+                selector.selectAll("天気を検索して", false, true)
         );
     }
 

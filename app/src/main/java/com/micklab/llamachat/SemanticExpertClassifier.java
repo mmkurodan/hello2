@@ -67,7 +67,7 @@ public final class SemanticExpertClassifier {
     }
 
     /**
-     * ユーザ入力を分類する。利用不可なエキスパート（web/calendar 無効）は候補から除外する。
+     * ユーザ入力を分類する。利用不可なエキスパート（web/memory 無効）は候補から除外する。
      * 埋め込み取得に失敗しても例外は投げず {@link ExpertType#NONE} を返す（チャットを止めない）。
      *
      * @param cacheKey 代表発話キャッシュの鍵（通常は埋め込みモデル名）。変わるとキャッシュを作り直す。
@@ -75,7 +75,6 @@ public final class SemanticExpertClassifier {
     public Result classify(String userInput,
                            Embedder embedder,
                            boolean webAvailable,
-                           boolean calendarAvailable,
                            boolean memoryAvailable,
                            String cacheKey) {
         if (userInput == null || userInput.trim().isEmpty() || embedder == null) {
@@ -92,7 +91,7 @@ public final class SemanticExpertClassifier {
             float secondScore = -1f;
             for (Map.Entry<ExpertType, float[][]> e : cache.entrySet()) {
                 ExpertType type = e.getKey();
-                if (!isAvailable(type, webAvailable, calendarAvailable, memoryAvailable)) {
+                if (!isAvailable(type, webAvailable, memoryAvailable)) {
                     continue;
                 }
                 float s = maxCosine(q, e.getValue());
@@ -147,7 +146,7 @@ public final class SemanticExpertClassifier {
         cachedKey = key;
     }
 
-    private static boolean isAvailable(ExpertType type, boolean web, boolean cal, boolean memory) {
+    private static boolean isAvailable(ExpertType type, boolean web, boolean memory) {
         if (type == ExpertType.WEB) return web;
         if (type == ExpertType.MEMORY_SAVE || type == ExpertType.MEMORY_RECALL) return memory;
         return true; // NONE は常に候補

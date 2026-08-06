@@ -46,11 +46,11 @@ public class SemanticExpertClassifierTest {
     }
 
     @Test
-    public void exactDeleteExample_routesToDelete() {
+    public void exactMemorySaveExample_routesToMemorySave() {
         SemanticExpertClassifier c = new SemanticExpertClassifier();
         SemanticExpertClassifier.Result r = c.classify(
-                "会議をキャンセルして", BOW, true, true, "test");
-        assertEquals(r.debugText, ExpertType.CALENDAR_DELETE, r.expertType);
+                "メモしておいて", BOW, true, true, "test");
+        assertEquals(r.debugText, ExpertType.MEMORY_SAVE, r.expertType);
     }
 
     @Test
@@ -70,11 +70,11 @@ public class SemanticExpertClassifierTest {
     }
 
     @Test
-    public void calendarDisabled_doesNotRouteToCalendar() {
+    public void memoryDisabled_doesNotRouteToMemory() {
         SemanticExpertClassifier c = new SemanticExpertClassifier();
         SemanticExpertClassifier.Result r = c.classify(
-                "会議をキャンセルして", BOW, true, /*calendarAvailable=*/false, "test");
-        assertNotEquals(ExpertType.CALENDAR_DELETE, r.expertType);
+                "メモしておいて", BOW, true, /*memoryAvailable=*/false, "test");
+        assertNotEquals(ExpertType.MEMORY_SAVE, r.expertType);
         assertEquals(ExpertType.NONE, r.expertType);
     }
 
