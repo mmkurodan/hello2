@@ -232,9 +232,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean autoChatterEnabled = false;
     private boolean autoVoiceInputEnabled = false;
     private boolean webSearchEnabled = false;
-    private static final String WEB_MODE_DDG = "DDG";
+    private static final String WEB_MODE_WIKIPEDIA = "WIKIPEDIA";
     private static final String WEB_MODE_API = "API";
-    private String webSearchMode = WEB_MODE_DDG;
+    private String webSearchMode = WEB_MODE_WIKIPEDIA;
     private boolean memoryEnabled = false;
     private MemoryRepository memoryRepository;
     // お知らせ機能（フロート常駐時に予定/ニュースをポップアップ通知）。
@@ -1437,7 +1437,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         }
         if (tvLabelHistoryLimit != null) tvLabelHistoryLimit.setText(t("History Limit", "履歴制限"));
         if (tvLabelChatterInterval != null) tvLabelChatterInterval.setText(t("Chatter Interval (sec)", "おしゃべり間隔（秒）"));
-        if (radioWebSearchDdg != null) radioWebSearchDdg.setText(t("DuckDuckGo (Free)", "DuckDuckGo（無料）"));
+        if (radioWebSearchDdg != null) radioWebSearchDdg.setText(t("Wikipedia (Free)", "Wikipedia（無料）"));
         if (radioWebSearchApi != null) radioWebSearchApi.setText(t("Web API", "Web API"));
         if (tvLabelWebSearchUrl != null) tvLabelWebSearchUrl.setText(t("Web Search API URL", "Web検索 API URL"));
         if (tvLabelWebSearchApiKey != null) tvLabelWebSearchApiKey.setText(t("Web Search API Key", "Web検索 APIキー"));
@@ -2399,7 +2399,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         appLanguage = s.optString("appLanguage", appLanguage);
         floatDisplayMode = normalizeFloatDisplayMode(s.optString("floatDisplayMode", floatDisplayMode));
         webSearchEnabled = s.optBoolean("webSearchEnabled", webSearchEnabled);
-        webSearchMode = s.optString("webSearchMode", WEB_MODE_DDG);
+        String savedMode = s.optString("webSearchMode", WEB_MODE_WIKIPEDIA);
+        webSearchMode = "DDG".equals(savedMode) ? WEB_MODE_WIKIPEDIA : savedMode;
         memoryEnabled = s.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = s.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);
         morningBriefingTime = s.optString("morningBriefingTime", morningBriefingTime);
@@ -2724,7 +2725,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         webSearchEnabled = switchWebSearch.isChecked();
         if (radioGroupWebSearchMode != null) {
             webSearchMode = (radioGroupWebSearchMode.getCheckedRadioButtonId() == R.id.radioWebSearchApi)
-                    ? WEB_MODE_API : WEB_MODE_DDG;
+                    ? WEB_MODE_API : WEB_MODE_WIKIPEDIA;
         }
         memoryEnabled = switchMemoryEnabled != null && switchMemoryEnabled.isChecked();
         if (spinnerRoutingMode != null) {
@@ -3587,7 +3588,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
 
     private boolean isWebSearchExpertAvailable() {
         if (!webSearchEnabled) return false;
-        if (WEB_MODE_DDG.equals(webSearchMode)) return true;
+        if (WEB_MODE_WIKIPEDIA.equals(webSearchMode)) return true;
         return !webSearchApiKey.isEmpty();
     }
 
@@ -3614,24 +3615,16 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                         if (keywords.isEmpty()) {
                             continue;
                         }
-                        String searchQuery = keywords;
-                        if (WEB_MODE_DDG.equals(webSearchMode)) {
-                            runOnUiThread(() -> setThinkingIndicatorLabel(
-                                    t("Extracting keywords...", "キーワードを抽出中..."), expertToken));
-                            searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
-                                    client, ollamaBaseUrl, expertModel, userMsg);
-                            Log.d(TAG, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
-                        }
-                        final String displayQuery = searchQuery;
-                        String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
+                        final String displayQuery = keywords;
+                        String keywordText = displayQuery.length() > 80 ? displayQuery.substring(0, 80) + "..." : displayQuery;
                         runOnUiThread(() -> setThinkingIndicatorLabel(
                                 t("Web searching: ", "Web検索中: ") + keywordText,
                                 expertToken
                         ));
                         String rawResults = callWebSearchApi(displayQuery);
-                        final String ddgDebug = t("Query: ", "クエリ: ") + displayQuery
+                        final String wikiDebug = t("Query: ", "クエリ: ") + displayQuery
                                 + (rawResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
-                        runOnUiThread(() -> { if (debugEnabled) appendDebug("DDG Search", ddgDebug); });
+                        runOnUiThread(() -> { if (debugEnabled) appendDebug("Wikipedia Search", wikiDebug); });
                         searchResultsBlock = (rawResults != null && !rawResults.isEmpty()) ? rawResults
                                 : t("SEARCH_RESULTS:\n(No results found for: " + displayQuery + ")",
                                   "SEARCH_RESULTS:\n(検索結果なし: " + displayQuery + ")");
@@ -3713,16 +3706,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (keywords != null && !keywords.isEmpty()) {
-                    String searchQuery = keywords;
-                    if (WEB_MODE_DDG.equals(webSearchMode)) {
-                        runOnUiThread(() -> setThinkingIndicatorLabel(
-                                t("Extracting keywords...", "キーワードを抽出中..."), webSearchToken));
-                        searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
-                                client, ollamaBaseUrl, expertModel, userMsg);
-                        Log.d(TAG, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
-                    }
-                    final String searchQuery_ = searchQuery;
-                    String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
+                    final String searchQuery_ = keywords;
+                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
                     runOnUiThread(() -> setThinkingIndicatorLabel(
                             t("Web searching: ", "Web検索中: ") + keywordText,
                             webSearchToken
@@ -3730,7 +3715,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                     String searchResults = callWebSearchApi(searchQuery_);
                     final String debugInfo = t("Query: ", "クエリ: ") + searchQuery_
                             + (searchResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
-                    runOnUiThread(() -> { if (debugEnabled) appendDebug("DDG Search", debugInfo); });
+                    runOnUiThread(() -> { if (debugEnabled) appendDebug("Wikipedia Search", debugInfo); });
                     if (searchResults != null && !searchResults.isEmpty()) {
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg, searchResults);
                     } else {
@@ -3758,8 +3743,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
 
     /** Call Web Search API and get structured results (generic) */
     private String callWebSearchApi(String keywords) {
-        if (WEB_MODE_DDG.equals(webSearchMode)) {
-            return DuckDuckGoSearchHelper.search(client, keywords);
+        if (WEB_MODE_WIKIPEDIA.equals(webSearchMode)) {
+            return WikipediaSearchHelper.search(client, keywords);
         }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);

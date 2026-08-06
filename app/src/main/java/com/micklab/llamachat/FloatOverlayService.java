@@ -172,7 +172,7 @@ public class FloatOverlayService extends Service {
     private String floatDisplayMode = FLOAT_DISPLAY_MODE_AVATAR;
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
-    private String webSearchMode = "DDG";
+    private String webSearchMode = "WIKIPEDIA";
     private String expertModel = "default";
     private String speechLang = "ja-JP";
     private int historyLimit = 10;
@@ -1007,7 +1007,7 @@ public class FloatOverlayService extends Service {
 
     private boolean isWebSearchExpertAvailable() {
         if (!webSearchEnabled) return false;
-        if ("DDG".equals(webSearchMode)) return true;
+        if ("WIKIPEDIA".equals(webSearchMode)) return true;
         return !webSearchApiKey.isEmpty();
     }
 
@@ -1103,16 +1103,9 @@ public class FloatOverlayService extends Service {
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (!TextUtils.isEmpty(keywords)) {
-                    String searchQuery = keywords;
-                    if ("DDG".equals(webSearchMode)) {
-                        updateThinkingLabel(t("Extracting keywords...", "キーワードを抽出中..."), requestToken);
-                        searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
-                                client, ollamaBaseUrl, expertModel, userMsg);
-                        DebugLogger.log(this, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
-                    }
-                    String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
+                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);
-                    String searchResults = callWebSearchApi(searchQuery);
+                    String searchResults = callWebSearchApi(keywords);
                     if (!TextUtils.isEmpty(searchResults)) {
                         // RAG: 埋め込みでクエリ関連度の高いチャンクのみ抽出
                         if (webSearchRagHelper != null) {
@@ -1178,8 +1171,8 @@ public class FloatOverlayService extends Service {
     }
 
     private String callWebSearchApi(String keywords) {
-        if ("DDG".equals(webSearchMode)) {
-            return DuckDuckGoSearchHelper.search(client, keywords);
+        if ("WIKIPEDIA".equals(webSearchMode)) {
+            return WikipediaSearchHelper.search(client, keywords);
         }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);
@@ -1960,7 +1953,8 @@ public class FloatOverlayService extends Service {
         webSearchEnabled = settings.optBoolean("webSearchEnabled", webSearchEnabled);
         webSearchUrl = settings.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = settings.optString("webSearchApiKey", webSearchApiKey);
-        webSearchMode = settings.optString("webSearchMode", "DDG");
+        String savedMode = settings.optString("webSearchMode", "WIKIPEDIA");
+        webSearchMode = "DDG".equals(savedMode) ? "WIKIPEDIA" : savedMode;
         expertModel = settings.optString("expertModel", settings.optString("webSearchModel", expertModel));
         memoryEnabled = settings.optBoolean("memoryEnabled", memoryEnabled);
         proactiveNotifyEnabled = settings.optBoolean("proactiveNotifyEnabled", proactiveNotifyEnabled);
