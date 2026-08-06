@@ -21,7 +21,9 @@ android {
         targetSdk 36
 
         // GitHub Actions のビルド番号を versionCode に自動反映
-        versionCode System.getenv("GITHUB_RUN_NUMBER")?.toInteger() ?: 1
+        // オフセット201 = 旧ワークフール(android.yml)の最終 run 番号
+        def runNumber = System.getenv("GITHUB_RUN_NUMBER")?.toInteger() ?: 1
+        versionCode runNumber + 201
 
         // versionName も同じロジックで自動化
         versionName "1.${System.getenv("GITHUB_RUN_NUMBER") ?: "0"}"
