@@ -3628,7 +3628,13 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                                 t("Web searching: ", "Web検索中: ") + keywordText,
                                 expertToken
                         ));
-                        searchResultsBlock = callWebSearchApi(displayQuery);
+                        String rawResults = callWebSearchApi(displayQuery);
+                        final String ddgDebug = t("Query: ", "クエリ: ") + displayQuery
+                                + (rawResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
+                        runOnUiThread(() -> { if (debugEnabled) appendDebug("DDG Search", ddgDebug); });
+                        searchResultsBlock = (rawResults != null && !rawResults.isEmpty()) ? rawResults
+                                : t("SEARCH_RESULTS:\n(No results found for: " + displayQuery + ")",
+                                  "SEARCH_RESULTS:\n(検索結果なし: " + displayQuery + ")");
                     }
                 }
                 String finalSearchResultsBlock = searchResultsBlock;
@@ -3722,8 +3728,15 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                             webSearchToken
                     ));
                     String searchResults = callWebSearchApi(searchQuery_);
+                    final String debugInfo = t("Query: ", "クエリ: ") + searchQuery_
+                            + (searchResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
+                    runOnUiThread(() -> { if (debugEnabled) appendDebug("DDG Search", debugInfo); });
                     if (searchResults != null && !searchResults.isEmpty()) {
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg, searchResults);
+                    } else {
+                        augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg,
+                                t("SEARCH_RESULTS:\n(No results found for: " + searchQuery_ + ")",
+                                  "SEARCH_RESULTS:\n(検索結果なし: " + searchQuery_ + ")"));
                     }
                 }
             } catch (Exception e) {
