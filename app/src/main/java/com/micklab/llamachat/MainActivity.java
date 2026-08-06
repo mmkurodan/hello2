@@ -230,6 +230,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean autoVoiceInputEnabled = false;
     private boolean webSearchEnabled = false;
     private boolean memoryEnabled = false;
+    private MemoryRepository memoryRepository;
     // お知らせ機能（フロート常駐時に予定/ニュースをポップアップ通知）。
     private boolean proactiveNotifyEnabled = false;
     private String morningBriefingTime = "07:00";
@@ -633,6 +634,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_main);
         conversationStore = ConversationStore.get(this);
+        memoryRepository = new MemoryRepository(this);
 
         // Request necessary permissions on first launch
         requestPermissionsOnFirstLaunch();
@@ -3444,7 +3446,71 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             performWebSearchFlow(userMsg, steps.get(0).getWebSearchQuery());
             return;
         }
+        if (expertType == ExpertType.MEMORY_SAVE) {
+            performMemorySaveFlow(userMsg);
+            return;
+        }
+        if (expertType == ExpertType.MEMORY_RECALL) {
+            performMemoryRecallFlow(userMsg);
+            return;
+        }
         sendChat(null);
+    }
+
+    private MemoryFlowHelper newMemoryHelper() {
+        EmbeddingClient emb = new EmbeddingClient(client, ollamaBaseUrl, resolveEmbeddingModelName());
+        return new MemoryFlowHelper(memoryRepository, emb, client, ollamaBaseUrl,
+                selectedModel, structuredMode(), appLanguage);
+    }
+
+    private void performMemorySaveFlow(String userMsg) {
+        if (memoryRepository == null) {
+            appendAssistantMessage(ChatSpeaker.BASE,
+                    t("Memory is unavailable.", "記憶機能が利用できません。"));
+            return;
+        }
+        isProcessing = true;
+        updateSendButton();
+        new Thread(() -> {
+            MemoryFlowHelper helper = newMemoryHelper();
+            MemoryRecord saved = helper.extractAndSave(userMsg);
+            final String message = (saved == null)
+                    ? t("What would you like me to remember?", "何を覚えておけば良いですか？")
+                    : helper.confirmationText(saved);
+            runOnUiThread(() -> {
+                isProcessing = false;
+                updateSendButton();
+                appendAssistantMessage(ChatSpeaker.BASE, message);
+                // 共有ストアへ発行（Float と同期）。描画済みのため renderedCount を進める。
+                conversationStore.append("assistant", message);
+                storeRenderedCount = conversationStore.size();
+            });
+        }).start();
+    }
+
+    private void performMemoryRecallFlow(String userMsg) {
+        if (memoryRepository == null) {
+            sendChat(null);
+            return;
+        }
+        isProcessing = true;
+        updateSendButton();
+        new Thread(() -> {
+            String memoryContext;
+            try {
+                memoryContext = newMemoryHelper().buildRecallContext(userMsg);
+            } catch (Exception e) {
+                memoryContext = "";
+            }
+            final boolean hasContext = memoryContext != null && !memoryContext.trim().isEmpty();
+            final String augmented = hasContext
+                    ? "MEMORIES:\n" + memoryContext + "\n\nUser: " + userMsg : null;
+            runOnUiThread(() -> {
+                isProcessing = false;
+                updateSendButton();
+                sendChat(augmented, hasContext);
+            });
+        }).start();
     }
 
     private boolean isWebSearchExpertAvailable() {

@@ -1,5 +1,6 @@
 package com.micklab.llamachat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -189,6 +190,8 @@ public class FloatOverlayService extends Service {
     private String structuredOutputMode = "OFF";
     // お知らせスケジューラ（サービス内で毎分時刻を評価）。
     private static final long PROACTIVE_TICK_MS = 60_000L;
+    // 毎時の直近予定リマインダの先読み幅（分）。次の毎時tickまでを見込む。
+    private static final int UPCOMING_WINDOW_MINUTES = 60;
     private static final String PROACTIVE_PREFS = "proactive_state";
     private boolean proactiveStarted = false;
     private final AtomicBoolean proactiveBusy = new AtomicBoolean(false);
@@ -1118,23 +1121,30 @@ public class FloatOverlayService extends Service {
         }).start();
     }
 
+    private MemoryFlowHelper newMemoryHelper() {
+        return new MemoryFlowHelper(memoryRepository, embeddingClient, client, ollamaBaseUrl,
+                selectedModel, StructuredOutput.Mode.fromString(structuredOutputMode), appLanguage);
+    }
+
     private void performMemorySaveFlow(String userMsg, int requestToken) {
         if (memoryRepository == null) {
             finishResponse(t("Memory is unavailable.", "記憶機能が利用できません。"), requestToken);
             return;
         }
-        String content = extractMemoryContent(userMsg);
-        if (TextUtils.isEmpty(content)) {
-            finishResponse(t("What would you like me to remember?", "何を覚えておけば良いですか？"), requestToken);
-            return;
-        }
-        long id = memoryRepository.save(content, null);
-        DebugLogger.log(this, "memory save: content=\"" + content + "\" id=" + id);
-        if (id < 0) {
-            finishResponse(t("Failed to save to memory.", "記録の保存に失敗しました。"), requestToken);
-            return;
-        }
-        finishResponse(t("Remembered: 「", "覚えました：「") + content + "」", requestToken);
+        updateThinkingLabel(t("Saving to memory...", "記録を保存中..."), requestToken);
+        new Thread(() -> {
+            MemoryFlowHelper helper = newMemoryHelper();
+            MemoryRecord saved = helper.extractAndSave(userMsg);
+            final String message;
+            if (saved == null) {
+                message = t("What would you like me to remember?", "何を覚えておけば良いですか？");
+            } else {
+                DebugLogger.log(this, "memory save: id=" + saved.id + " cat=" + saved.category
+                        + " content=\"" + saved.content + "\"");
+                message = helper.confirmationText(saved);
+            }
+            mainHandler.post(() -> finishResponse(message, requestToken));
+        }).start();
     }
 
     private void performMemoryRecallFlow(String userMsg, int requestToken) {
@@ -1145,18 +1155,7 @@ public class FloatOverlayService extends Service {
         updateThinkingLabel(t("Searching memory...", "記録を検索中..."), requestToken);
         new Thread(() -> {
             try {
-                String searchQuery = extractMemorySearchQuery(userMsg);
-                // 広めに候補を取得してからRAGで絞る
-                List<MemoryRecord> candidates = TextUtils.isEmpty(searchQuery)
-                        ? memoryRepository.getRecent(30)
-                        : memoryRepository.search(searchQuery);
-                List<MemoryRecord> ranked = candidates;
-                if (candidates.size() > 5 && embeddingClient != null) {
-                    updateThinkingLabel(t("Ranking memories...", "記録をランク付け中..."), requestToken);
-                    ranked = rerankMemoriesWithEmbedding(userMsg, candidates);
-                }
-                int takeCount = Math.min(10, ranked.size());
-                String memoryContext = buildMemoryContext(ranked.subList(0, takeCount));
+                String memoryContext = newMemoryHelper().buildRecallContext(userMsg);
                 String augmentedMessage = TextUtils.isEmpty(memoryContext) ? null
                         : "MEMORIES:\n" + memoryContext + "\n\nUser: " + userMsg;
                 mainHandler.post(() -> sendChat(augmentedMessage, !TextUtils.isEmpty(memoryContext), requestToken));
@@ -1165,91 +1164,6 @@ public class FloatOverlayService extends Service {
                 mainHandler.post(() -> sendChat(null, false, requestToken));
             }
         }).start();
-    }
-
-    private List<MemoryRecord> rerankMemoriesWithEmbedding(String userMsg, List<MemoryRecord> records) {
-        try {
-            float[] queryVec = EmbeddingClient.l2Normalize(embeddingClient.embed(userMsg));
-            List<String> contents = new ArrayList<>();
-            for (MemoryRecord r : records) contents.add(r.content);
-            List<float[]> vecs = embeddingClient.embedBatch(contents);
-            List<ScoredMemory> scored = new ArrayList<>();
-            for (int i = 0; i < vecs.size() && i < records.size(); i++) {
-                float sim = EmbeddingClient.cosineSimilarity(
-                        queryVec, EmbeddingClient.l2Normalize(vecs.get(i)));
-                scored.add(new ScoredMemory(records.get(i), sim));
-            }
-            Collections.sort(scored, (a, b) -> Float.compare(b.score, a.score));
-            List<MemoryRecord> result = new ArrayList<>(scored.size());
-            for (ScoredMemory sm : scored) result.add(sm.record);
-            return result;
-        } catch (Exception e) {
-            DebugLogger.log(this, "rerankMemoriesWithEmbedding error: " + e.getMessage());
-            return records;
-        }
-    }
-
-    private static final class ScoredMemory {
-        final MemoryRecord record;
-        final float score;
-        ScoredMemory(MemoryRecord record, float score) {
-            this.record = record;
-            this.score = score;
-        }
-    }
-
-    private String extractMemoryContent(String userMsg) {
-        if (TextUtils.isEmpty(userMsg)) return "";
-        String result = userMsg;
-        String[] triggers = {
-                "覚えておいてください", "覚えておいて", "覚えておく",
-                "記録しておいてください", "記録しておいて",
-                "メモしておいてください", "メモしておいて",
-                "記憶しておいてください", "記憶しておいて",
-                "メモして", "記録して", "記憶して"
-        };
-        for (String trigger : triggers) {
-            result = result.replace(trigger, "").trim();
-        }
-        // "〇〇を" → "〇〇" の末尾助詞を除去
-        if (result.endsWith("を") || result.endsWith("が") || result.endsWith("は")) {
-            result = result.substring(0, result.length() - 1).trim();
-        }
-        return result.trim();
-    }
-
-    private String extractMemorySearchQuery(String userMsg) {
-        if (TextUtils.isEmpty(userMsg)) return "";
-        String result = userMsg;
-        String[] triggers = {
-                "思い出してください", "思い出して",
-                "覚えていますか", "覚えてる？", "覚えてる",
-                "覚えていた？", "覚えていた",
-                "記憶にある？", "記憶にある",
-                "記録を見せてください", "記録を見せて",
-                "メモを見せてください", "メモを見せて",
-                "記憶を調べてください", "記憶を調べて",
-                "記録はある？", "記録はある",
-                "メモを確認して"
-        };
-        for (String trigger : triggers) {
-            result = result.replace(trigger, "").trim();
-        }
-        // "について", "のことを", "のこと", "を" などの末尾接続詞を除去
-        result = result.replaceAll("について$|のことを$|のこと$|を$|が$|は$", "").trim();
-        return result.trim();
-    }
-
-    private String buildMemoryContext(List<MemoryRecord> records) {
-        if (records == null || records.isEmpty()) return "";
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault());
-        StringBuilder sb = new StringBuilder();
-        for (MemoryRecord r : records) {
-            if (sb.length() > 0) sb.append("\n");
-            sb.append("[").append(sdf.format(new Date(r.createdAt))).append("] ")
-              .append(r.content);
-        }
-        return sb.toString();
     }
 
     private String callWebSearchApi(String keywords) {
@@ -2175,10 +2089,38 @@ public class FloatOverlayService extends Service {
         proactiveBusy.set(true);
         new Thread(() -> {
             try {
-                String instruction = "ja".equals(appLanguage)
-                        ? "おはようございます！今日も一日よろしくお願いします。"
-                        : "Good morning! Have a great day!";
-                finishProactive(generatePersonaText(instruction, ""));
+                boolean ja = "ja".equals(appLanguage);
+                String agenda = "";
+                String overdue = "";
+                if (memoryEnabled && memoryRepository != null) {
+                    MemoryFlowHelper helper = newMemoryHelper();
+                    LocalDate today = LocalDate.now();
+                    agenda = helper.formatAgenda(helper.agendaForDay(today));
+                    overdue = helper.formatAgenda(helper.overdueTodos(today));
+                }
+                StringBuilder instruction = new StringBuilder(ja
+                        ? "おはようございます。ユーザに朝のあいさつをし、今日の予定とやることを手短に伝えてください。"
+                        : "Good morning. Greet the user and briefly tell them today's plans and to-dos.");
+                if (!TextUtils.isEmpty(agenda)) {
+                    instruction.append(ja ? "\n【今日の予定・期限】\n" : "\n[Today]\n").append(agenda);
+                }
+                if (!TextUtils.isEmpty(overdue)) {
+                    instruction.append(ja ? "\n【やり残し】\n" : "\n[Overdue]\n").append(overdue);
+                }
+                if (TextUtils.isEmpty(agenda) && TextUtils.isEmpty(overdue)) {
+                    instruction.append(ja ? "\n今日の予定は特にありません。" : "\nThere are no plans today.");
+                }
+                String fallback;
+                if (TextUtils.isEmpty(agenda) && TextUtils.isEmpty(overdue)) {
+                    fallback = ja ? "おはようございます！今日も一日よろしくお願いします。"
+                                  : "Good morning! Have a great day!";
+                } else {
+                    StringBuilder fb = new StringBuilder(ja ? "おはようございます。" : "Good morning.");
+                    if (!TextUtils.isEmpty(agenda)) fb.append(ja ? "\n今日の予定:\n" : "\nToday:\n").append(agenda);
+                    if (!TextUtils.isEmpty(overdue)) fb.append(ja ? "\nやり残し:\n" : "\nOverdue:\n").append(overdue);
+                    fallback = fb.toString();
+                }
+                finishProactive(generatePersonaText(instruction.toString(), fallback));
             } catch (Exception e) {
                 DebugLogger.log(this, "fireMorningBriefing error: " + e.getMessage());
                 finishProactive(null);
@@ -2187,8 +2129,32 @@ public class FloatOverlayService extends Service {
     }
 
     private void fireUpcomingReminder() {
-        // カレンダー機能なしのためスキップ
-        finishProactive(null);
+        if (!memoryEnabled || memoryRepository == null) {
+            finishProactive(null);
+            return;
+        }
+        proactiveBusy.set(true);
+        new Thread(() -> {
+            try {
+                boolean ja = "ja".equals(appLanguage);
+                MemoryFlowHelper helper = newMemoryHelper();
+                List<MemoryRecord> upcoming =
+                        helper.upcomingWithin(LocalDateTime.now(), UPCOMING_WINDOW_MINUTES);
+                if (upcoming.isEmpty()) {
+                    finishProactive(null);
+                    return;
+                }
+                String list = helper.formatAgenda(upcoming);
+                String instruction = ja
+                        ? ("まもなくの予定をユーザへ手短に知らせてください。\n" + list)
+                        : ("Briefly remind the user of these upcoming items.\n" + list);
+                String fallback = (ja ? "まもなくの予定:\n" : "Upcoming:\n") + list;
+                finishProactive(generatePersonaText(instruction, fallback));
+            } catch (Exception e) {
+                DebugLogger.log(this, "fireUpcomingReminder error: " + e.getMessage());
+                finishProactive(null);
+            }
+        }).start();
     }
 
     private void fireNewsBriefing() {
