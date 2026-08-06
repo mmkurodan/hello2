@@ -491,9 +491,31 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・Streaming shows responses in real time.\n" +
             "・Text-to-Speech reads responses aloud.\n" +
             "・History Limit controls how many past messages are sent.\n\n" +
+            "■ Float Overlay\n" +
+            "・Tap Float Overlay to launch a floating chat window that stays on top of other apps.\n" +
+            "・Float Display: choose Avatar (full face) or Icon (compact icon) mode.\n" +
+            "・The float window shares conversation history with the main screen.\n\n" +
+            "■ Memory\n" +
+            "・Enable Memory Feature in Settings to let the AI remember things across conversations.\n" +
+            "・Say phrases like 'remember this', 'make a note', or 'add to my schedule' to save memories.\n" +
+            "・Three categories are stored: Memo (plain notes), ToDo (tasks with a due date), Plan (events/appointments with optional date, time, and location).\n" +
+            "・To recall, say 'do you remember', 'show my notes', or similar phrases.\n" +
+            "・To update an existing entry, say 'change the X to Y' — the closest matching record will be updated.\n" +
+            "・Tap Memory Manager to browse, edit, or delete saved memories.\n\n" +
+            "■ Schedule Notifications\n" +
+            "・Enable Schedule Notifications (requires Memory Feature and Float Overlay).\n" +
+            "・Morning briefing: sends today's agenda and overdue ToDos at the configured time (e.g. 07:00).\n" +
+            "・Upcoming reminders: checks once per hour for Plans or ToDos due within 60 minutes.\n\n" +
+            "■ News Mode\n" +
+            "・Enable News Mode to receive web-based news briefings at scheduled times (e.g. 08:00, 12:00, 18:00).\n" +
+            "・Requires Web Search to be enabled and Float Overlay to be running.\n\n" +
             "■ Expert Settings\n" +
             "・Web Search: Enable to use the configured search API.\n" +
             "・Expert Model is selected from /api/tags list (default: default).\n" +
+            "・Expert Routing controls how user intent is detected:\n" +
+            "  - Keyword Only: fast keyword matching.\n" +
+            "  - Keyword → Semantic: keyword first, then embedding-based fallback.\n" +
+            "  - Semantic Only: always uses embedding similarity.\n" +
             "・If multiple expert keywords are present, features run in the order they appear.\n" +
             "・Brave endpoints use Brave-optimized search handling.\n" +
             "・Debug Mode shows API request/response logs.\n\n" +
@@ -541,9 +563,31 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・Streaming: 応答をリアルタイム表示します。\n" +
             "・Text-to-Speech: 応答を音声で読み上げます。\n" +
             "・History Limitで送信する履歴数を調整します。\n\n" +
+            "■ フロートオーバーレイ\n" +
+            "・「Float Overlay」ボタンで他のアプリの上に重なるフローティングチャットを起動します。\n" +
+            "・Float Displayで「アバター」（全画面顔）か「アイコン」（コンパクト）を選べます。\n" +
+            "・フロートウィンドウはメイン画面と会話履歴を共有します。\n\n" +
+            "■ 記憶機能\n" +
+            "・設定で「記憶機能」をオンにすると、AIが会話をまたいで情報を記憶します。\n" +
+            "・「覚えておいて」「メモして」「記録して」などで記憶を保存します。\n" +
+            "・3種類のカテゴリで保存されます：メモ（メモ書き）、ToDo（期限付きタスク）、予定（日時・場所付きのイベント）。\n" +
+            "・「思い出して」「覚えてる？」「記録を見せて」などで記憶を呼び出せます。\n" +
+            "・「○○を××に変更して」と伝えると、最も近い既存レコードを上書き更新します。\n" +
+            "・「記憶マネージャー」から保存済みの記憶を一覧・編集・削除できます。\n\n" +
+            "■ 予定のお知らせ\n" +
+            "・「予定のお知らせ」を有効にすると、記憶機能の予定・ToDoをフロート経由で通知します。\n" +
+            "・朝のブリーフィング：設定した時刻（例: 07:00）に当日の予定とやり残しToDoをお知らせします。\n" +
+            "・直近リマインダー：1時間ごとにチェックし、60分以内に来る予定・期限をお知らせします。\n\n" +
+            "■ ニュースモード\n" +
+            "・「ニュースモード」を有効にすると、指定した時刻（例: 08:00, 12:00, 18:00）にウェブ検索でニュースを配信します。\n" +
+            "・Web SearchとフロートON時に動作します。\n\n" +
             "■ エキスパート設定\n" +
             "・Web Search: 有効にすると検索APIを使います。\n" +
             "・エキスパートモデルは/api/tagsの一覧から選択できます（初期値: default）。\n" +
+            "・エキスパートルーティングでユーザ意図の検出方法を選べます：\n" +
+            "  - キーワードのみ: 高速なキーワードマッチ。\n" +
+            "  - キーワード→セマンティック: キーワード優先、外れた場合は埋め込み類似度で判定。\n" +
+            "  - セマンティックのみ: 常に埋め込み類似度で判定。\n" +
             "・複数のエキスパートキーワードが含まれる場合は、登場順に処理します。\n" +
             "・Brave URLの場合はBrave向けに最適化した検索処理を使います。\n" +
             "・Debug Modeで通信ログを表示します。\n\n" +
