@@ -2,7 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main", "no-calendar" ]
+    branches:
+      - main
+      - no-calendar
   pull_request:
   workflow_dispatch:
 
