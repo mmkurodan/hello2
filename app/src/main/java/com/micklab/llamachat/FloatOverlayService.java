@@ -1105,10 +1105,10 @@ public class FloatOverlayService extends Service {
                 if (!TextUtils.isEmpty(keywords)) {
                     String searchQuery = keywords;
                     if ("DDG".equals(webSearchMode)) {
-                        updateThinkingLabel(t("Translating query...", "クエリを翻訳中..."), requestToken);
-                        searchQuery = DuckDuckGoSearchHelper.translateToEnglish(
-                                client, ollamaBaseUrl, expertModel, keywords);
-                        DebugLogger.log(this, "DDG translate: \"" + keywords + "\" -> \"" + searchQuery + "\"");
+                        updateThinkingLabel(t("Extracting keywords...", "キーワードを抽出中..."), requestToken);
+                        searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
+                                client, ollamaBaseUrl, expertModel, userMsg);
+                        DebugLogger.log(this, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
                     }
                     String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);

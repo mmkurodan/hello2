@@ -14,9 +14,9 @@ import org.json.JSONObject;
 /**
  * DuckDuckGo Instant Answer API を使った無料Web検索。
  *
- * <p>DDG はロケールに依存しないよう英語クエリを前提とするため、
- * {@link #translateToEnglish} で Ollama LLM を使って翻訳してから
- * {@link #search} を呼ぶ。翻訳失敗時は原文をそのまま使う。</p>
+ * <p>DDG は英語クエリを前提とするため、{@link #extractEnglishKeywords} で
+ * ユーザー発話から英語キーワードを1回の LLM 呼び出しで直接抽出してから
+ * {@link #search} を呼ぶ。抽出失敗時は原文をそのまま使う。</p>
  */
 public final class DuckDuckGoSearchHelper {
 
@@ -26,30 +26,34 @@ public final class DuckDuckGoSearchHelper {
     private DuckDuckGoSearchHelper() {}
 
     /**
-     * Ollama でクエリを英語に翻訳する。ASCII のみのクエリは翻訳をスキップ。
-     * LLM 呼び出しに失敗した場合は原文をそのまま返す。
+     * ユーザー発話から英語の検索キーワードを1回の LLM 呼び出しで直接抽出する。
+     * キーワード抽出と英語化を同時に行うため、別途翻訳呼び出しは不要。
+     * 失敗時は原文をそのまま返す。
      */
-    public static String translateToEnglish(OkHttpClient client, String baseUrl,
-                                            String model, String query) {
-        if (TextUtils.isEmpty(query)) return query;
-        if (isAsciiOnly(query)) return query;
-        if (client == null || TextUtils.isEmpty(baseUrl)) return query;
+    public static String extractEnglishKeywords(OkHttpClient client, String baseUrl,
+                                                String model, String userInput) {
+        if (TextUtils.isEmpty(userInput)) return userInput;
+        if (client == null || TextUtils.isEmpty(baseUrl)) return userInput;
         try {
             JSONObject body = new JSONObject();
             body.put("model", TextUtils.isEmpty(model) ? "default" : model);
             JSONArray messages = new JSONArray();
             messages.put(new JSONObject()
                     .put("role", "system")
-                    .put("content", "Translate the user's text into an English web search query. "
-                            + "Output only the translated query — no explanation, no quotes, no punctuation at the end."));
+                    .put("content",
+                            "Extract web search keywords from the user's message and output them in English.\n"
+                            + "Output format — exactly one of:\n"
+                            + "SEARCH: <English keywords>\n"
+                            + "NONE\n"
+                            + "No explanation. No other output."));
             messages.put(new JSONObject()
                     .put("role", "user")
-                    .put("content", query));
+                    .put("content", userInput));
             body.put("messages", messages);
             body.put("stream", false);
             JSONObject options = new JSONObject();
             options.put("temperature", 0);
-            options.put("num_predict", 80);
+            options.put("num_predict", 60);
             body.put("options", options);
 
             Request request = new Request.Builder()
@@ -57,16 +61,20 @@ public final class DuckDuckGoSearchHelper {
                     .post(RequestBody.create(body.toString(), JSON_MEDIA))
                     .build();
             try (Response resp = client.newCall(request).execute()) {
-                if (!resp.isSuccessful()) return query;
+                if (!resp.isSuccessful()) return userInput;
                 String respBody = resp.body() != null ? resp.body().string() : "";
                 JSONObject json = new JSONObject(respBody);
-                String translated = json.has("message")
+                String content = json.has("message")
                         ? json.getJSONObject("message").optString("content", "").trim() : "";
-                translated = translated.replaceAll("<think>[\\s\\S]*?</think>", "").trim();
-                return TextUtils.isEmpty(translated) ? query : translated;
+                content = content.replaceAll("<think>[\\s\\S]*?</think>", "").trim();
+                if (content.startsWith("SEARCH:")) {
+                    String kw = content.substring("SEARCH:".length()).trim();
+                    return kw.isEmpty() ? userInput : kw;
+                }
+                return userInput;
             }
         } catch (Exception e) {
-            return query;
+            return userInput;
         }
     }
 
@@ -160,12 +168,5 @@ public final class DuckDuckGoSearchHelper {
 
         String result = sb.toString().trim();
         return result.isEmpty() ? null : "SEARCH_RESULTS:\n" + result;
-    }
-
-    private static boolean isAsciiOnly(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) > 127) return false;
-        }
-        return true;
     }
 }
