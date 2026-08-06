@@ -17,7 +17,7 @@ import java.util.Locale;
  *   <li><b>OFF</b>: 何も付けない（従来どおりプロンプト＋検証/リトライ）。</li>
  * </ul>
  *
- * <p>カレンダー判定の strict JSON はスキーマで厳密に固定し、汎用 JSON モードは任意の JSON 値を許す。</p>
+ * <p>汎用 JSON モードは任意の JSON 値を許す。</p>
  */
 public final class StructuredOutput {
 

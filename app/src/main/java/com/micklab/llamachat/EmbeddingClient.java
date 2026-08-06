@@ -22,7 +22,7 @@ import okhttp3.Response;
  * 旧サーバー向けに {@code POST /api/embeddings}（単一・レスポンス {@code embedding}）へ自動フォールバックする。</p>
  *
  * <p>同期メソッドのため、必ずバックグラウンドスレッドから呼び出すこと
- * （既存の {@code requestCalendarJudgeResponse} と同じく {@code client.newCall(req).execute()} を用いる）。</p>
+ * （{@code client.newCall(req).execute()} を用いる）。</p>
  */
 public final class EmbeddingClient {
 

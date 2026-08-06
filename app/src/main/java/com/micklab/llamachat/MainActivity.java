@@ -494,9 +494,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "■ Expert Settings\n" +
             "・Web Search: Enable to use the configured search API.\n" +
             "・Expert Model is selected from /api/tags list (default: default).\n" +
-            "・Expert Model is used only for calendar model judgment when keyword routing selects Calendar analysis.\n" +
             "・If multiple expert keywords are present, features run in the order they appear.\n" +
-            "・Calendar updates and deletions search by keyword, then ask you to confirm or choose the target event.\n" +
             "・Brave endpoints use Brave-optimized search handling.\n" +
             "・Debug Mode shows API request/response logs.\n\n" +
             "■ Avatar\n" +
@@ -546,9 +544,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "■ エキスパート設定\n" +
             "・Web Search: 有効にすると検索APIを使います。\n" +
             "・エキスパートモデルは/api/tagsの一覧から選択できます（初期値: default）。\n" +
-            "・エキスパートモデルは、キーワード分岐で Calendar 解析が選ばれた場合の Calendar 判定にのみ使用します。\n" +
             "・複数のエキスパートキーワードが含まれる場合は、登場順に処理します。\n" +
-            "・Calendar の変更/削除はキーワード検索後に対象予定の確認または選択を行います。\n" +
             "・Brave URLの場合はBrave向けに最適化した検索処理を使います。\n" +
             "・Debug Modeで通信ログを表示します。\n\n" +
             "■ アバター\n" +

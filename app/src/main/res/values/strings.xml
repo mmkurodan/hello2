@@ -3,6 +3,4 @@
     <string name="app_name">Dual AI Chat</string>
     <string name="avatar_description">アシスタントの画像</string>
     <string name="server_client_id">986064202090-k0qaa4eumgeds5v7m30d85u5i262q80m.apps.googleusercontent.com</string>
-    <string name="calendar_judge_model">calendar-judge-model</string>
-    <string name="calendar_chat_model">calendar-chat-model</string>
 </resources>
