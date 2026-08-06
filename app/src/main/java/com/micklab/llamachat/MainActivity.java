@@ -3614,12 +3614,21 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                         if (keywords.isEmpty()) {
                             continue;
                         }
-                        String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
+                        String searchQuery = keywords;
+                        if (WEB_MODE_DDG.equals(webSearchMode)) {
+                            runOnUiThread(() -> setThinkingIndicatorLabel(
+                                    t("Extracting keywords...", "キーワードを抽出中..."), expertToken));
+                            searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
+                                    client, ollamaBaseUrl, expertModel, userMsg);
+                            Log.d(TAG, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
+                        }
+                        final String displayQuery = searchQuery;
+                        String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
                         runOnUiThread(() -> setThinkingIndicatorLabel(
                                 t("Web searching: ", "Web検索中: ") + keywordText,
                                 expertToken
                         ));
-                        searchResultsBlock = callWebSearchApi(keywords);
+                        searchResultsBlock = callWebSearchApi(displayQuery);
                     }
                 }
                 String finalSearchResultsBlock = searchResultsBlock;
@@ -3698,12 +3707,21 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (keywords != null && !keywords.isEmpty()) {
-                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
+                    String searchQuery = keywords;
+                    if (WEB_MODE_DDG.equals(webSearchMode)) {
+                        runOnUiThread(() -> setThinkingIndicatorLabel(
+                                t("Extracting keywords...", "キーワードを抽出中..."), webSearchToken));
+                        searchQuery = DuckDuckGoSearchHelper.extractEnglishKeywords(
+                                client, ollamaBaseUrl, expertModel, userMsg);
+                        Log.d(TAG, "DDG keywords: \"" + userMsg + "\" -> \"" + searchQuery + "\"");
+                    }
+                    final String searchQuery_ = searchQuery;
+                    String keywordText = searchQuery.length() > 80 ? searchQuery.substring(0, 80) + "..." : searchQuery;
                     runOnUiThread(() -> setThinkingIndicatorLabel(
                             t("Web searching: ", "Web検索中: ") + keywordText,
                             webSearchToken
                     ));
-                    String searchResults = callWebSearchApi(keywords);
+                    String searchResults = callWebSearchApi(searchQuery_);
                     if (searchResults != null && !searchResults.isEmpty()) {
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg, searchResults);
                     }
@@ -3727,6 +3745,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
 
     /** Call Web Search API and get structured results (generic) */
     private String callWebSearchApi(String keywords) {
+        if (WEB_MODE_DDG.equals(webSearchMode)) {
+            return DuckDuckGoSearchHelper.search(client, keywords);
+        }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);
         }
