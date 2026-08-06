@@ -3467,7 +3467,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         updateSendButton();
         new Thread(() -> {
             MemoryFlowHelper helper = newMemoryHelper();
-            MemoryRecord saved = helper.extractAndSave(userMsg);
+            MemoryFlowHelper.SaveResult saved = helper.extractAndSave(userMsg);
             final String message = (saved == null)
                     ? t("What would you like me to remember?", "何を覚えておけば良いですか？")
                     : helper.confirmationText(saved);

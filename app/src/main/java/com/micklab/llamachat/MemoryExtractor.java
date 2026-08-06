@@ -31,6 +31,8 @@ public final class MemoryExtractor {
     /** 抽出結果。TODO の年月日欠落や MEMO のスケジュールは正規化済み。 */
     public static final class Extracted {
         public String category = MemoryRecord.CAT_MEMO;
+        public String action = "SAVE";   // "SAVE" or "UPDATE"
+        public String targetQuery;       // UPDATE のとき既存レコードを検索するキーワード
         public String content = "";
         public Integer year;
         public Integer month;
@@ -98,7 +100,8 @@ public final class MemoryExtractor {
         String stamp = String.format(Locale.US, "%04d-%02d-%02d (%s) %02d:%02d",
                 now.getYear(), now.getMonthValue(), now.getDayOfMonth(), dow,
                 now.getHour(), now.getMinute());
-        String schema = "{\"category\":\"MEMO|TODO|PLAN\",\"content\":\"...\","
+        String schema = "{\"category\":\"MEMO|TODO|PLAN\",\"action\":\"SAVE|UPDATE\","
+                + "\"targetQuery\":string|null,\"content\":\"...\","
                 + "\"year\":int|null,\"month\":int|null,\"day\":int|null,"
                 + "\"hour\":int|null,\"minute\":int|null,\"location\":string|null}";
         if (ja) {
@@ -113,7 +116,10 @@ public final class MemoryExtractor {
                     + "- TODO(やること/タスク): 期限のあるやること。year・month・day は必ず埋める"
                     + "（明示が無ければ現在日付）。時刻・場所は任意。\n"
                     + "- MEMO(メモ): 単なる事実やメモ。year〜minute と location はすべて null。\n"
-                    + "- content には覚える中身だけを簡潔に書き、「覚えておいて」等の指示語は含めない。\n"
+                    + "- action: \"SAVE\"（新規）または \"UPDATE\"（変更）。"
+                    + "「〜を〜に変更」「〜の日時を修正」など変更意図が明確なとき UPDATE にする。\n"
+                    + "- targetQuery: UPDATE のとき、変更対象を特定するキーワード（例: 「聖歌隊練習を変更」→ \"聖歌隊練習\"）。SAVE のとき null。\n"
+                    + "- content には覚える中身だけを簡潔に書き、「覚えておいて」等の指示語は含めない。UPDATE のとき content・日時は変更後の値。\n"
                     + "- 不明な項目は null。月は1〜12、日は1〜31、時は0〜23、分は0〜59。";
         }
         return "You extract a structured memory from the user's utterance.\n"
@@ -126,13 +132,22 @@ public final class MemoryExtractor {
                 + "All-day -> hour and minute null. If no date/time at all, set them all null.\n"
                 + "- TODO: a task with a deadline. year, month, day MUST be filled (use the current date if unspecified). time/location optional.\n"
                 + "- MEMO: a plain fact/note. Set year..minute and location all null.\n"
-                + "- content holds only what to remember; do not include trigger phrases like \"remember\".\n"
+                + "- action: \"SAVE\" (new entry) or \"UPDATE\" (modify existing). Use UPDATE when the user clearly wants to change/reschedule something.\n"
+                + "- targetQuery: when action=UPDATE, a keyword to find the existing record (e.g. \"choir practice\"). null when SAVE.\n"
+                + "- content holds only what to remember; do not include trigger phrases like \"remember\". For UPDATE, content and date/time reflect the new values.\n"
                 + "- Unknown fields null. month 1-12, day 1-31, hour 0-23, minute 0-59.";
     }
 
     private static void applyParsed(Extracted ex, JSONObject o) {
         String cat = o.optString("category", ex.category);
         ex.category = MemoryRecord.normalizeCategory(cat);
+        String action = o.optString("action", "SAVE").trim().toUpperCase(Locale.ROOT);
+        ex.action = "UPDATE".equals(action) ? "UPDATE" : "SAVE";
+        Object tq = o.opt("targetQuery");
+        if (tq != null && !JSONObject.NULL.equals(tq)) {
+            String s = String.valueOf(tq).trim();
+            if (!s.isEmpty() && !"null".equalsIgnoreCase(s)) ex.targetQuery = s;
+        }
         String content = o.optString("content", "");
         if (!TextUtils.isEmpty(content)) ex.content = content.trim();
         ex.year = clampInt(o.opt("year"), 1, 9999);
@@ -159,10 +174,11 @@ public final class MemoryExtractor {
             if (ex.month == null) ex.month = today.getMonthValue();
             if (ex.day == null) ex.day = today.getDayOfMonth();
         }
-        // 時刻は分のみ/時のみを許さない（両方そろわなければ終日扱い）。
-        if (ex.hour == null || ex.minute == null) {
-            ex.hour = null;
+        // 時のみ指定（"10時"）は 0 分扱い。分のみは終日に落とす。
+        if (ex.hour == null) {
             ex.minute = null;
+        } else if (ex.minute == null) {
+            ex.minute = 0;
         }
         return ex;
     }

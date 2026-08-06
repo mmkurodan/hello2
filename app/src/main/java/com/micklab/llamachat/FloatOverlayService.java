@@ -1133,13 +1133,15 @@ public class FloatOverlayService extends Service {
         updateThinkingLabel(t("Saving to memory...", "記録を保存中..."), requestToken);
         new Thread(() -> {
             MemoryFlowHelper helper = newMemoryHelper();
-            MemoryRecord saved = helper.extractAndSave(userMsg);
+            MemoryFlowHelper.SaveResult saved = helper.extractAndSave(userMsg);
             final String message;
             if (saved == null) {
                 message = t("What would you like me to remember?", "何を覚えておけば良いですか？");
             } else {
-                DebugLogger.log(this, "memory save: id=" + saved.id + " cat=" + saved.category
-                        + " content=\"" + saved.content + "\"");
+                DebugLogger.log(this, "memory save: id=" + saved.record.id
+                        + " cat=" + saved.record.category
+                        + " updated=" + saved.wasUpdated
+                        + " content=\"" + saved.record.content + "\"");
                 message = helper.confirmationText(saved);
             }
             mainHandler.post(() -> finishResponse(message, requestToken));

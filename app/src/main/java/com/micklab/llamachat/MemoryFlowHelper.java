@@ -45,31 +45,70 @@ public final class MemoryFlowHelper {
         this.lang = "ja".equals(appLanguage) ? "ja" : "en";
     }
 
+    /** 保存または更新の結果。{@link #wasUpdated} が true のとき既存レコードを上書きした。 */
+    public static final class SaveResult {
+        public final MemoryRecord record;
+        public final boolean wasUpdated;
+
+        public SaveResult(MemoryRecord record, boolean wasUpdated) {
+            this.record = record;
+            this.wasUpdated = wasUpdated;
+        }
+    }
+
     // ===== 保存（LLM構造化抽出） =====
 
-    /** 発話から分類・内容・計画日時を抽出して保存する。保存できたレコードを返す（内容空なら null）。 */
-    public MemoryRecord extractAndSave(String userMsg) {
+    /**
+     * 発話から分類・内容・計画日時を抽出して保存する。
+     * LLM が UPDATE を返したときは既存レコードを上書き更新し、見つからなければ新規保存にフォールバック。
+     * 内容が空なら null を返す。
+     */
+    public SaveResult extractAndSave(String userMsg) {
         if (repo == null) return null;
         MemoryExtractor.Extracted ex =
                 MemoryExtractor.extract(client, baseUrl, model, mode, lang, userMsg);
         if (ex == null || TextUtils.isEmpty(ex.content)) return null;
+        if ("UPDATE".equals(ex.action) && !TextUtils.isEmpty(ex.targetQuery)) {
+            MemoryRecord updated = searchAndUpdate(ex.targetQuery, ex);
+            if (updated != null) return new SaveResult(updated, true);
+        }
         long created = System.currentTimeMillis();
         MemoryRecord rec = new MemoryRecord(0, ex.category, ex.content, created,
                 ex.year, ex.month, ex.day, ex.hour, ex.minute, ex.location, false, null);
         long id = repo.save(rec);
         if (id < 0) return null;
-        return new MemoryRecord(id, ex.category, ex.content, created,
-                ex.year, ex.month, ex.day, ex.hour, ex.minute, ex.location, false, null);
+        return new SaveResult(new MemoryRecord(id, ex.category, ex.content, created,
+                ex.year, ex.month, ex.day, ex.hour, ex.minute, ex.location, false, null), false);
     }
 
-    /** 保存結果の確認文（分類＋内容＋予定ラベル）。 */
-    public String confirmationText(MemoryRecord r) {
-        if (r == null) return "";
+    /** targetQuery で既存レコードを検索し、抽出した新しい値で上書きする。失敗したら null。 */
+    private MemoryRecord searchAndUpdate(String targetQuery, MemoryExtractor.Extracted ex) {
+        List<MemoryRecord> hits = repo.search(targetQuery);
+        if (hits.isEmpty()) return null;
+        MemoryRecord existing = hits.get(0);
+        MemoryRecord updated = new MemoryRecord(
+                existing.id,
+                ex.category,
+                TextUtils.isEmpty(ex.content) ? existing.content : ex.content,
+                existing.createdAt,
+                ex.year, ex.month, ex.day, ex.hour, ex.minute,
+                TextUtils.isEmpty(ex.location) ? existing.location : ex.location,
+                existing.completed,
+                existing.tags);
+        return repo.update(updated) ? updated : null;
+    }
+
+    /** 保存/更新結果の確認文（分類＋内容＋予定ラベル）。 */
+    public String confirmationText(SaveResult result) {
+        if (result == null || result.record == null) return "";
+        MemoryRecord r = result.record;
         boolean ja = "ja".equals(lang);
         String catLabel = categoryLabel(r.category);
         String sched = r.scheduleLabel(lang);
         StringBuilder sb = new StringBuilder();
-        sb.append(ja ? "覚えました" : "Got it").append("（").append(catLabel).append("）：「")
+        String verb = result.wasUpdated ? (ja ? "変更しました" : "Updated")
+                                        : (ja ? "覚えました" : "Got it");
+        sb.append(verb).append("（").append(catLabel).append("）：「")
           .append(r.content).append("」");
         if (!TextUtils.isEmpty(sched)) {
             sb.append(ja ? " / 予定: " : " / when: ").append(sched);
