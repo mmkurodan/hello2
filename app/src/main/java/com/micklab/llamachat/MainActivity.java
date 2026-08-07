@@ -3891,7 +3891,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             if (results == null || results.length() == 0) return null;
 
             // ブーストモード時は URL 先の本文を取得（上位5件のみ）
-            int limit = braveBoostEnabled ? Math.min(results.length(), 5) : Math.min(results.length(), 8);
+            int limit = Math.min(results.length(), 8);
 
             StringBuilder extracted = new StringBuilder();
             for (int i = 0; i < limit; i++) {
@@ -3965,8 +3965,11 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 if (!contentType.contains("text/html") && !contentType.contains("text/plain")
                         && !contentType.contains("application/xhtml")) return null;
                 String html = resp.body() != null ? resp.body().string() : "";
+                // 大きな HTML は先頭 300KB のみ処理してメモリ・速度を節約
+                if (html.length() > 300_000) html = html.substring(0, 300_000);
                 String text = stripHtml(html);
                 if (text.isEmpty()) return null;
+                // タグ除去後の純テキストで maxChars を計算
                 return text.length() > maxChars ? text.substring(0, maxChars) : text;
             }
         } catch (Exception e) {
@@ -3976,17 +3979,25 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     }
 
     private String stripHtml(String html) {
-        return html
+        if (html == null || html.isEmpty()) return "";
+        // script / style / コメントを先に除去（Html.fromHtml では処理されないため）
+        String pre = html
                 .replaceAll("(?is)<script[^>]*>.*?</script>", " ")
                 .replaceAll("(?is)<style[^>]*>.*?</style>", " ")
-                .replaceAll("(?is)<!--.*?-->", " ")
-                .replaceAll("<[^>]+>", " ")
-                .replace("&nbsp;", " ").replace("&amp;", "&")
-                .replace("&lt;", "<").replace("&gt;", ">")
-                .replace("&quot;", "\"").replace("&#39;", "'")
-                .replaceAll("&#\\d+;", "")
-                .replaceAll("\\s{2,}", " ")
-                .trim();
+                .replaceAll("(?is)<!--.*?-->", " ");
+        // Android HTML パーサーで残タグとエンティティを処理
+        // 正規表現では属性値に > が含まれる場合や改行タグで漏れが生じるため
+        String text;
+        try {
+            text = android.text.Html.fromHtml(pre, android.text.Html.FROM_HTML_MODE_COMPACT).toString();
+        } catch (Exception e) {
+            text = pre.replaceAll("<[^>]+>", " ")
+                      .replace("&nbsp;", " ").replace("&amp;", "&")
+                      .replace("&lt;", "<").replace("&gt;", ">")
+                      .replace("&quot;", "\"").replace("&#39;", "'")
+                      .replaceAll("&#\\d+;", "");
+        }
+        return text.replaceAll(" {2,}", " ").replaceAll("\n{3,}", "\n\n").trim();
     }
 
     /** Recursively extract all string values from JSON */

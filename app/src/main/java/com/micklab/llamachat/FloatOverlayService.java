@@ -1238,7 +1238,7 @@ public class FloatOverlayService extends Service {
             JSONArray results = web != null ? web.optJSONArray("results") : null;
             if (results == null || results.length() == 0) return null;
 
-            int limit = braveBoostEnabled ? Math.min(results.length(), 5) : Math.min(results.length(), 8);
+            int limit = Math.min(results.length(), 8);
             StringBuilder extracted = new StringBuilder();
             for (int i = 0; i < limit; i++) {
                 JSONObject item = results.optJSONObject(i);
@@ -1305,6 +1305,7 @@ public class FloatOverlayService extends Service {
                 if (!contentType.contains("text/html") && !contentType.contains("text/plain")
                         && !contentType.contains("application/xhtml")) return null;
                 String html = resp.body() != null ? resp.body().string() : "";
+                if (html.length() > 300_000) html = html.substring(0, 300_000);
                 String text = stripHtml(html);
                 if (text.isEmpty()) return null;
                 return text.length() > maxChars ? text.substring(0, maxChars) : text;
@@ -1316,17 +1317,22 @@ public class FloatOverlayService extends Service {
     }
 
     private String stripHtml(String html) {
-        return html
+        if (html == null || html.isEmpty()) return "";
+        String pre = html
                 .replaceAll("(?is)<script[^>]*>.*?</script>", " ")
                 .replaceAll("(?is)<style[^>]*>.*?</style>", " ")
-                .replaceAll("(?is)<!--.*?-->", " ")
-                .replaceAll("<[^>]+>", " ")
-                .replace("&nbsp;", " ").replace("&amp;", "&")
-                .replace("&lt;", "<").replace("&gt;", ">")
-                .replace("&quot;", "\"").replace("&#39;", "'")
-                .replaceAll("&#\\d+;", "")
-                .replaceAll("\\s{2,}", " ")
-                .trim();
+                .replaceAll("(?is)<!--.*?-->", " ");
+        String text;
+        try {
+            text = android.text.Html.fromHtml(pre, android.text.Html.FROM_HTML_MODE_COMPACT).toString();
+        } catch (Exception e) {
+            text = pre.replaceAll("<[^>]+>", " ")
+                      .replace("&nbsp;", " ").replace("&amp;", "&")
+                      .replace("&lt;", "<").replace("&gt;", ">")
+                      .replace("&quot;", "\"").replace("&#39;", "'")
+                      .replaceAll("&#\\d+;", "");
+        }
+        return text.replaceAll(" {2,}", " ").replaceAll("\n{3,}", "\n\n").trim();
     }
 
     private void extractAllStringValues(Object obj, StringBuilder sb, int depth) {
