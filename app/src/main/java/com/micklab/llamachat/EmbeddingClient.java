@@ -26,8 +26,8 @@ import okhttp3.Response;
  */
 public final class EmbeddingClient {
 
-    /** 設定が空のときに使うデフォルト埋め込みモデル。 */
-    public static final String DEFAULT_MODEL = "nomic-embed-text";
+    /** 埋め込みモデル未指定時に送るモデル名。"default" はサーバー側の現在ロード済みモデルを使う。 */
+    public static final String DEFAULT_MODEL = "default";
 
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
 

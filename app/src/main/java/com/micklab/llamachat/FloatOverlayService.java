@@ -176,6 +176,7 @@ public class FloatOverlayService extends Service {
     private String webSearchApiKey = "";
     private boolean braveBoostEnabled = false;
     private String webSearchMode = "WIKIPEDIA";
+    private String embeddingModel = "default";
     private String expertModel = "default";
     private String speechLang = "ja-JP";
     private int historyLimit = 10;
@@ -344,8 +345,7 @@ public class FloatOverlayService extends Service {
             ensureForegroundNotification();
 
             memoryRepository = new MemoryRepository(this);
-            embeddingClient = new EmbeddingClient(client, ollamaBaseUrl, EmbeddingClient.DEFAULT_MODEL);
-            webSearchRagHelper = new WebSearchRagHelper(embeddingClient, client, ollamaBaseUrl, selectedModel);
+            // embeddingClient / webSearchRagHelper は loadSettings() 内で生成済み
 
             startProactiveScheduler();
 
@@ -2064,6 +2064,14 @@ public class FloatOverlayService extends Service {
         }
         if (TextUtils.isEmpty(speechLang)) {
             speechLang = "ja-JP";
+        }
+        // 埋め込みモデルを設定から読み込み（MainActivity と同じ解決ロジック）
+        embeddingModel = settings.optString("embeddingModel", "default");
+        String resolvedEmbed = (embeddingModel == null || embeddingModel.trim().isEmpty()
+                || "default".equals(embeddingModel.trim())) ? "default" : embeddingModel.trim();
+        if (embeddingClient == null || !resolvedEmbed.equals(embeddingClient.getModel())) {
+            embeddingClient = new EmbeddingClient(client, ollamaBaseUrl, resolvedEmbed);
+            webSearchRagHelper = new WebSearchRagHelper(embeddingClient, client, ollamaBaseUrl, selectedModel);
         }
         applyTtsSettings();
     }
