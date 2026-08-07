@@ -121,8 +121,10 @@ public class FloatOverlayService extends Service {
     private static final int MAX_SYNC_LOG_LINES = 80;
     private static final int MAX_NOTIFICATION_TEXT_LENGTH = 240;
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
-    private static final int CHAT_NUM_CTX = 8192;
-    private static final int CHAT_NUM_PREDICT = -1;
+    private static final int DEFAULT_NUM_CTX = 8192;
+    private static final int DEFAULT_NUM_PREDICT = -1;
+    private int numCtx = DEFAULT_NUM_CTX;
+    private int numPredict = DEFAULT_NUM_PREDICT;
     private static final String CHAT_KEEP_ALIVE = "30m";
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -1013,8 +1015,8 @@ public class FloatOverlayService extends Service {
 
     private void applyOllamaOptions(JSONObject body) throws org.json.JSONException {
         JSONObject options = new JSONObject();
-        options.put("num_ctx", CHAT_NUM_CTX);
-        options.put("num_predict", CHAT_NUM_PREDICT);
+        options.put("num_ctx", numCtx);
+        options.put("num_predict", numPredict);
         body.put("options", options);
         body.put("keep_alive", CHAT_KEEP_ALIVE);
     }
@@ -1967,6 +1969,9 @@ public class FloatOverlayService extends Service {
         structuredOutputMode = StructuredOutput.Mode.fromString(
                 settings.optString("structuredOutputMode", structuredOutputMode)).name();
         systemPromptText = settings.optString("systemPrompt", systemPromptText);
+        numCtx = settings.optInt("numCtx", DEFAULT_NUM_CTX);
+        numPredict = settings.optInt("numPredict", DEFAULT_NUM_PREDICT);
+        if (numCtx <= 0) numCtx = DEFAULT_NUM_CTX;
         baseName = settings.optString("baseName", baseName);
         userName = settings.optString("userName", userName);
         historyLimit = Math.max(0, settings.optInt("historyLimit", historyLimit));

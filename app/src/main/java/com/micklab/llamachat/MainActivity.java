@@ -111,8 +111,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
     // Ollama 推論オプション（無回答対策）。num_ctx を明示してプロンプト切り詰めによる空応答を防ぐ。
     // 値は端末性能に合わせて調整可。
-    private static final int CHAT_NUM_CTX = 8192;       // 入力（system＋履歴＋検索結果）が収まる十分なコンテキスト
-    private static final int CHAT_NUM_PREDICT = -1;
+    private static final int DEFAULT_NUM_CTX = 8192;
+    private static final int DEFAULT_NUM_PREDICT = -1;
     private static final String CHAT_KEEP_ALIVE = "30m"; // モデル再ロードの churn 抑制
     private static final int REQ_FIRST_LAUNCH_PERMS = 1000;
     private static final int REQ_RECORD_AUDIO = 1001;
@@ -195,7 +195,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private LinearLayout sectionGeneralContent, sectionChatContent, sectionExpertContent;
     private TextView tvSettingsTitle, tvSectionGeneral, tvSectionChat, tvSectionExpert, tvSectionInfo;
     private TextView tvLabelLanguage, tvLabelConfigProfile, tvLabelOllamaUrl, tvLabelUserName, tvOllamaStatus;
-    private TextView tvLabelMode, tvLabelFloatDisplay, tvFloatModeUnavailable, tvLabelHistoryLimit, tvLabelChatterInterval;
+    private TextView tvLabelMode, tvLabelFloatDisplay, tvFloatModeUnavailable, tvLabelHistoryLimit, tvLabelChatterInterval, tvLabelNumCtx, tvLabelNumPredict;
     private TextView tvLabelWebSearchUrl, tvLabelWebSearchApiKey, tvLabelWebSearchModel, tvLabelEmbeddingModel, tvLabelStructuredOutput, tvLabelRoutingMode;
     private TextView tvLabelNotifications, tvLabelMorningBriefingTime, tvLabelNewsBriefingTimes;
     private TextView tvBaseSettingsTitle, tvBaseNameLabel, tvBaseModelLabel;
@@ -212,7 +212,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private EditText etOllamaUrl, etSpeechLang, etSpeechRate, etSpeechPitch, etSystemPrompt;
     private EditText etChatterSpeechLang, etChatterSpeechRate, etChatterSpeechPitch, etChatterSystemPrompt;
     private EditText etBaseName, etChatterName;
-    private EditText etHistoryLimit, etAutoChatterSeconds;
+    private EditText etHistoryLimit, etAutoChatterSeconds, etNumCtx, etNumPredict;
     private EditText etWebSearchUrl, etWebSearchApiKey, etProfileName, etUserName;
     private EditText etMorningBriefingTime, etNewsBriefingTimes;
     private EditText etSemanticThreshold, etSemanticRelMargin;
@@ -267,6 +267,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private String userName = "";
     private int historyLimit = 10;
     private int autoChatterSeconds = 10;
+    private int numCtx = DEFAULT_NUM_CTX;
+    private int numPredict = DEFAULT_NUM_PREDICT;
     private String appLanguage = Locale.getDefault().getLanguage().startsWith("ja") ? "ja" : "en";
     private String floatDisplayMode = FLOAT_DISPLAY_MODE_AVATAR;
     private boolean sectionGeneralExpanded = true;
@@ -848,6 +850,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         etChatterSystemPrompt = findViewById(R.id.etChatterSystemPrompt);
         etHistoryLimit = findViewById(R.id.etHistoryLimit);
         etAutoChatterSeconds = findViewById(R.id.etAutoChatterSeconds);
+        etNumCtx = findViewById(R.id.etNumCtx);
+        etNumPredict = findViewById(R.id.etNumPredict);
         switchWebSearch = findViewById(R.id.switchWebSearch);
         switchProactiveNotify = findViewById(R.id.switchProactiveNotify);
         switchNewsMode = findViewById(R.id.switchNewsMode);
@@ -908,6 +912,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         tvFloatModeUnavailable = findViewById(R.id.tvFloatModeUnavailable);
         tvLabelHistoryLimit = findViewById(R.id.tvLabelHistoryLimit);
         tvLabelChatterInterval = findViewById(R.id.tvLabelChatterInterval);
+        tvLabelNumCtx = findViewById(R.id.tvLabelNumCtx);
+        tvLabelNumPredict = findViewById(R.id.tvLabelNumPredict);
         tvLabelWebSearchUrl = findViewById(R.id.tvLabelWebSearchUrl);
         tvLabelWebSearchApiKey = findViewById(R.id.tvLabelWebSearchApiKey);
         tvLabelWebSearchModel = findViewById(R.id.tvLabelWebSearchModel);
@@ -1437,6 +1443,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         }
         if (tvLabelHistoryLimit != null) tvLabelHistoryLimit.setText(t("History Limit", "履歴制限"));
         if (tvLabelChatterInterval != null) tvLabelChatterInterval.setText(t("Chatter Interval (sec)", "おしゃべり間隔（秒）"));
+        if (tvLabelNumCtx != null) tvLabelNumCtx.setText(t("Context Size (nCtx)", "コンテキストサイズ (nCtx)"));
+        if (tvLabelNumPredict != null) tvLabelNumPredict.setText(t("Max Tokens (nPredict, -1=unlimited)", "最大トークン数 (nPredict, -1=無制限)"));
         if (radioWebSearchDdg != null) radioWebSearchDdg.setText(t("Wikipedia (Free)", "Wikipedia（無料）"));
         if (radioWebSearchApi != null) radioWebSearchApi.setText(t("Web API", "Web API"));
         if (tvLabelWebSearchUrl != null) tvLabelWebSearchUrl.setText(t("Web Search API URL", "Web検索 API URL"));
@@ -2343,6 +2351,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         s.put("userName", userName);
         s.put("historyLimit", historyLimit);
         s.put("autoChatterSeconds", autoChatterSeconds);
+        s.put("numCtx", numCtx);
+        s.put("numPredict", numPredict);
         s.put("appLanguage", appLanguage);
         s.put("floatDisplayMode", floatDisplayMode);
         s.put("webSearchEnabled", webSearchEnabled);
@@ -2396,6 +2406,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         userName = s.optString("userName", userName);
         historyLimit = s.optInt("historyLimit", historyLimit);
         autoChatterSeconds = s.optInt("autoChatterSeconds", autoChatterSeconds);
+        numCtx = s.optInt("numCtx", DEFAULT_NUM_CTX);
+        numPredict = s.optInt("numPredict", DEFAULT_NUM_PREDICT);
         appLanguage = s.optString("appLanguage", appLanguage);
         floatDisplayMode = normalizeFloatDisplayMode(s.optString("floatDisplayMode", floatDisplayMode));
         webSearchEnabled = s.optBoolean("webSearchEnabled", webSearchEnabled);
@@ -2722,6 +2734,17 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             autoChatterSeconds = 10;
         }
         if (autoChatterSeconds < 0) autoChatterSeconds = 0;
+        try {
+            numCtx = Integer.parseInt(etNumCtx.getText().toString());
+        } catch (Exception e) {
+            numCtx = DEFAULT_NUM_CTX;
+        }
+        if (numCtx <= 0) numCtx = DEFAULT_NUM_CTX;
+        try {
+            numPredict = Integer.parseInt(etNumPredict.getText().toString());
+        } catch (Exception e) {
+            numPredict = DEFAULT_NUM_PREDICT;
+        }
         webSearchEnabled = switchWebSearch.isChecked();
         if (radioGroupWebSearchMode != null) {
             webSearchMode = (radioGroupWebSearchMode.getCheckedRadioButtonId() == R.id.radioWebSearchApi)
@@ -2837,6 +2860,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         etChatterSystemPrompt.setText(chatterSystemPromptText);
         etHistoryLimit.setText(String.valueOf(historyLimit));
         etAutoChatterSeconds.setText(String.valueOf(autoChatterSeconds));
+        if (etNumCtx != null) etNumCtx.setText(String.valueOf(numCtx));
+        if (etNumPredict != null) etNumPredict.setText(String.valueOf(numPredict));
         switchWebSearch.setChecked(webSearchEnabled);
         if (radioGroupWebSearchMode != null) {
             boolean isApi = WEB_MODE_API.equals(webSearchMode);
@@ -4343,8 +4368,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
      */
     private void applyOllamaOptions(JSONObject body) throws JSONException {
         JSONObject options = new JSONObject();
-        options.put("num_ctx", CHAT_NUM_CTX);
-        options.put("num_predict", CHAT_NUM_PREDICT);
+        options.put("num_ctx", numCtx);
+        options.put("num_predict", numPredict);
         body.put("options", options);
         body.put("keep_alive", CHAT_KEEP_ALIVE);
     }
