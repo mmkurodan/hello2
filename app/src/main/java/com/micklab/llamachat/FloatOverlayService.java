@@ -122,7 +122,7 @@ public class FloatOverlayService extends Service {
     private static final int MAX_NOTIFICATION_TEXT_LENGTH = 240;
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
     private static final int CHAT_NUM_CTX = 8192;
-    private static final int CHAT_NUM_PREDICT = 2048;
+    private static final int CHAT_NUM_PREDICT = -1;
     private static final String CHAT_KEEP_ALIVE = "30m";
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());

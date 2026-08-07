@@ -112,7 +112,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     // Ollama 推論オプション（無回答対策）。num_ctx を明示してプロンプト切り詰めによる空応答を防ぐ。
     // 値は端末性能に合わせて調整可。
     private static final int CHAT_NUM_CTX = 8192;       // 入力（system＋履歴＋検索結果）が収まる十分なコンテキスト
-    private static final int CHAT_NUM_PREDICT = 2048;   // 暴走（未閉じ推論など）防止の生成上限。通常応答には十分
+    private static final int CHAT_NUM_PREDICT = -1;
     private static final String CHAT_KEEP_ALIVE = "30m"; // モデル再ロードの churn 抑制
     private static final int REQ_FIRST_LAUNCH_PERMS = 1000;
     private static final int REQ_RECORD_AUDIO = 1001;
@@ -3625,9 +3625,16 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                         final String wikiDebug = t("Query: ", "クエリ: ") + displayQuery
                                 + (rawResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
                         runOnUiThread(() -> { if (debugEnabled) appendDebug("Wikipedia Search", wikiDebug); });
-                        searchResultsBlock = (rawResults != null && !rawResults.isEmpty()) ? rawResults
-                                : t("SEARCH_RESULTS:\n(No results found for: " + displayQuery + ")",
-                                  "SEARCH_RESULTS:\n(検索結果なし: " + displayQuery + ")");
+                        if (rawResults != null && !rawResults.isEmpty()) {
+                            runOnUiThread(() -> setThinkingIndicatorLabel(
+                                    t("Ranking results...", "結果を絞り込み中..."), expertToken));
+                            EmbeddingClient emb = new EmbeddingClient(client, ollamaBaseUrl, resolveEmbeddingModelName());
+                            WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel());
+                            searchResultsBlock = rag.rerankSearchResults(userMsg, rawResults);
+                        } else {
+                            searchResultsBlock = t("SEARCH_RESULTS:\n(No results found for: " + displayQuery + ")",
+                                    "SEARCH_RESULTS:\n(検索結果なし: " + displayQuery + ")");
+                        }
                     }
                 }
                 String finalSearchResultsBlock = searchResultsBlock;
@@ -3717,6 +3724,11 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                             + (searchResults != null ? t("\nResult: found", "\n結果: あり") : t("\nResult: no results", "\n結果: なし"));
                     runOnUiThread(() -> { if (debugEnabled) appendDebug("Wikipedia Search", debugInfo); });
                     if (searchResults != null && !searchResults.isEmpty()) {
+                        runOnUiThread(() -> setThinkingIndicatorLabel(
+                                t("Ranking results...", "結果を絞り込み中..."), webSearchToken));
+                        EmbeddingClient emb = new EmbeddingClient(client, ollamaBaseUrl, resolveEmbeddingModelName());
+                        WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel());
+                        searchResults = rag.rerankSearchResults(userMsg, searchResults);
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg, searchResults);
                     } else {
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg,
