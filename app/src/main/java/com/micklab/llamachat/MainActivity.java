@@ -3615,8 +3615,12 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                         if (keywords.isEmpty()) {
                             continue;
                         }
-                        final String displayQuery = keywords;
-                        String keywordText = displayQuery.length() > 80 ? displayQuery.substring(0, 80) + "..." : displayQuery;
+                        runOnUiThread(() -> setThinkingIndicatorLabel(
+                                t("Extracting keywords...", "キーワードを抽出中..."), expertToken));
+                        String extracted = WikipediaSearchHelper.extractKeywords(
+                                client, ollamaBaseUrl, expertModel, userMsg);
+                        final String displayQuery = extracted;
+                        String keywordText = extracted.length() > 80 ? extracted.substring(0, 80) + "..." : extracted;
                         runOnUiThread(() -> setThinkingIndicatorLabel(
                                 t("Web searching: ", "Web検索中: ") + keywordText,
                                 expertToken
@@ -3713,8 +3717,12 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (keywords != null && !keywords.isEmpty()) {
-                    final String searchQuery_ = keywords;
-                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
+                    runOnUiThread(() -> setThinkingIndicatorLabel(
+                            t("Extracting keywords...", "キーワードを抽出中..."), webSearchToken));
+                    String extracted = WikipediaSearchHelper.extractKeywords(
+                            client, ollamaBaseUrl, expertModel, userMsg);
+                    final String searchQuery_ = extracted;
+                    String keywordText = extracted.length() > 80 ? extracted.substring(0, 80) + "..." : extracted;
                     runOnUiThread(() -> setThinkingIndicatorLabel(
                             t("Web searching: ", "Web検索中: ") + keywordText,
                             webSearchToken

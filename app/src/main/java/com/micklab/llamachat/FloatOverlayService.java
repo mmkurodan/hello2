@@ -1103,9 +1103,12 @@ public class FloatOverlayService extends Service {
             try {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (!TextUtils.isEmpty(keywords)) {
-                    String keywordText = keywords.length() > 80 ? keywords.substring(0, 80) + "..." : keywords;
+                    updateThinkingLabel(t("Extracting keywords...", "キーワードを抽出中..."), requestToken);
+                    String extracted = WikipediaSearchHelper.extractKeywords(
+                            client, ollamaBaseUrl, expertModel, userMsg);
+                    String keywordText = extracted.length() > 80 ? extracted.substring(0, 80) + "..." : extracted;
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);
-                    String searchResults = callWebSearchApi(keywords);
+                    String searchResults = callWebSearchApi(extracted);
                     if (!TextUtils.isEmpty(searchResults)) {
                         // RAG: 埋め込みでクエリ関連度の高いチャンクのみ抽出
                         if (webSearchRagHelper != null) {
