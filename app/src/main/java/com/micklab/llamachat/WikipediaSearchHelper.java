@@ -11,10 +11,11 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.LinkedHashSet;
+
 /**
  * Wikipedia Search API を使った無料Web検索。
- * 日本語版・英語版を並行検索し結果を統合する。
- * LLM でキーワードを抽出し（翻訳なし）、そのまま検索する。
+ * クエリ言語を検出して一致する言語版を優先し、タイトル直接マッチを先頭に挿入する。
  */
 public final class WikipediaSearchHelper {
 
@@ -23,7 +24,7 @@ public final class WikipediaSearchHelper {
     private WikipediaSearchHelper() {}
 
     /**
-     * ユーザー発話から検索キーワードを LLM で抽出する（日本語のまま、翻訳なし）。
+     * ユーザー発話から検索キーワードを LLM で抽出する（翻訳なし）。
      * 失敗時は原文をそのまま返す。
      */
     public static String extractKeywords(OkHttpClient client, String baseUrl,
@@ -73,20 +74,24 @@ public final class WikipediaSearchHelper {
     }
 
     /**
-     * 日本語・英語 Wikipedia を検索し、結果を統合して返す。
-     * 結果が得られなければ null を返す。
+     * クエリ言語を優先しながら日本語・英語 Wikipedia を検索して結果を統合する。
+     * タイトルにクエリが含まれる記事は先頭に配置する。
      */
     public static String search(OkHttpClient client, String query) {
         if (client == null || TextUtils.isEmpty(query)) return null;
         try {
-            String jaPart = searchWikipedia(client, "ja", query);
-            String enPart = searchWikipedia(client, "en", query);
+            boolean cjk = hasCjkChars(query);
+            String primary = cjk ? "ja" : "en";
+            String secondary = cjk ? "en" : "ja";
+
+            String primaryPart = searchWikipedia(client, primary, query);
+            String secondaryPart = searchWikipedia(client, secondary, query);
 
             StringBuilder combined = new StringBuilder();
-            if (jaPart != null) combined.append(jaPart);
-            if (enPart != null) {
+            if (primaryPart != null) combined.append(primaryPart);
+            if (secondaryPart != null) {
                 if (combined.length() > 0) combined.append("\n");
-                combined.append(enPart);
+                combined.append(secondaryPart);
             }
 
             String result = combined.toString().trim();
@@ -96,9 +101,14 @@ public final class WikipediaSearchHelper {
         }
     }
 
-    // 検索ヒット一覧を取得し、各記事の冒頭全文（Summary REST API）を付加して返す
+    // タイトル直接マッチを先頭に、キーワード検索結果をその後に並べる
     private static String searchWikipedia(OkHttpClient client, String lang, String query) {
         try {
+            // 1. クエリをタイトルとして直接ルックアップ（タイトル優先）
+            String exactExtract = fetchSummaryExtract(client, lang, query);
+            String exactTitle = (exactExtract != null) ? query : null;
+
+            // 2. キーワード全文検索
             String url = "https://" + lang + ".wikipedia.org/w/api.php"
                     + "?action=query&list=search&srsearch="
                     + java.net.URLEncoder.encode(query.trim(), "UTF-8")
@@ -109,39 +119,55 @@ public final class WikipediaSearchHelper {
                     .addHeader("Accept", "application/json")
                     .get()
                     .build();
-            try (Response resp = client.newCall(request).execute()) {
-                if (!resp.isSuccessful()) return null;
-                String body = resp.body() != null ? resp.body().string() : "";
-                JSONObject json = new JSONObject(body);
-                JSONArray hits = json.getJSONObject("query").getJSONArray("search");
-                if (hits.length() == 0) return null;
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < Math.min(hits.length(), 3); i++) {
-                    JSONObject hit = hits.getJSONObject(i);
-                    String title = hit.optString("title", "").trim();
-                    String ts = hit.optString("timestamp", "");
-                    String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
-                    if (title.isEmpty()) continue;
+            StringBuilder sb = new StringBuilder();
+            LinkedHashSet<String> seen = new LinkedHashSet<>();
 
-                    String articleUrl = "https://" + lang + ".wikipedia.org/wiki/"
-                            + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
-
-                    // 記事冒頭全文を Summary REST API で取得
-                    String extract = fetchSummaryExtract(client, lang, title);
-
-                    sb.append("[Wikipedia/").append(lang).append("] ").append(title);
-                    if (!updated.isEmpty()) sb.append(" (").append(updated).append(")");
-                    sb.append("\n");
-                    if (extract != null && !extract.isEmpty()) sb.append(extract).append("\n");
-                    sb.append(articleUrl).append("\n");
-                }
-                String result = sb.toString().trim();
-                return result.isEmpty() ? null : result;
+            // タイトル直接マッチを先頭に挿入
+            if (exactTitle != null) {
+                seen.add(exactTitle);
+                appendArticle(sb, lang, exactTitle, null, exactExtract);
             }
+
+            try (Response resp = client.newCall(request).execute()) {
+                if (resp.isSuccessful()) {
+                    String body = resp.body() != null ? resp.body().string() : "";
+                    JSONObject json = new JSONObject(body);
+                    JSONArray hits = json.getJSONObject("query").getJSONArray("search");
+                    for (int i = 0; i < Math.min(hits.length(), 3); i++) {
+                        JSONObject hit = hits.getJSONObject(i);
+                        String title = hit.optString("title", "").trim();
+                        if (title.isEmpty() || seen.contains(title)) continue;
+                        seen.add(title);
+                        String ts = hit.optString("timestamp", "");
+                        String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
+                        String extract = fetchSummaryExtract(client, lang, title);
+                        appendArticle(sb, lang, title, updated, extract);
+                    }
+                }
+            }
+
+            String result = sb.toString().trim();
+            return result.isEmpty() ? null : result;
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static void appendArticle(StringBuilder sb, String lang,
+                                       String title, String updated, String extract) {
+        String articleUrl = "https://" + lang + ".wikipedia.org/wiki/";
+        try {
+            articleUrl += java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
+        } catch (Exception e) {
+            articleUrl += title.replace(" ", "_");
+        }
+        if (sb.length() > 0) sb.append("\n");
+        sb.append("[Wikipedia/").append(lang).append("] ").append(title);
+        if (updated != null && !updated.isEmpty()) sb.append(" (").append(updated).append(")");
+        sb.append("\n");
+        if (extract != null && !extract.isEmpty()) sb.append(extract).append("\n");
+        sb.append(articleUrl).append("\n");
     }
 
     // Wikipedia Summary REST API で記事冒頭テキスト（extract）を取得する
@@ -159,12 +185,26 @@ public final class WikipediaSearchHelper {
                 if (!resp.isSuccessful()) return null;
                 String body = resp.body() != null ? resp.body().string() : "";
                 JSONObject json = new JSONObject(body);
+                // タイムスタンプが存在する記事のみ（redirect ページなどを除外）
+                if (json.optString("type", "").equals("disambiguation")) return null;
                 String extract = json.optString("extract", "").trim();
-                // 長すぎる場合は先頭 1500 字に絞る（RAG が後段で再ランクするため）
                 return extract.length() > 1500 ? extract.substring(0, 1500) : extract;
             }
         } catch (Exception e) {
             return null;
         }
+    }
+
+    // クエリに CJK 文字（日本語・中国語）が含まれるか判定
+    private static boolean hasCjkChars(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            Character.UnicodeBlock block = Character.UnicodeBlock.of(s.charAt(i));
+            if (block == Character.UnicodeBlock.HIRAGANA
+                    || block == Character.UnicodeBlock.KATAKANA
+                    || block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+                return true;
+            }
+        }
+        return false;
     }
 }
