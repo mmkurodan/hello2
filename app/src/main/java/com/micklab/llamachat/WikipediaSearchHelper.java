@@ -104,11 +104,21 @@ public final class WikipediaSearchHelper {
     // タイトル直接マッチを先頭に、キーワード検索結果をその後に並べる
     private static String searchWikipedia(OkHttpClient client, String lang, String query) {
         try {
-            // 1. クエリをタイトルとして直接ルックアップ（タイトル優先）
-            String exactExtract = fetchSummaryExtract(client, lang, query);
-            String exactTitle = (exactExtract != null) ? query : null;
+            StringBuilder sb = new StringBuilder();
+            LinkedHashSet<String> seen = new LinkedHashSet<>();
 
-            // 2. キーワード全文検索
+            // 1. クエリをタイトルとして直接ルックアップ（タイトル優先）
+            // Summary API がリダイレクト先の正規タイトルを返すためそれを重複キーに使う
+            JSONObject exactSummary = fetchSummary(client, lang, query);
+            if (exactSummary != null) {
+                String canonicalTitle = exactSummary.optString("title", query).trim();
+                String extract = exactSummary.optString("extract", "").trim();
+                if (extract.length() > 1500) extract = extract.substring(0, 1500);
+                seen.add(canonicalTitle);
+                appendArticle(sb, lang, canonicalTitle, null, extract);
+            }
+
+            // 2. キーワード全文検索（重複除外して最大2件追加）
             String url = "https://" + lang + ".wikipedia.org/w/api.php"
                     + "?action=query&list=search&srsearch="
                     + java.net.URLEncoder.encode(query.trim(), "UTF-8")
@@ -120,29 +130,28 @@ public final class WikipediaSearchHelper {
                     .get()
                     .build();
 
-            StringBuilder sb = new StringBuilder();
-            LinkedHashSet<String> seen = new LinkedHashSet<>();
-
-            // タイトル直接マッチを先頭に挿入
-            if (exactTitle != null) {
-                seen.add(exactTitle);
-                appendArticle(sb, lang, exactTitle, null, exactExtract);
-            }
-
             try (Response resp = client.newCall(request).execute()) {
                 if (resp.isSuccessful()) {
                     String body = resp.body() != null ? resp.body().string() : "";
                     JSONObject json = new JSONObject(body);
                     JSONArray hits = json.getJSONObject("query").getJSONArray("search");
-                    for (int i = 0; i < Math.min(hits.length(), 3); i++) {
+                    int added = 0;
+                    for (int i = 0; i < hits.length() && added < 2; i++) {
                         JSONObject hit = hits.getJSONObject(i);
                         String title = hit.optString("title", "").trim();
                         if (title.isEmpty() || seen.contains(title)) continue;
-                        seen.add(title);
+                        // Summary API で正規タイトル確認（リダイレクト重複防止）
+                        JSONObject summary = fetchSummary(client, lang, title);
+                        if (summary == null) continue;
+                        String canonicalTitle = summary.optString("title", title).trim();
+                        if (seen.contains(canonicalTitle)) continue;
+                        seen.add(canonicalTitle);
                         String ts = hit.optString("timestamp", "");
                         String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
-                        String extract = fetchSummaryExtract(client, lang, title);
-                        appendArticle(sb, lang, title, updated, extract);
+                        String extract = summary.optString("extract", "").trim();
+                        if (extract.length() > 1500) extract = extract.substring(0, 1500);
+                        appendArticle(sb, lang, canonicalTitle, updated, extract);
+                        added++;
                     }
                 }
             }
@@ -170,8 +179,8 @@ public final class WikipediaSearchHelper {
         sb.append(articleUrl).append("\n");
     }
 
-    // Wikipedia Summary REST API で記事冒頭テキスト（extract）を取得する
-    private static String fetchSummaryExtract(OkHttpClient client, String lang, String title) {
+    // Wikipedia Summary REST API で記事 JSON を取得する（title・extract を含む）
+    private static JSONObject fetchSummary(OkHttpClient client, String lang, String title) {
         try {
             String url = "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/"
                     + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
@@ -185,10 +194,9 @@ public final class WikipediaSearchHelper {
                 if (!resp.isSuccessful()) return null;
                 String body = resp.body() != null ? resp.body().string() : "";
                 JSONObject json = new JSONObject(body);
-                // タイムスタンプが存在する記事のみ（redirect ページなどを除外）
-                if (json.optString("type", "").equals("disambiguation")) return null;
-                String extract = json.optString("extract", "").trim();
-                return extract.length() > 1500 ? extract.substring(0, 1500) : extract;
+                if ("disambiguation".equals(json.optString("type", ""))) return null;
+                if (json.optString("extract", "").trim().isEmpty()) return null;
+                return json;
             }
         } catch (Exception e) {
             return null;
