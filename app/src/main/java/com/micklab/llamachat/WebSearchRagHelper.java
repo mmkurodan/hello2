@@ -22,8 +22,8 @@ import okhttp3.Response;
  * 関連性の低い情報のノイズを削減し応答品質を向上させる。</p>
  */
 public final class WebSearchRagHelper {
-    private static final int MAX_CHUNKS_TO_EMBED = 25;
-    private static final int TOP_K_CHUNKS = 5;
+    private static final int MAX_CHUNKS_TO_EMBED = 8;
+    private static final int TOP_K_CHUNKS = 3;
     private static final int MAX_CONTEXT_TOKENS = 3000;
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
 
@@ -51,10 +51,18 @@ public final class WebSearchRagHelper {
             List<String> chunks = splitIntoChunks(rawSearchResults);
             if (chunks.size() <= TOP_K_CHUNKS) return rawSearchResults;
 
-            float[] queryVec = EmbeddingClient.l2Normalize(embeddingClient.embed(userQuery));
             int batchSize = Math.min(chunks.size(), MAX_CHUNKS_TO_EMBED);
             List<String> batchChunks = chunks.subList(0, batchSize);
-            List<float[]> chunkVecs = embeddingClient.embedBatch(batchChunks);
+
+            // クエリと全チャンクを1回のリクエストにまとめて埋め込む
+            List<String> allTexts = new ArrayList<>(batchSize + 1);
+            allTexts.add(userQuery);
+            allTexts.addAll(batchChunks);
+            List<float[]> allVecs = embeddingClient.embedBatch(allTexts);
+            if (allVecs.size() < 2) return rawSearchResults;
+
+            float[] queryVec = EmbeddingClient.l2Normalize(allVecs.get(0));
+            List<float[]> chunkVecs = allVecs.subList(1, allVecs.size());
 
             List<ScoredChunk> scored = new ArrayList<>(chunkVecs.size());
             for (int i = 0; i < chunkVecs.size(); i++) {
@@ -105,6 +113,17 @@ public final class WebSearchRagHelper {
 
     private List<String> splitIntoChunks(String searchResults) {
         List<String> chunks = new ArrayList<>();
+
+        // Wikipedia 形式: [Wikipedia/lang] で記事単位に分割
+        if (searchResults.contains("[Wikipedia/")) {
+            String[] parts = searchResults.split("(?=\\[Wikipedia/)");
+            for (String p : parts) {
+                String t = p.trim();
+                if (t.startsWith("[Wikipedia/")) chunks.add(t);
+            }
+            if (!chunks.isEmpty()) return chunks;
+        }
+
         // Brave/generic 形式: [1] Title\nDesc\nURL で区切る
         String[] parts = searchResults.split("(?=\\[\\d+\\])");
         for (String p : parts) {
