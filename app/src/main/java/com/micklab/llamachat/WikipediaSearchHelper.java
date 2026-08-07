@@ -96,12 +96,13 @@ public final class WikipediaSearchHelper {
         }
     }
 
+    // 検索ヒット一覧を取得し、各記事の冒頭全文（Summary REST API）を付加して返す
     private static String searchWikipedia(OkHttpClient client, String lang, String query) {
         try {
             String url = "https://" + lang + ".wikipedia.org/w/api.php"
                     + "?action=query&list=search&srsearch="
                     + java.net.URLEncoder.encode(query.trim(), "UTF-8")
-                    + "&srlimit=3&srprop=snippet%7Ctimestamp&utf8=1&format=json";
+                    + "&srlimit=3&srprop=timestamp&utf8=1&format=json";
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("User-Agent", "llamachat/1.0 (Android)")
@@ -119,22 +120,48 @@ public final class WikipediaSearchHelper {
                 for (int i = 0; i < Math.min(hits.length(), 3); i++) {
                     JSONObject hit = hits.getJSONObject(i);
                     String title = hit.optString("title", "").trim();
-                    String snippet = hit.optString("snippet", "")
-                            .replaceAll("<[^>]+>", "").trim();
                     String ts = hit.optString("timestamp", "");
                     String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
-
                     if (title.isEmpty()) continue;
+
+                    String articleUrl = "https://" + lang + ".wikipedia.org/wiki/"
+                            + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
+
+                    // 記事冒頭全文を Summary REST API で取得
+                    String extract = fetchSummaryExtract(client, lang, title);
+
                     sb.append("[Wikipedia/").append(lang).append("] ").append(title);
                     if (!updated.isEmpty()) sb.append(" (").append(updated).append(")");
                     sb.append("\n");
-                    if (!snippet.isEmpty()) sb.append(snippet).append("\n");
-                    sb.append("https://").append(lang).append(".wikipedia.org/wiki/")
-                      .append(java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8"))
-                      .append("\n");
+                    if (extract != null && !extract.isEmpty()) sb.append(extract).append("\n");
+                    sb.append(articleUrl).append("\n");
                 }
                 String result = sb.toString().trim();
                 return result.isEmpty() ? null : result;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // Wikipedia Summary REST API で記事冒頭テキスト（extract）を取得する
+    private static String fetchSummaryExtract(OkHttpClient client, String lang, String title) {
+        try {
+            String url = "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/"
+                    + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("User-Agent", "llamachat/1.0 (Android)")
+                    .addHeader("Accept", "application/json")
+                    .get()
+                    .build();
+            try (Response resp = client.newCall(request).execute()) {
+                if (!resp.isSuccessful()) return null;
+                String body = resp.body() != null ? resp.body().string() : "";
+                JSONObject json = new JSONObject(body);
+                String extract = json.optString("extract", "").trim();
+                // 長すぎる場合は先頭 1500 字に絞る（RAG が後段で再ランクするため）
+                return extract.length() > 1500 ? extract.substring(0, 1500) : extract;
             }
         } catch (Exception e) {
             return null;
