@@ -110,6 +110,7 @@ public final class WikipediaSearchHelper {
             // 1. クエリをタイトルとして直接ルックアップ（タイトル優先）
             // Summary API がリダイレクト先の正規タイトルを返すためそれを重複キーに使う
             JSONObject exactSummary = fetchSummary(client, lang, query);
+            boolean titleMatched = exactSummary != null;
             if (exactSummary != null) {
                 String canonicalTitle = exactSummary.optString("title", query).trim();
                 String extract = exactSummary.optString("extract", "").trim();
@@ -118,40 +119,43 @@ public final class WikipediaSearchHelper {
                 appendArticle(sb, lang, canonicalTitle, null, extract);
             }
 
-            // 2. キーワード全文検索（重複除外して最大2件追加）
-            String url = "https://" + lang + ".wikipedia.org/w/api.php"
-                    + "?action=query&list=search&srsearch="
-                    + java.net.URLEncoder.encode(query.trim(), "UTF-8")
-                    + "&srlimit=3&srprop=timestamp&utf8=1&format=json";
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("User-Agent", "llamachat/1.0 (Android)")
-                    .addHeader("Accept", "application/json")
-                    .get()
-                    .build();
+            // 2. キーワード全文検索（タイトル直接マッチがあればスキップ）
+            // タイトルマッチがある場合はそれが最も関連性が高いため、
+            // キーワード検索で返る周辺記事（Seiko等）の混入を防ぐ
+            if (!titleMatched) {
+                String url = "https://" + lang + ".wikipedia.org/w/api.php"
+                        + "?action=query&list=search&srsearch="
+                        + java.net.URLEncoder.encode(query.trim(), "UTF-8")
+                        + "&srlimit=3&srprop=timestamp&utf8=1&format=json";
+                Request request = new Request.Builder()
+                        .url(url)
+                        .addHeader("User-Agent", "llamachat/1.0 (Android)")
+                        .addHeader("Accept", "application/json")
+                        .get()
+                        .build();
 
-            try (Response resp = client.newCall(request).execute()) {
-                if (resp.isSuccessful()) {
-                    String body = resp.body() != null ? resp.body().string() : "";
-                    JSONObject json = new JSONObject(body);
-                    JSONArray hits = json.getJSONObject("query").getJSONArray("search");
-                    int added = 0;
-                    for (int i = 0; i < hits.length() && added < 2; i++) {
-                        JSONObject hit = hits.getJSONObject(i);
-                        String title = hit.optString("title", "").trim();
-                        if (title.isEmpty() || seen.contains(title)) continue;
-                        // Summary API で正規タイトル確認（リダイレクト重複防止）
-                        JSONObject summary = fetchSummary(client, lang, title);
-                        if (summary == null) continue;
-                        String canonicalTitle = summary.optString("title", title).trim();
-                        if (seen.contains(canonicalTitle)) continue;
-                        seen.add(canonicalTitle);
-                        String ts = hit.optString("timestamp", "");
-                        String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
-                        String extract = summary.optString("extract", "").trim();
-                        if (extract.length() > 1500) extract = extract.substring(0, 1500);
-                        appendArticle(sb, lang, canonicalTitle, updated, extract);
-                        added++;
+                try (Response resp = client.newCall(request).execute()) {
+                    if (resp.isSuccessful()) {
+                        String body = resp.body() != null ? resp.body().string() : "";
+                        JSONObject json = new JSONObject(body);
+                        JSONArray hits = json.getJSONObject("query").getJSONArray("search");
+                        int added = 0;
+                        for (int i = 0; i < hits.length() && added < 2; i++) {
+                            JSONObject hit = hits.getJSONObject(i);
+                            String title = hit.optString("title", "").trim();
+                            if (title.isEmpty() || seen.contains(title)) continue;
+                            JSONObject summary = fetchSummary(client, lang, title);
+                            if (summary == null) continue;
+                            String canonicalTitle = summary.optString("title", title).trim();
+                            if (seen.contains(canonicalTitle)) continue;
+                            seen.add(canonicalTitle);
+                            String ts = hit.optString("timestamp", "");
+                            String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
+                            String extract = summary.optString("extract", "").trim();
+                            if (extract.length() > 1500) extract = extract.substring(0, 1500);
+                            appendArticle(sb, lang, canonicalTitle, updated, extract);
+                            added++;
+                        }
                     }
                 }
             }
