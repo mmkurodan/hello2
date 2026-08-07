@@ -38,10 +38,14 @@ public final class WikipediaSearchHelper {
             messages.put(new JSONObject()
                     .put("role", "system")
                     .put("content",
-                            "ユーザーのメッセージから検索キーワードのみを抽出してください。\n"
-                            + "言語はそのまま（翻訳しない）。\n"
+                            "ユーザーのメッセージから検索エンジン向けのキーワードを抽出してください。\n"
+                            + "ルール:\n"
+                            + "- 固有名詞・専門用語を個別に分解してスペース区切りで並べる\n"
+                            + "- 「AとBの違い」→「A B 違い」のように比較対象を個別キーワードに分解する\n"
+                            + "- 「〜を教えて」「〜を調べて」「〜を検索して」などの指示語は含めない\n"
+                            + "- 翻訳しない（元の言語のまま）\n"
                             + "出力形式（どちらか一方のみ）:\n"
-                            + "SEARCH: <キーワード>\n"
+                            + "SEARCH: <キーワード1 キーワード2 ...>\n"
                             + "NONE\n"
                             + "説明・余計な出力は不要。"));
             messages.put(new JSONObject()
@@ -49,7 +53,7 @@ public final class WikipediaSearchHelper {
                     .put("content", userInput));
             body.put("messages", messages);
             body.put("stream", false);
-            body.put("options", new JSONObject().put("temperature", 0).put("num_predict", 60));
+            body.put("options", new JSONObject().put("temperature", 0).put("num_predict", 80));
 
             Request request = new Request.Builder()
                     .url(baseUrl + "/api/chat")
