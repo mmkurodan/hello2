@@ -174,6 +174,7 @@ public class FloatOverlayService extends Service {
     private String floatDisplayMode = FLOAT_DISPLAY_MODE_AVATAR;
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
+    private boolean braveBoostEnabled = false;
     private String webSearchMode = "WIKIPEDIA";
     private String expertModel = "default";
     private String speechLang = "ja-JP";
@@ -1236,25 +1237,44 @@ public class FloatOverlayService extends Service {
             JSONObject web = json.optJSONObject("web");
             JSONArray results = web != null ? web.optJSONArray("results") : null;
             if (results == null || results.length() == 0) return null;
+
+            int limit = braveBoostEnabled ? Math.min(results.length(), 5) : Math.min(results.length(), 8);
             StringBuilder extracted = new StringBuilder();
-            int limit = Math.min(results.length(), 8);
             for (int i = 0; i < limit; i++) {
                 JSONObject item = results.optJSONObject(i);
                 if (item == null) continue;
                 String title = item.optString("title", "").trim();
                 String description = item.optString("description", "").trim();
                 String resultUrl = item.optString("url", "").trim();
-                JSONArray snippets = item.optJSONArray("extra_snippets");
                 if (title.isEmpty() && description.isEmpty() && resultUrl.isEmpty()) continue;
                 if (extracted.length() > 0) extracted.append("\n\n");
                 extracted.append("[").append(i + 1).append("]");
                 if (!title.isEmpty()) extracted.append(" ").append(title);
-                if (!description.isEmpty()) extracted.append("\n").append(description);
-                if (!resultUrl.isEmpty()) extracted.append("\n").append(resultUrl);
-                if (snippets != null) {
-                    for (int j = 0; j < snippets.length() && j < 2; j++) {
-                        String snippet = snippets.optString(j, "").trim();
-                        if (!snippet.isEmpty()) extracted.append("\n").append(snippet);
+                extracted.append("\n");
+                if (!resultUrl.isEmpty()) extracted.append(resultUrl).append("\n");
+
+                if (braveBoostEnabled && !resultUrl.isEmpty()) {
+                    String pageText = fetchUrlContent(resultUrl, 1500);
+                    if (pageText != null) {
+                        extracted.append(pageText);
+                    } else {
+                        if (!description.isEmpty()) extracted.append(description);
+                        JSONArray snippets = item.optJSONArray("extra_snippets");
+                        if (snippets != null) {
+                            for (int j = 0; j < snippets.length() && j < 2; j++) {
+                                String s = snippets.optString(j, "").trim();
+                                if (!s.isEmpty()) extracted.append("\n").append(s);
+                            }
+                        }
+                    }
+                } else {
+                    if (!description.isEmpty()) extracted.append(description);
+                    JSONArray snippets = item.optJSONArray("extra_snippets");
+                    if (snippets != null) {
+                        for (int j = 0; j < snippets.length() && j < 2; j++) {
+                            String s = snippets.optString(j, "").trim();
+                            if (!s.isEmpty()) extracted.append("\n").append(s);
+                        }
                     }
                 }
             }
@@ -1265,6 +1285,48 @@ public class FloatOverlayService extends Service {
             DebugLogger.log(this, "callBraveWebSearchApi error: " + e.getMessage());
             return null;
         }
+    }
+
+    private String fetchUrlContent(String url, int maxChars) {
+        try {
+            okhttp3.OkHttpClient fetchClient = client.newBuilder()
+                    .connectTimeout(5, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(8, java.util.concurrent.TimeUnit.SECONDS)
+                    .build();
+            Request req = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("User-Agent", "Mozilla/5.0 (Android) AppleWebKit/537.36")
+                    .addHeader("Accept", "text/html,application/xhtml+xml")
+                    .build();
+            try (Response resp = fetchClient.newCall(req).execute()) {
+                if (!resp.isSuccessful()) return null;
+                String contentType = resp.header("Content-Type", "");
+                if (!contentType.contains("text/html") && !contentType.contains("text/plain")
+                        && !contentType.contains("application/xhtml")) return null;
+                String html = resp.body() != null ? resp.body().string() : "";
+                String text = stripHtml(html);
+                if (text.isEmpty()) return null;
+                return text.length() > maxChars ? text.substring(0, maxChars) : text;
+            }
+        } catch (Exception e) {
+            DebugLogger.log(this, "fetchUrlContent failed: " + url + " - " + e.getMessage());
+            return null;
+        }
+    }
+
+    private String stripHtml(String html) {
+        return html
+                .replaceAll("(?is)<script[^>]*>.*?</script>", " ")
+                .replaceAll("(?is)<style[^>]*>.*?</style>", " ")
+                .replaceAll("(?is)<!--.*?-->", " ")
+                .replaceAll("<[^>]+>", " ")
+                .replace("&nbsp;", " ").replace("&amp;", "&")
+                .replace("&lt;", "<").replace("&gt;", ">")
+                .replace("&quot;", "\"").replace("&#39;", "'")
+                .replaceAll("&#\\d+;", "")
+                .replaceAll("\\s{2,}", " ")
+                .trim();
     }
 
     private void extractAllStringValues(Object obj, StringBuilder sb, int depth) {
@@ -1958,6 +2020,7 @@ public class FloatOverlayService extends Service {
         webSearchEnabled = settings.optBoolean("webSearchEnabled", webSearchEnabled);
         webSearchUrl = settings.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = settings.optString("webSearchApiKey", webSearchApiKey);
+        braveBoostEnabled = settings.optBoolean("braveBoostEnabled", braveBoostEnabled);
         String savedMode = settings.optString("webSearchMode", "WIKIPEDIA");
         webSearchMode = "DDG".equals(savedMode) ? "WIKIPEDIA" : savedMode;
         expertModel = settings.optString("expertModel", settings.optString("webSearchModel", expertModel));

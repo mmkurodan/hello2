@@ -203,7 +203,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private TextView tvChatterSettingsTitle, tvChatterNameLabel, tvChatterModelLabel;
     private TextView tvChatterSpeechLangLabel, tvChatterSpeechRateLabel, tvChatterSpeechPitchLabel, tvChatterSystemPromptLabel, tvChatterAvatarTitle;
     private View sectionGeneralHeader, sectionChatHeader, sectionExpertHeader;
-    private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchDebug, switchJsonMode;
+    private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchDebug, switchJsonMode, switchBraveBoost;
     private Switch switchProactiveNotify, switchNewsMode, switchMemoryEnabled;
     private android.widget.RadioGroup radioGroupWebSearchMode;
     private android.widget.RadioButton radioWebSearchDdg, radioWebSearchApi;
@@ -251,6 +251,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean debugEnabled = false;
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
+    private boolean braveBoostEnabled = false;
     private String expertModel = "default";
     private String embeddingModel = "default";
     private String structuredOutputMode = "OFF"; // OFF / SCHEMA / GBNF（StructuredOutput.Mode）
@@ -880,6 +881,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         radioWebSearchDdg = findViewById(R.id.radioWebSearchDdg);
         radioWebSearchApi = findViewById(R.id.radioWebSearchApi);
         layoutWebApiConfig = findViewById(R.id.layoutWebApiConfig);
+        switchBraveBoost = findViewById(R.id.switchBraveBoost);
         if (radioGroupWebSearchMode != null) {
             radioGroupWebSearchMode.setOnCheckedChangeListener((group, checkedId) -> {
                 boolean isApi = checkedId == R.id.radioWebSearchApi;
@@ -1449,6 +1451,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (radioWebSearchApi != null) radioWebSearchApi.setText(t("Web API", "Web API"));
         if (tvLabelWebSearchUrl != null) tvLabelWebSearchUrl.setText(t("Web Search API URL", "Web検索 API URL"));
         if (tvLabelWebSearchApiKey != null) tvLabelWebSearchApiKey.setText(t("Web Search API Key", "Web検索 APIキー"));
+        if (switchBraveBoost != null) switchBraveBoost.setText(t("Boost Mode (fetch URL content)", "ブーストモード（URL本文を取得）"));
         if (tvLabelWebSearchModel != null) tvLabelWebSearchModel.setText(t("Expert Model", "エキスパートモデル"));
         if (tvLabelEmbeddingModel != null) tvLabelEmbeddingModel.setText(t("Embedding Model", "埋め込みモデル"));
         if (tvLabelStructuredOutput != null) tvLabelStructuredOutput.setText(t("Structured Output", "構造化出力"));
@@ -2365,6 +2368,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         s.put("webSearchMode", webSearchMode);
         s.put("webSearchUrl", webSearchUrl);
         s.put("webSearchApiKey", webSearchApiKey);
+        s.put("braveBoostEnabled", braveBoostEnabled);
         s.put("expertModel", expertModel);
         s.put("embeddingModel", embeddingModel);
         s.put("routingMode", routingMode);
@@ -2421,6 +2425,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         debugEnabled = s.optBoolean("debugEnabled", debugEnabled);
         webSearchUrl = s.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = s.optString("webSearchApiKey", webSearchApiKey);
+        braveBoostEnabled = s.optBoolean("braveBoostEnabled", braveBoostEnabled);
         expertModel = s.optString("expertModel", s.optString("webSearchModel", expertModel));
         embeddingModel = s.optString("embeddingModel", embeddingModel);
         semanticThreshold = (float) s.optDouble("semanticThreshold", semanticThreshold);
@@ -2783,6 +2788,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         webSearchUrl = etWebSearchUrl.getText().toString().trim();
         if (webSearchUrl.isEmpty()) webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
         webSearchApiKey = etWebSearchApiKey.getText().toString().trim();
+        if (switchBraveBoost != null) braveBoostEnabled = switchBraveBoost.isChecked();
         expertModel = spinnerWebSearchModel.getSelectedItem() != null
                 ? spinnerWebSearchModel.getSelectedItem().toString().trim() : "";
         if (expertModel.isEmpty()) expertModel = "default";
@@ -2892,6 +2898,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (etNewsBriefingTimes != null) etNewsBriefingTimes.setText(newsBriefingTimes);
         etWebSearchUrl.setText(webSearchUrl);
         etWebSearchApiKey.setText(webSearchApiKey);
+        if (switchBraveBoost != null) switchBraveBoost.setChecked(braveBoostEnabled);
         if (groupFloatDisplay != null) {
             groupFloatDisplay.check(FLOAT_DISPLAY_MODE_ICON.equals(floatDisplayMode)
                     ? R.id.radioFloatIcon
@@ -3883,27 +3890,46 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             JSONArray results = web != null ? web.optJSONArray("results") : null;
             if (results == null || results.length() == 0) return null;
 
+            // ブーストモード時は URL 先の本文を取得（上位5件のみ）
+            int limit = braveBoostEnabled ? Math.min(results.length(), 5) : Math.min(results.length(), 8);
+
             StringBuilder extracted = new StringBuilder();
-            int limit = Math.min(results.length(), 8);
             for (int i = 0; i < limit; i++) {
                 JSONObject item = results.optJSONObject(i);
                 if (item == null) continue;
                 String title = item.optString("title", "").trim();
                 String description = item.optString("description", "").trim();
                 String resultUrl = item.optString("url", "").trim();
-                JSONArray snippets = item.optJSONArray("extra_snippets");
 
                 if (title.isEmpty() && description.isEmpty() && resultUrl.isEmpty()) continue;
                 if (extracted.length() > 0) extracted.append("\n\n");
                 extracted.append("[").append(i + 1).append("]");
                 if (!title.isEmpty()) extracted.append(" ").append(title);
-                if (!description.isEmpty()) extracted.append("\n").append(description);
-                if (!resultUrl.isEmpty()) extracted.append("\n").append(resultUrl);
-                if (snippets != null) {
-                    for (int j = 0; j < snippets.length() && j < 2; j++) {
-                        String snippet = snippets.optString(j, "").trim();
-                        if (!snippet.isEmpty()) {
-                            extracted.append("\n").append(snippet);
+                extracted.append("\n");
+                if (!resultUrl.isEmpty()) extracted.append(resultUrl).append("\n");
+
+                if (braveBoostEnabled && !resultUrl.isEmpty()) {
+                    String pageText = fetchUrlContent(resultUrl, 1500);
+                    if (pageText != null) {
+                        extracted.append(pageText);
+                    } else {
+                        // 取得失敗時はスニペットにフォールバック
+                        if (!description.isEmpty()) extracted.append(description);
+                        JSONArray snippets = item.optJSONArray("extra_snippets");
+                        if (snippets != null) {
+                            for (int j = 0; j < snippets.length() && j < 2; j++) {
+                                String snippet = snippets.optString(j, "").trim();
+                                if (!snippet.isEmpty()) extracted.append("\n").append(snippet);
+                            }
+                        }
+                    }
+                } else {
+                    if (!description.isEmpty()) extracted.append(description);
+                    JSONArray snippets = item.optJSONArray("extra_snippets");
+                    if (snippets != null) {
+                        for (int j = 0; j < snippets.length() && j < 2; j++) {
+                            String snippet = snippets.optString(j, "").trim();
+                            if (!snippet.isEmpty()) extracted.append("\n").append(snippet);
                         }
                     }
                 }
@@ -3919,6 +3945,48 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             Log.e(TAG, "callBraveWebSearchApi error", e);
             return null;
         }
+    }
+
+    private String fetchUrlContent(String url, int maxChars) {
+        try {
+            okhttp3.OkHttpClient fetchClient = client.newBuilder()
+                    .connectTimeout(5, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(8, java.util.concurrent.TimeUnit.SECONDS)
+                    .build();
+            Request req = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("User-Agent", "Mozilla/5.0 (Android) AppleWebKit/537.36")
+                    .addHeader("Accept", "text/html,application/xhtml+xml")
+                    .build();
+            try (Response resp = fetchClient.newCall(req).execute()) {
+                if (!resp.isSuccessful()) return null;
+                String contentType = resp.header("Content-Type", "");
+                if (!contentType.contains("text/html") && !contentType.contains("text/plain")
+                        && !contentType.contains("application/xhtml")) return null;
+                String html = resp.body() != null ? resp.body().string() : "";
+                String text = stripHtml(html);
+                if (text.isEmpty()) return null;
+                return text.length() > maxChars ? text.substring(0, maxChars) : text;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "fetchUrlContent failed: " + url + " - " + e.getMessage());
+            return null;
+        }
+    }
+
+    private String stripHtml(String html) {
+        return html
+                .replaceAll("(?is)<script[^>]*>.*?</script>", " ")
+                .replaceAll("(?is)<style[^>]*>.*?</style>", " ")
+                .replaceAll("(?is)<!--.*?-->", " ")
+                .replaceAll("<[^>]+>", " ")
+                .replace("&nbsp;", " ").replace("&amp;", "&")
+                .replace("&lt;", "<").replace("&gt;", ">")
+                .replace("&quot;", "\"").replace("&#39;", "'")
+                .replaceAll("&#\\d+;", "")
+                .replaceAll("\\s{2,}", " ")
+                .trim();
     }
 
     /** Recursively extract all string values from JSON */
