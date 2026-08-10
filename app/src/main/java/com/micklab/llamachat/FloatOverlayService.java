@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -175,6 +176,9 @@ public class FloatOverlayService extends Service {
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
     private boolean braveBoostEnabled = false;
+    private int wikiArticleLimit = 2;
+    private int braveResultCount = 8;
+    private int searchTextLength = 1500;
     private String webSearchMode = "WIKIPEDIA";
     private String embeddingModel = "default";
     private String expertModel = "default";
@@ -1178,7 +1182,7 @@ public class FloatOverlayService extends Service {
 
     private String callWebSearchApi(String keywords) {
         if ("WIKIPEDIA".equals(webSearchMode)) {
-            return WikipediaSearchHelper.search(client, keywords);
+            return WikipediaSearchHelper.search(client, keywords, wikiArticleLimit, searchTextLength);
         }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);
@@ -1221,7 +1225,7 @@ public class FloatOverlayService extends Service {
 
     private String callBraveWebSearchApi(String keywords) {
         try {
-            String url = webSearchUrl + "?q=" + java.net.URLEncoder.encode(keywords, "UTF-8") + "&count=8";
+            String url = webSearchUrl + "?q=" + java.net.URLEncoder.encode(keywords, "UTF-8") + "&count=" + braveResultCount;
             Request.Builder reqBuilder = new Request.Builder()
                     .url(url)
                     .get()
@@ -1238,7 +1242,7 @@ public class FloatOverlayService extends Service {
             JSONArray results = web != null ? web.optJSONArray("results") : null;
             if (results == null || results.length() == 0) return null;
 
-            int limit = Math.min(results.length(), 8);
+            int limit = Math.min(results.length(), braveResultCount);
             StringBuilder extracted = new StringBuilder();
             for (int i = 0; i < limit; i++) {
                 JSONObject item = results.optJSONObject(i);
@@ -1254,7 +1258,7 @@ public class FloatOverlayService extends Service {
                 if (!resultUrl.isEmpty()) extracted.append(resultUrl).append("\n");
 
                 if (braveBoostEnabled && !resultUrl.isEmpty()) {
-                    String pageText = fetchUrlContent(resultUrl, 1500);
+                    String pageText = fetchUrlContent(resultUrl, searchTextLength);
                     if (pageText != null) {
                         extracted.append(pageText);
                     } else {
@@ -1968,6 +1972,12 @@ public class FloatOverlayService extends Service {
                 result.append("The user's name is ").append(trimmedUserName).append(".");
             }
         }
+        LocalDateTime now = LocalDateTime.now();
+        String dow = now.getDayOfWeek().getDisplayName(TextStyle.SHORT, isJapanese ? Locale.JAPAN : Locale.US);
+        String stamp = String.format(Locale.US, "%04d-%02d-%02d (%s) %02d:%02d",
+                now.getYear(), now.getMonthValue(), now.getDayOfMonth(), dow, now.getHour(), now.getMinute());
+        if (result.length() > 0) result.append("\n");
+        result.append(isJapanese ? "現在日時: " : "Current datetime: ").append(stamp);
         return result.toString();
     }
 
@@ -2027,6 +2037,12 @@ public class FloatOverlayService extends Service {
         webSearchUrl = settings.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = settings.optString("webSearchApiKey", webSearchApiKey);
         braveBoostEnabled = settings.optBoolean("braveBoostEnabled", braveBoostEnabled);
+        wikiArticleLimit = settings.optInt("wikiArticleLimit", wikiArticleLimit);
+        braveResultCount = settings.optInt("braveResultCount", braveResultCount);
+        searchTextLength = settings.optInt("searchTextLength", searchTextLength);
+        if (wikiArticleLimit < 1) wikiArticleLimit = 1;
+        if (braveResultCount < 1) braveResultCount = 1;
+        if (searchTextLength < 100) searchTextLength = 100;
         String savedMode = settings.optString("webSearchMode", "WIKIPEDIA");
         webSearchMode = "DDG".equals(savedMode) ? "WIKIPEDIA" : savedMode;
         expertModel = settings.optString("expertModel", settings.optString("webSearchModel", expertModel));

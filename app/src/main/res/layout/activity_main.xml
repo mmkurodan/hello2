@@ -881,10 +881,34 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/tvLabelWikiArticleLimit"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Wikipedia: max articles per language" android:layout_marginTop="8dp"/>
+                    <EditText android:id="@+id/etWikiArticleLimit"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="number" android:singleLine="true" android:hint="2"/>
+
+                    <TextView
+                        android:id="@+id/tvLabelBraveResultCount"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Web API: result count" android:layout_marginTop="4dp"/>
+                    <EditText android:id="@+id/etBraveResultCount"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="number" android:singleLine="true" android:hint="8"/>
+
+                    <TextView
+                        android:id="@+id/tvLabelSearchTextLength"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Max text per result (chars)" android:layout_marginTop="4dp"/>
+                    <EditText android:id="@+id/etSearchTextLength"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="number" android:singleLine="true" android:hint="1500"/>
+
                      <TextView
                          android:id="@+id/tvLabelWebSearchModel"
                          android:layout_width="wrap_content" android:layout_height="wrap_content"
-                         android:text="Expert Model" android:layout_marginTop="4dp"/>
+                         android:text="Expert Model" android:layout_marginTop="8dp"/>
                      <Spinner android:id="@+id/etWebSearchModel"
                          android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
@@ -994,13 +1018,6 @@
                          android:text="Debug Mode" android:layout_marginTop="16dp"/>
 
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btnPromptEditor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Open Prompt Editor" />
 
                 </LinearLayout>
             </ScrollView>

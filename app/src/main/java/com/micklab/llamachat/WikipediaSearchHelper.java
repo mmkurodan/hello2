@@ -24,7 +24,7 @@ public final class WikipediaSearchHelper {
     private WikipediaSearchHelper() {}
 
     /**
-     * ユーザー発話から検索キーワードを LLM で抽出する（翻訳なし）。
+     * ユーザー発話から Wikipedia 検索用の主要キーワードを 1 つ LLM で抽出する（翻訳なし）。
      * 失敗時は原文をそのまま返す。
      */
     public static String extractKeywords(OkHttpClient client, String baseUrl,
@@ -38,14 +38,14 @@ public final class WikipediaSearchHelper {
             messages.put(new JSONObject()
                     .put("role", "system")
                     .put("content",
-                            "ユーザーのメッセージから検索エンジン向けのキーワードを抽出してください。\n"
+                            "ユーザーのメッセージから、Wikipediaで検索するのに最適な1つのキーワードを抽出してください。\n"
                             + "ルール:\n"
-                            + "- 固有名詞・専門用語を個別に分解してスペース区切りで並べる\n"
-                            + "- 「AとBの違い」→「A B 違い」のように比較対象を個別キーワードに分解する\n"
+                            + "- 最も重要な固有名詞・専門用語を1語（または自然な複合名詞）だけ選ぶ\n"
+                            + "- 比較や対比があれば（例: 「AとBの違い」）、主題として最も重要な1語を選ぶ\n"
                             + "- 「〜を教えて」「〜を調べて」「〜を検索して」などの指示語は含めない\n"
                             + "- 翻訳しない（元の言語のまま）\n"
                             + "出力形式（どちらか一方のみ）:\n"
-                            + "SEARCH: <キーワード1 キーワード2 ...>\n"
+                            + "SEARCH: <キーワード1語>\n"
                             + "NONE\n"
                             + "説明・余計な出力は不要。"));
             messages.put(new JSONObject()
@@ -80,16 +80,21 @@ public final class WikipediaSearchHelper {
     /**
      * クエリ言語を優先しながら日本語・英語 Wikipedia を検索して結果を統合する。
      * タイトルにクエリが含まれる記事は先頭に配置する。
+     *
+     * @param articleLimit  キーワード検索で追加取得する最大記事数（言語ごと）
+     * @param extractLength  記事 extract の最大文字数
      */
-    public static String search(OkHttpClient client, String query) {
+    public static String search(OkHttpClient client, String query, int articleLimit, int extractLength) {
         if (client == null || TextUtils.isEmpty(query)) return null;
+        if (articleLimit < 1) articleLimit = 1;
+        if (extractLength < 100) extractLength = 100;
         try {
             boolean cjk = hasCjkChars(query);
             String primary = cjk ? "ja" : "en";
             String secondary = cjk ? "en" : "ja";
 
-            String primaryPart = searchWikipedia(client, primary, query);
-            String secondaryPart = searchWikipedia(client, secondary, query);
+            String primaryPart = searchWikipedia(client, primary, query, articleLimit, extractLength);
+            String secondaryPart = searchWikipedia(client, secondary, query, articleLimit, extractLength);
 
             StringBuilder combined = new StringBuilder();
             if (primaryPart != null) combined.append(primaryPart);
@@ -106,7 +111,8 @@ public final class WikipediaSearchHelper {
     }
 
     // タイトル直接マッチを先頭に、キーワード検索結果をその後に並べる
-    private static String searchWikipedia(OkHttpClient client, String lang, String query) {
+    private static String searchWikipedia(OkHttpClient client, String lang, String query,
+                                           int articleLimit, int extractLength) {
         try {
             StringBuilder sb = new StringBuilder();
             LinkedHashSet<String> seen = new LinkedHashSet<>();
@@ -118,7 +124,7 @@ public final class WikipediaSearchHelper {
             if (exactSummary != null) {
                 String canonicalTitle = exactSummary.optString("title", query).trim();
                 String extract = exactSummary.optString("extract", "").trim();
-                if (extract.length() > 1500) extract = extract.substring(0, 1500);
+                if (extract.length() > extractLength) extract = extract.substring(0, extractLength);
                 seen.add(canonicalTitle);
                 appendArticle(sb, lang, canonicalTitle, null, extract);
             }
@@ -127,10 +133,11 @@ public final class WikipediaSearchHelper {
             // タイトルマッチがある場合はそれが最も関連性が高いため、
             // キーワード検索で返る周辺記事（Seiko等）の混入を防ぐ
             if (!titleMatched) {
+                int srlimit = Math.min(articleLimit + 1, 10);
                 String url = "https://" + lang + ".wikipedia.org/w/api.php"
                         + "?action=query&list=search&srsearch="
                         + java.net.URLEncoder.encode(query.trim(), "UTF-8")
-                        + "&srlimit=3&srprop=timestamp&utf8=1&format=json";
+                        + "&srlimit=" + srlimit + "&srprop=timestamp&utf8=1&format=json";
                 Request request = new Request.Builder()
                         .url(url)
                         .addHeader("User-Agent", "llamachat/1.0 (Android)")
@@ -144,7 +151,7 @@ public final class WikipediaSearchHelper {
                         JSONObject json = new JSONObject(body);
                         JSONArray hits = json.getJSONObject("query").getJSONArray("search");
                         int added = 0;
-                        for (int i = 0; i < hits.length() && added < 2; i++) {
+                        for (int i = 0; i < hits.length() && added < articleLimit; i++) {
                             JSONObject hit = hits.getJSONObject(i);
                             String title = hit.optString("title", "").trim();
                             if (title.isEmpty() || seen.contains(title)) continue;
@@ -156,7 +163,7 @@ public final class WikipediaSearchHelper {
                             String ts = hit.optString("timestamp", "");
                             String updated = ts.length() >= 10 ? ts.substring(0, 10) : ts;
                             String extract = summary.optString("extract", "").trim();
-                            if (extract.length() > 1500) extract = extract.substring(0, 1500);
+                            if (extract.length() > extractLength) extract = extract.substring(0, extractLength);
                             appendArticle(sb, lang, canonicalTitle, updated, extract);
                             added++;
                         }

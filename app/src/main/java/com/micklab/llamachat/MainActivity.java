@@ -65,6 +65,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -177,7 +179,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private Button btnPickChatterC0, btnPickChatterC1, btnPickChatterC2, btnPickChatterC3;
     private Button btnClearChatterC0, btnClearChatterC1, btnClearChatterC2, btnClearChatterC3;
     private Button btnResetLogs, btnProfileSave, btnProfileLoad, btnProfileDelete, btnLaunchLlmTester;
-    private Button btnHelp, btnPrivacy, btnRights, btnPromptEditor;
+    private Button btnHelp, btnPrivacy, btnRights;
     private TextView tvC0Filename, tvC1Filename, tvC2Filename, tvC3Filename;
     private TextView tvChatterC0Filename, tvChatterC1Filename, tvChatterC2Filename, tvChatterC3Filename;
     private ScrollView scrollView;
@@ -197,6 +199,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private TextView tvLabelLanguage, tvLabelConfigProfile, tvLabelOllamaUrl, tvLabelUserName, tvOllamaStatus;
     private TextView tvLabelMode, tvLabelFloatDisplay, tvFloatModeUnavailable, tvLabelHistoryLimit, tvLabelChatterInterval, tvLabelNumCtx, tvLabelNumPredict;
     private TextView tvLabelWebSearchUrl, tvLabelWebSearchApiKey, tvLabelWebSearchModel, tvLabelEmbeddingModel, tvLabelStructuredOutput, tvLabelRoutingMode;
+    private TextView tvLabelWikiArticleLimit, tvLabelBraveResultCount, tvLabelSearchTextLength;
     private TextView tvLabelNotifications, tvLabelMorningBriefingTime, tvLabelNewsBriefingTimes;
     private TextView tvBaseSettingsTitle, tvBaseNameLabel, tvBaseModelLabel;
     private TextView tvBaseSpeechLangLabel, tvBaseSpeechRateLabel, tvBaseSpeechPitchLabel, tvBaseSystemPromptLabel, tvBaseAvatarTitle;
@@ -214,6 +217,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private EditText etBaseName, etChatterName;
     private EditText etHistoryLimit, etAutoChatterSeconds, etNumCtx, etNumPredict;
     private EditText etWebSearchUrl, etWebSearchApiKey, etProfileName, etUserName;
+    private EditText etWikiArticleLimit, etBraveResultCount, etSearchTextLength;
     private EditText etMorningBriefingTime, etNewsBriefingTimes;
     private EditText etSemanticThreshold, etSemanticRelMargin;
     private ImageView ivAvatarBackground;
@@ -252,6 +256,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private String webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
     private String webSearchApiKey = "";
     private boolean braveBoostEnabled = false;
+    private int wikiArticleLimit = 2;
+    private int braveResultCount = 8;
+    private int searchTextLength = 1500;
     private String expertModel = "default";
     private String embeddingModel = "default";
     private String structuredOutputMode = "OFF"; // OFF / SCHEMA / GBNF（StructuredOutput.Mode）
@@ -520,6 +527,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・Requires Web Search to be enabled and Float Overlay to be running.\n\n" +
             "■ Expert Settings\n" +
             "・Web Search: Enable to use the configured search API.\n" +
+            "・Wikipedia mode uses a single primary keyword extracted by the LLM.\n" +
+            "・Wikipedia: max articles per language — how many articles to fetch (default: 2).\n" +
+            "・Web API: result count — how many results to fetch (default: 8).\n" +
+            "・Max text per result — character limit for each article or URL content (default: 1500).\n" +
             "・Expert Model is selected from /api/tags list (default: default).\n" +
             "・Expert Routing controls how user intent is detected:\n" +
             "  - Keyword Only: fast keyword matching.\n" +
@@ -536,7 +547,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・You can set different images for Base and Chatter Partner.\n" +
             "・Press Clear to reset to default.\n\n" +
             "■ Other\n" +
-            "・Settings, templates, popup preferences, and images are stored locally on the device.";
+            "・Settings, templates, popup preferences, and images are stored locally on the device.\n" +
+            "・The current date and time are automatically included in every AI request.";
 
     private static final String HELP_TEXT_JA =
             "Dual AI Chat — マニュアル\n\n" +
@@ -592,6 +604,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・Web SearchとフロートON時に動作します。\n\n" +
             "■ エキスパート設定\n" +
             "・Web Search: 有効にすると検索APIを使います。\n" +
+            "・WikipediaモードはLLMが抽出した1つの主要キーワードで検索します。\n" +
+            "・Wikipedia: 言語ごとの最大記事数 — 取得する記事数（初期値: 2）。\n" +
+            "・Web API: 取得件数 — 取得する検索結果数（初期値: 8）。\n" +
+            "・1件あたりの最大文字数 — 記事・URL本文の文字数上限（初期値: 1500）。\n" +
             "・エキスパートモデルは/api/tagsの一覧から選択できます（初期値: default）。\n" +
             "・エキスパートルーティングでユーザ意図の検出方法を選べます：\n" +
             "  - キーワードのみ: 高速なキーワードマッチ。\n" +
@@ -608,7 +624,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・Baseとおしゃべり相手で別々に設定できます。\n" +
             "・Clearでデフォルトに戻します。\n\n" +
             "■ その他\n" +
-            "・設定、テンプレート、ポップアップ表示設定、画像は端末内に保存されます。";
+            "・設定、テンプレート、ポップアップ表示設定、画像は端末内に保存されます。\n" +
+            "・現在の日時はすべてのAIリクエストに自動的に含まれます。";
 
     private static final String PRIVACY_TEXT_EN =
             "Dual AI Chat — Privacy Policy\n\n" +
@@ -792,7 +809,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         btnHelp = findViewById(R.id.btnHelp);
         btnPrivacy = findViewById(R.id.btnPrivacy);
         btnRights = findViewById(R.id.btnRights);
-        btnPromptEditor = findViewById(R.id.btnPromptEditor);
+        etWikiArticleLimit = findViewById(R.id.etWikiArticleLimit);
+        etBraveResultCount = findViewById(R.id.etBraveResultCount);
+        etSearchTextLength = findViewById(R.id.etSearchTextLength);
         tvC0Filename = findViewById(R.id.tvC0Filename);
         tvC1Filename = findViewById(R.id.tvC1Filename);
         tvC2Filename = findViewById(R.id.tvC2Filename);
@@ -919,6 +938,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         tvLabelWebSearchUrl = findViewById(R.id.tvLabelWebSearchUrl);
         tvLabelWebSearchApiKey = findViewById(R.id.tvLabelWebSearchApiKey);
         tvLabelWebSearchModel = findViewById(R.id.tvLabelWebSearchModel);
+        tvLabelWikiArticleLimit = findViewById(R.id.tvLabelWikiArticleLimit);
+        tvLabelBraveResultCount = findViewById(R.id.tvLabelBraveResultCount);
+        tvLabelSearchTextLength = findViewById(R.id.tvLabelSearchTextLength);
         tvLabelEmbeddingModel = findViewById(R.id.tvLabelEmbeddingModel);
         tvLabelStructuredOutput = findViewById(R.id.tvLabelStructuredOutput);
         tvLabelRoutingMode = findViewById(R.id.tvLabelRoutingMode);
@@ -1028,15 +1050,6 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 btnSettings.setContentDescription("Save settings");
             }
         });
-        if (tvSettingsTitle != null) {
-            tvSettingsTitle.setOnLongClickListener(v -> {
-                launchPromptEditor();
-                return true;
-            });
-        }
-        if (btnPromptEditor != null) {
-            btnPromptEditor.setOnClickListener(v -> launchPromptEditor());
-        }
         if (btnFloatOverlay != null) {
             btnFloatOverlay.setOnClickListener(v -> enterFloatingOverlayMode());
         }
@@ -1218,12 +1231,6 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 t("Rights", "権利情報"),
                 "ja".equals(appLanguage) ? RIGHTS_TEXT_JA : RIGHTS_TEXT_EN));
         updateOverlayEntryUi();
-    }
-
-    private void launchPromptEditor() {
-        Intent intent = new Intent(this, PromptEditorActivity.class);
-        intent.putExtra("appLanguage", appLanguage);
-        startActivity(intent);
     }
 
     private void focusMainLayerAfterSettings() {
@@ -1454,6 +1461,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (switchBraveBoost != null) switchBraveBoost.setText(t("Boost Mode (fetch URL content)", "ブーストモード（URL本文を取得）"));
         if (tvLabelWebSearchModel != null) tvLabelWebSearchModel.setText(t("Expert Model", "エキスパートモデル"));
         if (tvLabelEmbeddingModel != null) tvLabelEmbeddingModel.setText(t("Embedding Model", "埋め込みモデル"));
+        if (tvLabelWikiArticleLimit != null) tvLabelWikiArticleLimit.setText(t("Wikipedia: max articles per language", "Wikipedia: 言語ごとの最大記事数"));
+        if (tvLabelBraveResultCount != null) tvLabelBraveResultCount.setText(t("Web API: result count", "Web API: 取得件数"));
+        if (tvLabelSearchTextLength != null) tvLabelSearchTextLength.setText(t("Max text per result (chars)", "1件あたりの最大文字数"));
         if (tvLabelStructuredOutput != null) tvLabelStructuredOutput.setText(t("Structured Output", "構造化出力"));
         if (tvBaseSettingsTitle != null) tvBaseSettingsTitle.setText(t("Base Settings", "Baseの設定"));
         if (tvBaseNameLabel != null) tvBaseNameLabel.setText(t("Name", "名前"));
@@ -1479,7 +1489,6 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (btnHelp != null) btnHelp.setText(t("Help", "ヘルプ"));
         if (btnPrivacy != null) btnPrivacy.setText(t("Privacy", "プライバシー"));
         if (btnRights != null) btnRights.setText(t("Rights", "権利情報"));
-        if (btnPromptEditor != null) btnPromptEditor.setText(t("Open Prompt Editor", "プロンプト編集を開く"));
         if (switchStreaming != null) switchStreaming.setText("Streaming");
         if (switchTts != null) switchTts.setText(t("Text-to-Speech", "音声読み上げ"));
         if (switchVoiceInput != null) switchVoiceInput.setText(t("Voice Input (on empty send)", "音声入力（空送信）"));
@@ -2369,6 +2378,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         s.put("webSearchUrl", webSearchUrl);
         s.put("webSearchApiKey", webSearchApiKey);
         s.put("braveBoostEnabled", braveBoostEnabled);
+        s.put("wikiArticleLimit", wikiArticleLimit);
+        s.put("braveResultCount", braveResultCount);
+        s.put("searchTextLength", searchTextLength);
         s.put("expertModel", expertModel);
         s.put("embeddingModel", embeddingModel);
         s.put("routingMode", routingMode);
@@ -2426,6 +2438,12 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         webSearchUrl = s.optString("webSearchUrl", webSearchUrl);
         webSearchApiKey = s.optString("webSearchApiKey", webSearchApiKey);
         braveBoostEnabled = s.optBoolean("braveBoostEnabled", braveBoostEnabled);
+        wikiArticleLimit = s.optInt("wikiArticleLimit", wikiArticleLimit);
+        braveResultCount = s.optInt("braveResultCount", braveResultCount);
+        searchTextLength = s.optInt("searchTextLength", searchTextLength);
+        if (wikiArticleLimit < 1) wikiArticleLimit = 1;
+        if (braveResultCount < 1) braveResultCount = 1;
+        if (searchTextLength < 100) searchTextLength = 100;
         expertModel = s.optString("expertModel", s.optString("webSearchModel", expertModel));
         embeddingModel = s.optString("embeddingModel", embeddingModel);
         semanticThreshold = (float) s.optDouble("semanticThreshold", semanticThreshold);
@@ -2789,6 +2807,21 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (webSearchUrl.isEmpty()) webSearchUrl = "https://api.search.brave.com/res/v1/web/search";
         webSearchApiKey = etWebSearchApiKey.getText().toString().trim();
         if (switchBraveBoost != null) braveBoostEnabled = switchBraveBoost.isChecked();
+        if (etWikiArticleLimit != null) {
+            try { wikiArticleLimit = Integer.parseInt(etWikiArticleLimit.getText().toString().trim()); }
+            catch (NumberFormatException ignored) {}
+            if (wikiArticleLimit < 1) wikiArticleLimit = 1;
+        }
+        if (etBraveResultCount != null) {
+            try { braveResultCount = Integer.parseInt(etBraveResultCount.getText().toString().trim()); }
+            catch (NumberFormatException ignored) {}
+            if (braveResultCount < 1) braveResultCount = 1;
+        }
+        if (etSearchTextLength != null) {
+            try { searchTextLength = Integer.parseInt(etSearchTextLength.getText().toString().trim()); }
+            catch (NumberFormatException ignored) {}
+            if (searchTextLength < 100) searchTextLength = 100;
+        }
         expertModel = spinnerWebSearchModel.getSelectedItem() != null
                 ? spinnerWebSearchModel.getSelectedItem().toString().trim() : "";
         if (expertModel.isEmpty()) expertModel = "default";
@@ -2899,6 +2932,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         etWebSearchUrl.setText(webSearchUrl);
         etWebSearchApiKey.setText(webSearchApiKey);
         if (switchBraveBoost != null) switchBraveBoost.setChecked(braveBoostEnabled);
+        if (etWikiArticleLimit != null) etWikiArticleLimit.setText(String.valueOf(wikiArticleLimit));
+        if (etBraveResultCount != null) etBraveResultCount.setText(String.valueOf(braveResultCount));
+        if (etSearchTextLength != null) etSearchTextLength.setText(String.valueOf(searchTextLength));
         if (groupFloatDisplay != null) {
             groupFloatDisplay.check(FLOAT_DISPLAY_MODE_ICON.equals(floatDisplayMode)
                     ? R.id.radioFloatIcon
@@ -3310,6 +3346,12 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 result.append("The user's name is ").append(trimmedUserName).append(".");
             }
         }
+        LocalDateTime now = LocalDateTime.now();
+        String dow = now.getDayOfWeek().getDisplayName(TextStyle.SHORT, isJapanese ? Locale.JAPAN : Locale.US);
+        String stamp = String.format(Locale.US, "%04d-%02d-%02d (%s) %02d:%02d",
+                now.getYear(), now.getMonthValue(), now.getDayOfMonth(), dow, now.getHour(), now.getMinute());
+        if (result.length() > 0) result.append("\n");
+        result.append(isJapanese ? "現在日時: " : "Current datetime: ").append(stamp);
         return result.toString();
     }
 
@@ -3796,7 +3838,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     /** Call Web Search API and get structured results (generic) */
     private String callWebSearchApi(String keywords) {
         if (WEB_MODE_WIKIPEDIA.equals(webSearchMode)) {
-            return WikipediaSearchHelper.search(client, keywords);
+            return WikipediaSearchHelper.search(client, keywords, wikiArticleLimit, searchTextLength);
         }
         if (isBraveWebSearchUrl(webSearchUrl)) {
             return callBraveWebSearchApi(keywords);
@@ -3861,7 +3903,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private String callBraveWebSearchApi(String keywords) {
         try {
             String url = webSearchUrl + "?q=" + java.net.URLEncoder.encode(keywords, "UTF-8")
-                    + "&count=8";
+                    + "&count=" + braveResultCount;
             Request.Builder reqBuilder = new Request.Builder()
                     .url(url)
                     .get()
@@ -3890,8 +3932,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             JSONArray results = web != null ? web.optJSONArray("results") : null;
             if (results == null || results.length() == 0) return null;
 
-            // ブーストモード時は URL 先の本文を取得（上位5件のみ）
-            int limit = Math.min(results.length(), 8);
+            int limit = Math.min(results.length(), braveResultCount);
 
             StringBuilder extracted = new StringBuilder();
             for (int i = 0; i < limit; i++) {
@@ -3909,7 +3950,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 if (!resultUrl.isEmpty()) extracted.append(resultUrl).append("\n");
 
                 if (braveBoostEnabled && !resultUrl.isEmpty()) {
-                    String pageText = fetchUrlContent(resultUrl, 1500);
+                    String pageText = fetchUrlContent(resultUrl, searchTextLength);
                     if (pageText != null) {
                         extracted.append(pageText);
                     } else {
