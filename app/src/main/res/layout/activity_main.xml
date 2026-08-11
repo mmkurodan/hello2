@@ -734,6 +734,63 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
+                        <!-- Web Search -->
+                        <Switch android:id="@+id/switchWebSearch"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="Web Search" android:layout_marginTop="8dp"/>
+
+                        <RadioGroup android:id="@+id/radioGroupWebSearchMode"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:layout_marginTop="4dp">
+                            <RadioButton android:id="@+id/radioWebSearchDdg"
+                                android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="DuckDuckGo (Free)" android:checked="true"/>
+                            <RadioButton android:id="@+id/radioWebSearchApi"
+                                android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Web API"/>
+                        </RadioGroup>
+
+                        <LinearLayout android:id="@+id/layoutWebApiConfig"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:visibility="gone">
+                            <TextView android:id="@+id/tvLabelWebSearchUrl"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Web Search API URL" android:layout_marginTop="4dp"/>
+                            <EditText android:id="@+id/etWebSearchUrl"
+                                android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:inputType="textUri" android:singleLine="true"/>
+                            <TextView android:id="@+id/tvLabelWebSearchApiKey"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Web Search API Key" android:layout_marginTop="4dp"/>
+                            <EditText android:id="@+id/etWebSearchApiKey"
+                                android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:inputType="textPassword" android:singleLine="true"/>
+                            <Switch android:id="@+id/switchBraveBoost"
+                                android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:text="Boost Mode (fetch URL content)" android:layout_marginTop="4dp"/>
+                        </LinearLayout>
+
+                        <TextView android:id="@+id/tvLabelWikiArticleLimit"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Wikipedia: max articles per language" android:layout_marginTop="8dp"/>
+                        <EditText android:id="@+id/etWikiArticleLimit"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number" android:singleLine="true" android:hint="2"/>
+                        <TextView android:id="@+id/tvLabelBraveResultCount"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Web API: result count" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etBraveResultCount"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number" android:singleLine="true" android:hint="8"/>
+                        <TextView android:id="@+id/tvLabelSearchTextLength"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Max text per result (chars)" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etSearchTextLength"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number" android:singleLine="true" android:hint="5000"/>
+
                         <!-- Memory Feature -->
                         <TextView
                             android:layout_width="wrap_content"
@@ -812,74 +869,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone">
-
-                    <Switch android:id="@+id/switchWebSearch"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="Web Search" android:layout_marginTop="4dp"/>
-
-                    <RadioGroup android:id="@+id/radioGroupWebSearchMode"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:layout_marginTop="4dp">
-                        <RadioButton android:id="@+id/radioWebSearchDdg"
-                            android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="DuckDuckGo (Free)" android:checked="true"/>
-                        <RadioButton android:id="@+id/radioWebSearchApi"
-                            android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Web API"/>
-                    </RadioGroup>
-
-                    <LinearLayout android:id="@+id/layoutWebApiConfig"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="vertical" android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/tvLabelWebSearchUrl"
-                            android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Web Search API URL" android:layout_marginTop="4dp"/>
-                        <EditText android:id="@+id/etWebSearchUrl"
-                            android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:inputType="textUri" android:singleLine="true"/>
-
-                        <TextView
-                            android:id="@+id/tvLabelWebSearchApiKey"
-                            android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Web Search API Key" android:layout_marginTop="4dp"/>
-                        <EditText android:id="@+id/etWebSearchApiKey"
-                            android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:inputType="textPassword" android:singleLine="true"/>
-
-                        <Switch android:id="@+id/switchBraveBoost"
-                            android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:text="Boost Mode (fetch URL content)"
-                            android:layout_marginTop="4dp"/>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvLabelWikiArticleLimit"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Wikipedia: max articles per language" android:layout_marginTop="8dp"/>
-                    <EditText android:id="@+id/etWikiArticleLimit"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="number" android:singleLine="true" android:hint="2"/>
-
-                    <TextView
-                        android:id="@+id/tvLabelBraveResultCount"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Web API: result count" android:layout_marginTop="4dp"/>
-                    <EditText android:id="@+id/etBraveResultCount"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="number" android:singleLine="true" android:hint="8"/>
-
-                    <TextView
-                        android:id="@+id/tvLabelSearchTextLength"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Max text per result (chars)" android:layout_marginTop="4dp"/>
-                    <EditText android:id="@+id/etSearchTextLength"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="number" android:singleLine="true" android:hint="5000"/>
 
                      <TextView
                          android:id="@+id/tvLabelWebSearchModel"

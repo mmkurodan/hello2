@@ -3096,6 +3096,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                     autoChatterEnabled ? View.GONE
                     : (sectionSecretaryExpanded ? View.VISIBLE : View.GONE));
         }
+        if (tvLabelFloatDisplay != null) tvLabelFloatDisplay.setVisibility(autoChatterEnabled ? View.GONE : View.VISIBLE);
+        if (groupFloatDisplay != null) groupFloatDisplay.setVisibility(autoChatterEnabled ? View.GONE : View.VISIBLE);
         updateOverlayEntryUi();
     }
 
@@ -3500,7 +3502,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         List<JSONObject> trimmed = new ArrayList<>();
         if (history == null || history.isEmpty()) return trimmed;
         int keepStart = "system".equals(history.get(0).optString("role")) ? 1 : 0;
-        int maxMessages = Math.max(MIN_RETAINED_HISTORY_MESSAGES, historyLimit * 4);
+        // historyLimit を超えたメッセージを圧縮対象とする（旧: historyLimit * 4 で殆どトリガーされなかった）
+        int maxMessages = Math.max(2, historyLimit);
         while (history.size() - keepStart > maxMessages) {
             JSONObject removed = history.get(keepStart);
             if (!"system".equals(removed.optString("role"))) trimmed.add(removed);
