@@ -1922,6 +1922,11 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                     lp.topMargin = top + dpToPx(4);
                     btnFloatOverlay.setLayoutParams(lp);
                 }
+                if (btnResetInline != null) {
+                    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) btnResetInline.getLayoutParams();
+                    lp.topMargin = top + dpToPx(4);
+                    btnResetInline.setLayoutParams(lp);
+                }
                 return insets;
             }
         });
