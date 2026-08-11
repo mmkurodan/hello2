@@ -238,8 +238,8 @@ public final class WikipediaSearchHelper {
         sb.append(articleUrl).append("\n");
     }
 
-    // MediaWiki Action API で記事全文をプレーンテキストで取得する。
-    // exchars でサーバ側文字数を制限し、explaintext でテキスト変換する。
+    // MediaWiki Action API で記事全文をプレーンテキストで取得し、ローカルで文字数を制限する。
+    // exchars はサーバ側で ~1200 文字に制限されるため使用せず、全文取得後にローカルで truncate する。
     // セクション見出しは "== 見出し ==" 形式で残り、LLM にとって有用な構造情報となる。
     private static String fetchFullExtract(OkHttpClient client, String lang,
                                             String title, int extractLength) {
@@ -247,23 +247,28 @@ public final class WikipediaSearchHelper {
             String url = "https://" + lang + ".wikipedia.org/w/api.php"
                     + "?action=query&prop=extracts&titles="
                     + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8")
-                    + "&exchars=" + extractLength
                     + "&explaintext=1&redirects=1&utf8=1&format=json";
+            okhttp3.OkHttpClient fetchClient = client.newBuilder()
+                    .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+                    .build();
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("User-Agent", "llamachat/1.0 (Android)")
                     .addHeader("Accept", "application/json")
                     .get()
                     .build();
-            try (Response resp = client.newCall(request).execute()) {
+            try (Response resp = fetchClient.newCall(request).execute()) {
                 if (!resp.isSuccessful()) return null;
                 String body = resp.body() != null ? resp.body().string() : "";
                 JSONObject json = new JSONObject(body);
                 JSONObject pages = json.getJSONObject("query").getJSONObject("pages");
-                String pageId = pages.keys().next();
+                java.util.Iterator<String> keys = pages.keys();
+                if (!keys.hasNext()) return null;
+                String pageId = keys.next();
                 if ("-1".equals(pageId)) return null;
                 String extract = pages.getJSONObject(pageId).optString("extract", "").trim();
-                return extract.isEmpty() ? null : extract;
+                if (extract.isEmpty()) return null;
+                return extract.length() > extractLength ? extract.substring(0, extractLength) : extract;
             }
         } catch (Exception e) {
             return null;
