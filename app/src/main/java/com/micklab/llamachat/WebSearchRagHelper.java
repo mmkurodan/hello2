@@ -3,9 +3,11 @@ package com.micklab.llamachat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -22,8 +24,8 @@ import okhttp3.Response;
  * 関連性の低い情報のノイズを削減し応答品質を向上させる。</p>
  */
 public final class WebSearchRagHelper {
-    // Wikipedia セクション分割後は多数のチャンクが生成される
-    private static final int MAX_CHUNKS_TO_EMBED = 40;
+    // クイック事前絞り込み後に embedding へ渡す最大チャンク数
+    private static final int MAX_CHUNKS_TO_EMBED = 20;
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
 
     private final EmbeddingClient embeddingClient;
@@ -61,13 +63,15 @@ public final class WebSearchRagHelper {
             List<String> chunks = splitIntoChunks(rawSearchResults);
             if (chunks.size() <= topKChunks) return rawSearchResults;
 
-            int batchSize = Math.min(chunks.size(), MAX_CHUNKS_TO_EMBED);
-            List<String> batchChunks = chunks.subList(0, batchSize);
+            // ① 速度最適化: キーワード頻度と時制スコアで事前絞り込み → embedding 対象を削減
+            List<String> candidates = quickPrefilter(chunks, userQuery, MAX_CHUNKS_TO_EMBED);
 
-            // クエリと全チャンクを1回のリクエストにまとめて埋め込む
-            List<String> allTexts = new ArrayList<>(batchSize + 1);
-            allTexts.add(userQuery);
-            allTexts.addAll(batchChunks);
+            // ② 時制認識: クエリに現在年月を付加して「今年」「最近」等が正しく解決されるよう補助
+            String embeddingQuery = augmentWithDate(userQuery);
+
+            List<String> allTexts = new ArrayList<>(candidates.size() + 1);
+            allTexts.add(embeddingQuery);
+            allTexts.addAll(candidates);
             List<float[]> allVecs = embeddingClient.embedBatch(allTexts);
             if (allVecs.size() < 2) return rawSearchResults;
 
@@ -78,7 +82,7 @@ public final class WebSearchRagHelper {
             for (int i = 0; i < chunkVecs.size(); i++) {
                 float sim = EmbeddingClient.cosineSimilarity(
                         queryVec, EmbeddingClient.l2Normalize(chunkVecs.get(i)));
-                scored.add(new ScoredChunk(batchChunks.get(i), sim));
+                scored.add(new ScoredChunk(candidates.get(i), sim));
             }
             Collections.sort(scored, (a, b) -> Float.compare(b.score, a.score));
 
@@ -87,7 +91,8 @@ public final class WebSearchRagHelper {
             int count = 0;
             for (ScoredChunk sc : scored) {
                 if (count >= topKChunks || budget <= 0) break;
-                int tokens = countTokensSafe(sc.chunk);
+                // ③ 速度最適化: HTTP tokenize API を呼ばず文字数推定でバジェット管理
+                int tokens = estimateTokens(sc.chunk);
                 if (budget - tokens < 0 && count > 0) break;
                 if (result.length() > "SEARCH_RESULTS:\n".length()) result.append("\n\n");
                 result.append(sc.chunk);
@@ -98,6 +103,60 @@ public final class WebSearchRagHelper {
         } catch (Exception e) {
             return rawSearchResults;
         }
+    }
+
+    /**
+     * クエリに現在の年月を付加する。
+     * 「今年」「最近」等の時制表現が embedding でも正しく解釈されるよう補助する。
+     */
+    private static String augmentWithDate(String query) {
+        LocalDate today = LocalDate.now();
+        return query + " " + today.getYear() + "年" + today.getMonthValue() + "月";
+    }
+
+    /**
+     * embedding 前の高速事前絞り込み。
+     * クエリトークンの出現頻度でスコアリングし、時制クエリ（「今年」等）では
+     * 現在年を含むセクション見出しを大幅ブーストして maxChunks 件に絞る。
+     */
+    private static List<String> quickPrefilter(List<String> chunks, String query, int maxChunks) {
+        if (chunks.size() <= maxChunks) return chunks;
+
+        String lowerQuery = query.toLowerCase(Locale.ROOT);
+        String[] tokens = lowerQuery.split("[\\s　、。，．！？!?,]+");
+
+        int currentYear = LocalDate.now().getYear();
+        boolean temporalQuery = lowerQuery.contains("今年") || lowerQuery.contains("今月")
+                || lowerQuery.contains("最近") || lowerQuery.contains("現在")
+                || lowerQuery.contains("this year") || lowerQuery.contains("current")
+                || lowerQuery.contains("latest") || lowerQuery.contains("recent");
+
+        List<ScoredChunk> scored = new ArrayList<>(chunks.size());
+        for (String chunk : chunks) {
+            String lowerChunk = chunk.toLowerCase(Locale.ROOT);
+            float score = 0;
+            for (String token : tokens) {
+                if (token.length() < 2) continue;
+                int idx = 0;
+                while ((idx = lowerChunk.indexOf(token, idx)) >= 0) {
+                    score++;
+                    idx += token.length();
+                }
+            }
+            // 時制クエリ時: 現在年を含むセクション見出し行を強くブースト
+            if (temporalQuery) {
+                String header = chunk.split("\n")[0];
+                if (header.contains(String.valueOf(currentYear))) score += 10;
+            }
+            scored.add(new ScoredChunk(chunk, score));
+        }
+        Collections.sort(scored, (a, b) -> Float.compare(b.score, a.score));
+
+        List<String> result = new ArrayList<>(maxChunks);
+        for (int i = 0; i < maxChunks; i++) {
+            result.add(scored.get(i).chunk);
+        }
+        return result;
     }
 
     /** Ollama /api/tokenize でトークン数を計算。失敗時は文字数推定で代替。 */
