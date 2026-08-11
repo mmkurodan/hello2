@@ -22,22 +22,32 @@ import okhttp3.Response;
  * 関連性の低い情報のノイズを削減し応答品質を向上させる。</p>
  */
 public final class WebSearchRagHelper {
-    private static final int MAX_CHUNKS_TO_EMBED = 8;
-    private static final int TOP_K_CHUNKS = 3;
-    private static final int MAX_CONTEXT_TOKENS = 3000;
+    // Wikipedia セクション分割後は多数のチャンクが生成される
+    private static final int MAX_CHUNKS_TO_EMBED = 40;
     private static final MediaType JSON_MEDIA = MediaType.get("application/json; charset=utf-8");
 
     private final EmbeddingClient embeddingClient;
     private final OkHttpClient httpClient;
     private final String baseUrl;
     private final String chatModel;
+    private final int maxContextTokens;
+    private final int topKChunks;
 
+    /**
+     * @param numCtx LLM のコンテキストサイズ。検索結果の token 予算と top-K を動的に決定する。
+     *               0 以下の場合はデフォルト (4096) を使用。
+     */
     public WebSearchRagHelper(EmbeddingClient embeddingClient, OkHttpClient httpClient,
-                               String baseUrl, String chatModel) {
+                               String baseUrl, String chatModel, int numCtx) {
         this.embeddingClient = embeddingClient;
         this.httpClient = httpClient;
         this.baseUrl = normalizeUrl(baseUrl);
         this.chatModel = chatModel;
+        int ctx = numCtx > 0 ? numCtx : 4096;
+        // nCtx の約 55% を検索結果に割り当て（残りはシステムプロンプト・履歴・ユーザ発話）
+        this.maxContextTokens = Math.max(500, (int) (ctx * 0.55));
+        // nCtx 1024 あたり 1 チャンク、最小 2、最大 10
+        this.topKChunks = Math.max(2, Math.min(10, ctx / 1024));
     }
 
     /**
@@ -49,7 +59,7 @@ public final class WebSearchRagHelper {
         if (rawSearchResults == null || rawSearchResults.isEmpty()) return rawSearchResults;
         try {
             List<String> chunks = splitIntoChunks(rawSearchResults);
-            if (chunks.size() <= TOP_K_CHUNKS) return rawSearchResults;
+            if (chunks.size() <= topKChunks) return rawSearchResults;
 
             int batchSize = Math.min(chunks.size(), MAX_CHUNKS_TO_EMBED);
             List<String> batchChunks = chunks.subList(0, batchSize);
@@ -73,10 +83,10 @@ public final class WebSearchRagHelper {
             Collections.sort(scored, (a, b) -> Float.compare(b.score, a.score));
 
             StringBuilder result = new StringBuilder("SEARCH_RESULTS:\n");
-            int budget = MAX_CONTEXT_TOKENS;
+            int budget = maxContextTokens;
             int count = 0;
             for (ScoredChunk sc : scored) {
-                if (count >= TOP_K_CHUNKS || budget <= 0) break;
+                if (count >= topKChunks || budget <= 0) break;
                 int tokens = countTokensSafe(sc.chunk);
                 if (budget - tokens < 0 && count > 0) break;
                 if (result.length() > "SEARCH_RESULTS:\n".length()) result.append("\n\n");

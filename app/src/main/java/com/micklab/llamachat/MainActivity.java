@@ -3707,7 +3707,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                             runOnUiThread(() -> setThinkingIndicatorLabel(
                                     t("Ranking results...", "結果を絞り込み中..."), expertToken));
                             EmbeddingClient emb = new EmbeddingClient(client, ollamaBaseUrl, resolveEmbeddingModelName());
-                            WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel());
+                            WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel(), numCtx);
                             searchResultsBlock = rag.rerankSearchResults(userMsg, rawResults);
                         } else {
                             searchResultsBlock = t("SEARCH_RESULTS:\n(No results found for: " + displayQuery + ")",
@@ -3810,7 +3810,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                         runOnUiThread(() -> setThinkingIndicatorLabel(
                                 t("Ranking results...", "結果を絞り込み中..."), webSearchToken));
                         EmbeddingClient emb = new EmbeddingClient(client, ollamaBaseUrl, resolveEmbeddingModelName());
-                        WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel());
+                        WebSearchRagHelper rag = new WebSearchRagHelper(emb, client, ollamaBaseUrl, resolveBaseChatModel(), numCtx);
                         searchResults = rag.rerankSearchResults(userMsg, searchResults);
                         augmentedMessageHolder[0] = buildSearchAugmentedUserMessage(userMsg, searchResults);
                     } else {

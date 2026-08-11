@@ -160,7 +160,6 @@ public final class WikipediaSearchHelper {
             LinkedHashSet<String> seen = new LinkedHashSet<>();
 
             // 1. クエリをタイトルとして直接ルックアップ（タイトル優先）
-            // Summary API でリダイレクト解決・曖昧さ回避判定をしてから全文 extracts を取得
             JSONObject exactSummary = fetchSummary(client, lang, query);
             boolean titleMatched = exactSummary != null;
             if (exactSummary != null) {
@@ -169,12 +168,10 @@ public final class WikipediaSearchHelper {
                 if (extract == null) extract = exactSummary.optString("extract", "").trim();
                 if (extract.length() > extractLength) extract = extract.substring(0, extractLength);
                 seen.add(canonicalTitle);
-                appendArticle(sb, lang, canonicalTitle, null, extract);
+                appendArticleSections(sb, lang, canonicalTitle, null, extract);
             }
 
             // 2. キーワード全文検索（タイトル直接マッチがあればスキップ）
-            // タイトルマッチがある場合はそれが最も関連性が高いため、
-            // キーワード検索で返る周辺記事の混入を防ぐ
             if (!titleMatched) {
                 int srlimit = Math.min(articleLimit + 1, 10);
                 String url = "https://" + lang + ".wikipedia.org/w/api.php"
@@ -208,7 +205,7 @@ public final class WikipediaSearchHelper {
                             String extract = fetchFullExtract(client, lang, canonicalTitle, extractLength);
                             if (extract == null) extract = summary.optString("extract", "").trim();
                             if (extract.length() > extractLength) extract = extract.substring(0, extractLength);
-                            appendArticle(sb, lang, canonicalTitle, updated, extract);
+                            appendArticleSections(sb, lang, canonicalTitle, updated, extract);
                             added++;
                         }
                     }
@@ -222,20 +219,60 @@ public final class WikipediaSearchHelper {
         }
     }
 
-    private static void appendArticle(StringBuilder sb, String lang,
-                                       String title, String updated, String extract) {
-        String articleUrl = "https://" + lang + ".wikipedia.org/wiki/";
-        try {
-            articleUrl += java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
-        } catch (Exception e) {
-            articleUrl += title.replace(" ", "_");
+    /**
+     * 記事を Wikipedia のセクション見出し（== ... ==）単位に分割し、
+     * それぞれ [Wikipedia/lang] Title > SectionName 形式で sb に追記する。
+     * セクションのない記事（またはイントロのみ）は 1 チャンクとして追記する。
+     * チャンクが RAG の入力単位となるため、embedding 類似度で関連セクションを選別できる。
+     */
+    private static void appendArticleSections(StringBuilder sb, String lang,
+                                               String title, String updated, String extract) {
+        if (extract == null || extract.isEmpty()) return;
+
+        String articleUrl = buildArticleUrl(lang, title);
+        String titleTag = "[Wikipedia/" + lang + "] " + title;
+        if (updated != null && !updated.isEmpty()) titleTag += " (" + updated + ")";
+
+        StringBuilder currentContent = new StringBuilder();
+        String currentHeader = null;
+
+        for (String line : extract.split("\n", -1)) {
+            String trimmed = line.trim();
+            // セクション見出し判定: == ... == 形式（先頭と末尾が = で囲まれ内部に非 = 文字を含む）
+            if (trimmed.length() >= 3 && trimmed.charAt(0) == '='
+                    && trimmed.charAt(trimmed.length() - 1) == '=') {
+                int depth = 0;
+                while (depth < trimmed.length() && trimmed.charAt(depth) == '=') depth++;
+                String inner = trimmed.substring(depth, trimmed.length() - depth).trim();
+                if (!inner.isEmpty() && !inner.contains("=")) {
+                    flushSection(sb, titleTag, currentHeader, currentContent.toString(), articleUrl);
+                    currentContent = new StringBuilder();
+                    currentHeader = inner;
+                    continue;
+                }
+            }
+            currentContent.append(line).append("\n");
         }
+        flushSection(sb, titleTag, currentHeader, currentContent.toString(), articleUrl);
+    }
+
+    private static void flushSection(StringBuilder sb, String titleTag, String header,
+                                      String content, String articleUrl) {
+        String trimmed = content.trim();
+        if (trimmed.isEmpty()) return;
         if (sb.length() > 0) sb.append("\n");
-        sb.append("[Wikipedia/").append(lang).append("] ").append(title);
-        if (updated != null && !updated.isEmpty()) sb.append(" (").append(updated).append(")");
-        sb.append("\n");
-        if (extract != null && !extract.isEmpty()) sb.append(extract).append("\n");
-        sb.append(articleUrl).append("\n");
+        sb.append(titleTag);
+        if (header != null) sb.append(" > ").append(header);
+        sb.append("\n").append(trimmed).append("\n").append(articleUrl).append("\n");
+    }
+
+    private static String buildArticleUrl(String lang, String title) {
+        try {
+            return "https://" + lang + ".wikipedia.org/wiki/"
+                    + java.net.URLEncoder.encode(title.replace(" ", "_"), "UTF-8");
+        } catch (Exception e) {
+            return "https://" + lang + ".wikipedia.org/wiki/" + title.replace(" ", "_");
+        }
     }
 
     // MediaWiki Action API で記事全文をプレーンテキストで取得し、ローカルで文字数を制限する。

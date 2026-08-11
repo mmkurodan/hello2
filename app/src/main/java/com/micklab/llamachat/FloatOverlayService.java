@@ -2088,7 +2088,7 @@ public class FloatOverlayService extends Service {
                 || "default".equals(embeddingModel.trim())) ? "default" : embeddingModel.trim();
         if (embeddingClient == null || !resolvedEmbed.equals(embeddingClient.getModel())) {
             embeddingClient = new EmbeddingClient(client, ollamaBaseUrl, resolvedEmbed);
-            webSearchRagHelper = new WebSearchRagHelper(embeddingClient, client, ollamaBaseUrl, selectedModel);
+            webSearchRagHelper = new WebSearchRagHelper(embeddingClient, client, ollamaBaseUrl, selectedModel, numCtx);
         }
         applyTtsSettings();
     }
