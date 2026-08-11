@@ -34,6 +34,10 @@ public final class WebSearchRagHelper {
     private final String chatModel;
     private final int maxContextTokens;
     private final int topKChunks;
+    // 1チャンクの最大文字数: topK 件が丁度 maxContextTokens に収まるよう逆算
+    // tokens = chars × 0.75 なので chars = tokens × 4/3
+    // maxChunkTokens = maxContextTokens / topK → maxChunkChars = maxContextTokens × 4 / (3 × topK)
+    private final int maxChunkChars;
 
     /**
      * @param numCtx LLM のコンテキストサイズ。検索結果の token 予算と top-K を動的に決定する。
@@ -50,6 +54,8 @@ public final class WebSearchRagHelper {
         this.maxContextTokens = Math.max(500, (int) (ctx * 0.55));
         // nCtx 1024 あたり 1 チャンク、最小 2、最大 10
         this.topKChunks = Math.max(2, Math.min(10, ctx / 1024));
+        // topK 件が丁度 maxContextTokens に収まるよう 1 チャンクの最大文字数を決定
+        this.maxChunkChars = Math.max(300, maxContextTokens * 4 / (3 * this.topKChunks));
     }
 
     /**
@@ -181,32 +187,84 @@ public final class WebSearchRagHelper {
     }
 
     private List<String> splitIntoChunks(String searchResults) {
-        List<String> chunks = new ArrayList<>();
-
-        // Wikipedia 形式: [Wikipedia/lang] で記事単位に分割
+        // --- Step 1: チャンク境界で粗分割 ---
+        List<String> raw = new ArrayList<>();
         if (searchResults.contains("[Wikipedia/")) {
-            String[] parts = searchResults.split("(?=\\[Wikipedia/)");
-            for (String p : parts) {
+            for (String p : searchResults.split("(?=\\[Wikipedia/)")) {
                 String t = p.trim();
-                if (t.startsWith("[Wikipedia/")) chunks.add(t);
+                if (t.startsWith("[Wikipedia/")) raw.add(t);
             }
-            if (!chunks.isEmpty()) return chunks;
         }
-
-        // Brave/generic 形式: [1] Title\nDesc\nURL で区切る
-        String[] parts = searchResults.split("(?=\\[\\d+\\])");
-        for (String p : parts) {
-            String t = p.trim();
-            if (!t.isEmpty()) chunks.add(t);
+        if (raw.isEmpty()) {
+            for (String p : searchResults.split("(?=\\[\\d+\\])")) {
+                String t = p.trim();
+                if (!t.isEmpty()) raw.add(t);
+            }
         }
-        if (chunks.size() <= 1) {
-            chunks.clear();
+        if (raw.size() <= 1) {
+            raw.clear();
             for (String p : searchResults.split("\n\n+")) {
                 String t = p.trim();
-                if (!t.isEmpty()) chunks.add(t);
+                if (!t.isEmpty()) raw.add(t);
             }
         }
-        return chunks;
+
+        // --- Step 2: maxChunkChars を超えるチャンクを段落単位でサブ分割 ---
+        List<String> bounded = new ArrayList<>();
+        for (String chunk : raw) {
+            if (chunk.length() <= maxChunkChars) {
+                bounded.add(chunk);
+            } else {
+                bounded.addAll(splitLargeChunk(chunk));
+            }
+        }
+        return bounded;
+    }
+
+    /**
+     * maxChunkChars を超えるチャンクを段落（\n\n）単位で分割する。
+     * Wikipedia チャンク: 先頭行（見出し）を各サブチャンクに付与して文脈を保持。
+     * Brave boost チャンク: 先頭 2 行（タイトル＋URL）を各サブチャンクに付与。
+     */
+    private List<String> splitLargeChunk(String chunk) {
+        // ヘッダ行数を決定（各サブチャンクに繰り返し付与する）
+        String header;
+        String body;
+        if (chunk.startsWith("[Wikipedia/")) {
+            int nl = chunk.indexOf('\n');
+            if (nl < 0) return Collections.singletonList(chunk.substring(0, maxChunkChars));
+            header = chunk.substring(0, nl + 1);
+            body = chunk.substring(nl + 1);
+        } else {
+            // [N] Title\nhttps://...\n{content} → タイトル行＋URL 行をヘッダとして保持
+            int nl1 = chunk.indexOf('\n');
+            int nl2 = nl1 >= 0 ? chunk.indexOf('\n', nl1 + 1) : -1;
+            int cut = nl2 >= 0 ? nl2 + 1 : (nl1 >= 0 ? nl1 + 1 : 0);
+            header = chunk.substring(0, cut);
+            body = chunk.substring(cut);
+        }
+
+        List<String> result = new ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        for (String para : body.split("\n\n+")) {
+            if (para.trim().isEmpty()) continue;
+            int projected = header.length() + cur.length()
+                    + (cur.length() > 0 ? 2 : 0) + para.length();
+            if (projected > maxChunkChars && cur.length() > 0) {
+                result.add(header + cur.toString().trim());
+                cur = new StringBuilder();
+            }
+            if (cur.length() > 0) cur.append("\n\n");
+            cur.append(para);
+        }
+        if (cur.length() > 0) {
+            String last = header + cur.toString().trim();
+            result.add(last.length() > maxChunkChars ? last.substring(0, maxChunkChars) : last);
+        }
+        if (result.isEmpty()) {
+            result.add(chunk.substring(0, Math.min(chunk.length(), maxChunkChars)));
+        }
+        return result;
     }
 
     private static int estimateTokens(String text) {
