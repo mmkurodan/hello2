@@ -164,6 +164,26 @@
                             android:layout_marginStart="4dp"/>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <Button
+                            android:id="@+id/btnBackup"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Backup"/>
+                        <Button
+                            android:id="@+id/btnRestore"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Restore"
+                            android:layout_marginStart="4dp"/>
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/tvLabelOllamaUrl"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -406,159 +426,6 @@
                         <EditText android:id="@+id/etSystemPrompt"
                             android:layout_width="match_parent" android:layout_height="wrap_content"
                             android:inputType="textMultiLine" android:minLines="2"/>
-
-                        <TextView
-                            android:id="@+id/tvBaseAvatarTitle"
-                            android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Avatar Images" android:textStyle="bold" android:layout_marginTop="8dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="c0 BG"/>
-                            <TextView
-                                android:id="@+id/tvC0Filename"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="8dp"
-                                android:text="(default)"
-                                android:textSize="12sp"
-                                android:ellipsize="middle"
-                                android:singleLine="true"/>
-                            <Button
-                                android:id="@+id/btnPickC0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Select"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"/>
-                            <Button
-                                android:id="@+id/btnClearC0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Clear"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="c1 Base"/>
-                            <TextView
-                                android:id="@+id/tvC1Filename"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="8dp"
-                                android:text="(default)"
-                                android:textSize="12sp"
-                                android:ellipsize="middle"
-                                android:singleLine="true"/>
-                            <Button
-                                android:id="@+id/btnPickC1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Select"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"/>
-                            <Button
-                                android:id="@+id/btnClearC1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Clear"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="c2 Blink"/>
-                            <TextView
-                                android:id="@+id/tvC2Filename"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="8dp"
-                                android:text="(default)"
-                                android:textSize="12sp"
-                                android:ellipsize="middle"
-                                android:singleLine="true"/>
-                            <Button
-                                android:id="@+id/btnPickC2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Select"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"/>
-                            <Button
-                                android:id="@+id/btnClearC2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Clear"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="c3 Talk"/>
-                            <TextView
-                                android:id="@+id/tvC3Filename"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="8dp"
-                                android:text="(default)"
-                                android:textSize="12sp"
-                                android:ellipsize="middle"
-                                android:singleLine="true"/>
-                            <Button
-                                android:id="@+id/btnPickC3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Select"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"/>
-                            <Button
-                                android:id="@+id/btnClearC3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="Clear"
-                                android:minWidth="0dp"
-                                android:minHeight="0dp"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -815,6 +682,129 @@
                             android:layout_marginStart="4dp"/>
                     </LinearLayout>
 
+                    <!-- Secretary Mode Section -->
+                    <LinearLayout
+                        android:id="@+id/sectionSecretaryHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="4dp">
+                        <TextView
+                            android:id="@+id/tvSectionSecretary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="▶ Secretary"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sectionSecretaryContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <!-- Avatar (Normal mode only) -->
+                        <LinearLayout
+                            android:id="@+id/layoutSecretaryAvatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <TextView
+                                android:id="@+id/tvBaseAvatarTitle"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Avatar Images" android:textStyle="bold" android:layout_marginTop="8dp"/>
+
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="4dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="c0 BG"/>
+                                <TextView android:id="@+id/tvC0Filename" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:text="(default)" android:textSize="12sp" android:ellipsize="middle" android:singleLine="true"/>
+                                <Button android:id="@+id/btnPickC0" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Select" android:minWidth="0dp" android:minHeight="0dp"/>
+                                <Button android:id="@+id/btnClearC0" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Clear" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="4dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="c1 Base"/>
+                                <TextView android:id="@+id/tvC1Filename" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:text="(default)" android:textSize="12sp" android:ellipsize="middle" android:singleLine="true"/>
+                                <Button android:id="@+id/btnPickC1" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Select" android:minWidth="0dp" android:minHeight="0dp"/>
+                                <Button android:id="@+id/btnClearC1" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Clear" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="4dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="c2 Blink"/>
+                                <TextView android:id="@+id/tvC2Filename" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:text="(default)" android:textSize="12sp" android:ellipsize="middle" android:singleLine="true"/>
+                                <Button android:id="@+id/btnPickC2" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Select" android:minWidth="0dp" android:minHeight="0dp"/>
+                                <Button android:id="@+id/btnClearC2" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Clear" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="4dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="c3 Talk"/>
+                                <TextView android:id="@+id/tvC3Filename" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:text="(default)" android:textSize="12sp" android:ellipsize="middle" android:singleLine="true"/>
+                                <Button android:id="@+id/btnPickC3" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Select" android:minWidth="0dp" android:minHeight="0dp"/>
+                                <Button android:id="@+id/btnClearC3" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Clear" android:minWidth="0dp" android:minHeight="0dp" android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Memory Feature -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Memory"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp" />
+
+                        <Switch
+                            android:id="@+id/switchMemoryEnabled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Memory Feature" />
+
+                        <Button
+                            android:id="@+id/btnManageMemories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Manage Memories" />
+
+                        <TextView
+                            android:id="@+id/tvLabelNotifications"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Notifications"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp"/>
+
+                        <Switch android:id="@+id/switchProactiveNotify"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="Schedule Notifications" android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvLabelMorningBriefingTime"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Morning briefing time (HH:mm)" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etMorningBriefingTime"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="time" android:singleLine="true"
+                            android:hint="07:00"/>
+
+                        <Switch android:id="@+id/switchNewsMode"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="News Mode" android:layout_marginTop="8dp"/>
+
+                        <TextView
+                            android:id="@+id/tvLabelNewsBriefingTimes"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="News times (HH:mm, comma-separated)" android:layout_marginTop="4dp"/>
+                        <EditText android:id="@+id/etNewsBriefingTimes"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="text" android:singleLine="true"
+                            android:hint="08:00,12:00,18:00"/>
+
+                    </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/sectionExpertHeader"
                         android:layout_width="match_parent"
@@ -958,61 +948,6 @@
                          android:layout_marginTop="8dp"
                          android:text="JSON Mode" />
 
-                     <!-- Memory Feature -->
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Memory"
-                         android:textStyle="bold"
-                         android:layout_marginTop="16dp" />
-
-                     <Switch
-                         android:id="@+id/switchMemoryEnabled"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="4dp"
-                         android:text="Memory Feature" />
-
-                     <Button
-                         android:id="@+id/btnManageMemories"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="4dp"
-                         android:text="Manage Memories" />
-
-                     <TextView
-                         android:id="@+id/tvLabelNotifications"
-                         android:layout_width="wrap_content" android:layout_height="wrap_content"
-                         android:text="Notifications"
-                         android:textStyle="bold"
-                         android:layout_marginTop="16dp"/>
-
-                     <Switch android:id="@+id/switchProactiveNotify"
-                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                         android:text="Schedule Notifications" android:layout_marginTop="4dp"/>
-
-                     <TextView
-                         android:id="@+id/tvLabelMorningBriefingTime"
-                         android:layout_width="wrap_content" android:layout_height="wrap_content"
-                         android:text="Morning briefing time (HH:mm)" android:layout_marginTop="4dp"/>
-                     <EditText android:id="@+id/etMorningBriefingTime"
-                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                         android:inputType="time" android:singleLine="true"
-                         android:hint="07:00"/>
-
-                     <Switch android:id="@+id/switchNewsMode"
-                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                         android:text="News Mode" android:layout_marginTop="8dp"/>
-
-                     <TextView
-                         android:id="@+id/tvLabelNewsBriefingTimes"
-                         android:layout_width="wrap_content" android:layout_height="wrap_content"
-                         android:text="News times (HH:mm, comma-separated)" android:layout_marginTop="4dp"/>
-                     <EditText android:id="@+id/etNewsBriefingTimes"
-                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                         android:inputType="text" android:singleLine="true"
-                         android:hint="08:00,12:00,18:00"/>
-
                      <Switch android:id="@+id/switchDebug"
                          android:layout_width="match_parent" android:layout_height="wrap_content"
                          android:text="Debug Mode" android:layout_marginTop="16dp"/>
@@ -1120,6 +1055,22 @@
         android:layout_marginTop="56dp"
         android:layout_marginEnd="12dp"
         android:text="⚙"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/btn_settings_bg"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="8dp"
+        android:elevation="4dp"/>
+
+    <Button
+        android:id="@+id/btnResetInline"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="66dp"
+        android:text="↺"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/btn_settings_bg"

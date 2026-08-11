@@ -180,6 +180,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private Button btnClearChatterC0, btnClearChatterC1, btnClearChatterC2, btnClearChatterC3;
     private Button btnResetLogs, btnProfileSave, btnProfileLoad, btnProfileDelete, btnLaunchLlmTester;
     private Button btnHelp, btnPrivacy, btnRights;
+    private Button btnBackup, btnRestore;
+    private Button btnResetInline;
     private TextView tvC0Filename, tvC1Filename, tvC2Filename, tvC3Filename;
     private TextView tvChatterC0Filename, tvChatterC1Filename, tvChatterC2Filename, tvChatterC3Filename;
     private ScrollView scrollView;
@@ -206,6 +208,11 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private TextView tvChatterSettingsTitle, tvChatterNameLabel, tvChatterModelLabel;
     private TextView tvChatterSpeechLangLabel, tvChatterSpeechRateLabel, tvChatterSpeechPitchLabel, tvChatterSystemPromptLabel, tvChatterAvatarTitle;
     private View sectionGeneralHeader, sectionChatHeader, sectionExpertHeader;
+    private View sectionSecretaryHeader;
+    private LinearLayout sectionSecretaryContent;
+    private LinearLayout layoutSecretaryAvatar;
+    private TextView tvSectionSecretary;
+    private boolean sectionSecretaryExpanded = false;
     private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchDebug, switchJsonMode, switchBraveBoost;
     private Switch switchProactiveNotify, switchNewsMode, switchMemoryEnabled;
     private android.widget.RadioGroup radioGroupWebSearchMode;
@@ -284,6 +291,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean sectionExpertExpanded = false;
     private boolean suppressQuickStartPopup = false;
     private boolean ollamaApiAvailable = false;
+    private volatile String compressedContextSummary = "";
+    private final java.util.concurrent.ExecutorService compressExecutor =
+            java.util.concurrent.Executors.newSingleThreadExecutor();
     private boolean refreshModelsOnResume = false;
     private boolean pendingOverlayLaunch = false;
     private boolean isFloatOverlayActive = false;
@@ -457,6 +467,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean pendingScrollToBottom = false;
     private long lastScrollToBottomAtMs = 0L;
     private Call currentCall = null;
+    private String currentStreamingStartTime = "";
+    private long thinkingStartMs = 0;
     private final Runnable thinkingAnimationRunnable = new Runnable() {
         @Override
         public void run() {
@@ -481,50 +493,52 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・In Settings, use Launch LLM API above the API status tile. If LLM Tester is missing, the Play Store page opens.\n\n" +
             "■ Screen\n" +
             "・Tap ⚙️ to open settings, then 💾 to save and close.\n" +
-            "・Tap the top handle of the log area to expand/collapse the chat panel.\n\n" +
+            "・Tap the top handle of the log area to expand/collapse the chat panel.\n" +
+            "・Tap ↺ in the top bar to instantly reset the conversation.\n\n" +
             "■ Settings\n" +
             "・Choose the app language from the dropdown as English or 日本語.\n" +
             "・Use Launch LLM API above the API status tile to launch LLM Tester.\n" +
             "・The tile under Ollama URL shows the /api/tags status.\n" +
             "・Use Settings to configure connection settings and avatar images.\n" +
             "・Use SELECT Template under Config Profile to load templates.\n" +
-            "・On startup and each time settings opens, /api/tags refreshes model lists and the API status tile.\n\n" +
+            "・On startup and each time settings opens, /api/tags refreshes model lists and the API status tile.\n" +
+            "・Use Backup to save settings and avatars to Downloads/LlamaChat. Use Restore to load them back.\n\n" +
             "■ Sending\n" +
             "・Enter a message and press Send.\n" +
             "・If Voice Input is enabled, pressing Send with empty input starts voice input.\n" +
             "・While processing, the button shows STOP and can cancel the request.\n" +
             "・Note: On the first message, approximately 1GB of data may be downloaded for model downloads by the LLM API, which can take time.\n\n" +
             "■ Reset\n" +
-            "・To reset the conversation, press Reset Conversation Log in Settings.\n\n" +
+            "・To reset the conversation, press Reset Conversation Log in Settings, or tap ↺ in the main screen top bar.\n\n" +
             "■ Modes\n" +
             "・Normal: Chat with a single model.\n" +
             "・Chatter: Base and Chatter Partner alternate turns.\n" +
             "・Chatter Interval sets the delay between turns (seconds).\n\n" +
             "■ Settings Tabs\n" +
             "・Use the Base/Chatter Partner tabs to switch settings.\n" +
-            "・Configure Model/Name/System Prompt/Speech Language/Rate/Pitch.\n\n" +
+            "・Configure Model/Name/System Prompt/Speech Language/Rate/Pitch.\n" +
+            "・Secretary section: Memory, Notifications, News, and Avatar (Normal mode only).\n" +
+            "・Expert section: Web Search, Routing, Debug, and other advanced options.\n\n" +
             "■ Response\n" +
             "・Streaming shows responses in real time.\n" +
             "・Text-to-Speech reads responses aloud.\n" +
-            "・History Limit controls how many past messages are sent.\n\n" +
+            "・History Limit controls how many past messages are sent.\n" +
+            "・Each message bubble shows a timestamp (HH:mm) next to the speaker name.\n" +
+            "・The thinking indicator shows elapsed seconds while the model is processing.\n" +
+            "・When old messages are trimmed, they are compressed and injected as a past conversation summary in the system prompt.\n\n" +
             "■ Float Overlay\n" +
             "・Tap Float Overlay to launch a floating chat window that stays on top of other apps.\n" +
             "・Float Display: choose Avatar (full face) or Icon (compact icon) mode.\n" +
             "・The float window shares conversation history with the main screen.\n\n" +
-            "■ Memory\n" +
-            "・Enable Memory Feature in Settings to let the AI remember things across conversations.\n" +
-            "・Say phrases like 'remember this', 'make a note', or 'add to my schedule' to save memories.\n" +
-            "・Three categories are stored: Memo (plain notes), ToDo (tasks with a due date), Plan (events/appointments with optional date, time, and location).\n" +
-            "・To recall, say 'do you remember', 'show my notes', or similar phrases.\n" +
-            "・To update an existing entry, say 'change the X to Y' — the closest matching record will be updated.\n" +
-            "・Tap Memory Manager to browse, edit, or delete saved memories.\n\n" +
-            "■ Schedule Notifications\n" +
-            "・Enable Schedule Notifications (requires Memory Feature and Float Overlay).\n" +
-            "・Morning briefing: sends today's agenda and overdue ToDos at the configured time (e.g. 07:00).\n" +
-            "・Upcoming reminders: checks once per hour for Plans or ToDos due within 60 minutes.\n\n" +
-            "■ News Mode\n" +
-            "・Enable News Mode to receive web-based news briefings at scheduled times (e.g. 08:00, 12:00, 18:00).\n" +
-            "・Requires Web Search to be enabled and Float Overlay to be running.\n\n" +
+            "■ Secretary Mode\n" +
+            "・Tap the Secretary section header in Settings to expand it.\n" +
+            "・Avatar: set background/base/blink/talking images (only available in Normal mode, hidden in Chatter mode).\n" +
+            "・Memory Feature: enable so the AI remembers things across conversations.\n" +
+            "  - Say 'remember this', 'make a note', or 'add to my schedule' to save. Say 'do you remember' to recall.\n" +
+            "  - Three categories: Memo (notes), ToDo (tasks with due date), Plan (events with date/time/location).\n" +
+            "  - Tap Manage Memories to browse, edit, or delete saved memories.\n" +
+            "・Schedule Notifications: sends morning briefing and upcoming reminders via Float Overlay.\n" +
+            "・News Mode: delivers web-based news at configured times. Requires Web Search and Float Overlay.\n\n" +
             "■ Expert Settings\n" +
             "・Web Search: Enable to use the configured search API.\n" +
             "・Wikipedia mode uses a single primary keyword extracted by the LLM.\n" +
@@ -539,16 +553,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・If multiple expert keywords are present, features run in the order they appear.\n" +
             "・Brave endpoints use Brave-optimized search handling.\n" +
             "・Debug Mode shows API request/response logs.\n\n" +
-            "■ Avatar\n" +
-            "・c0: Background\n" +
-            "・c1: Base\n" +
-            "・c2: Blink\n" +
-            "・c3: Talking\n" +
-            "・You can set different images for Base and Chatter Partner.\n" +
-            "・Press Clear to reset to default.\n\n" +
             "■ Other\n" +
             "・Settings, templates, popup preferences, and images are stored locally on the device.\n" +
-            "・The current date and time are automatically included in every AI request.";
+            "・The current date and time are automatically included in every AI request.\n" +
+            "・Backup: saves settings and avatar images to Downloads/LlamaChat. Restore: loads them back.";
 
     private static final String HELP_TEXT_JA =
             "Dual AI Chat — マニュアル\n\n" +
@@ -558,50 +566,52 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・設定画面では、API状態タイルの上にある「LLM APIを起動」からLLM Testerを開けます。未インストール時はGoogle Playを開きます。\n\n" +
             "■ 画面\n" +
             "・⚙️ で設定を開き、💾で保存して閉じます。\n" +
-            "・ログ上部のバーをタップするとチャットエリアが拡大/縮小します。\n\n" +
+            "・ログ上部のバーをタップするとチャットエリアが拡大/縮小します。\n" +
+            "・画面上部の↺ボタンをタップすると即座に会話をリセットできます。\n\n" +
             "■ 設定\n" +
             "・言語はプルダウンからEnglishまたは日本語を選択します。\n" +
             "・API状態タイルの上にある「LLM APIを起動」からLLM Testerを起動できます。\n" +
             "・Ollama URLの下に/api/tagsの接続状態をタイル表示します。\n" +
-            "・設定画面で接続設定やアバター画像を設定できます。\n" +
+            "・設定画面で接続設定などを設定できます。\n" +
             "・Config Profileの下にある SELECT Template でテンプレートを読み込みます。\n" +
-            "・起動時と設定画面を開くたびに/api/tagsを再取得し、モデル一覧とAPI状態を更新します。\n\n" +
+            "・起動時と設定画面を開くたびに/api/tagsを再取得し、モデル一覧とAPI状態を更新します。\n" +
+            "・バックアップ：設定とアバター画像をDownloads/LlamaChatに保存します。リストア：読み込みます。\n\n" +
             "■ 送信\n" +
             "・メッセージ入力後にSendで送信します。\n" +
             "・Voice Inputを有効にすると、未入力のままSendで音声入力を開始します。\n" +
             "・処理中はボタンがSTOPになり、タップで中止できます。\n" +
             "・注記: 初回のメッセージ送信時には約1GB程度の通信が発生します。これはLLM API側でモデルのダウンロードが行われることによるもので、反応まで時間がかかる場合があります。\n\n" +
             "■ リセット\n" +
-            "・会話をリセットしたい場合は、設定画面のReset Conversation Logを押してください。\n\n" +
+            "・会話をリセットしたい場合は、設定画面のReset Conversation Logを押すか、メイン画面上部の↺をタップしてください。\n\n" +
             "■ モード\n" +
             "・Normal: 1つのモデルでチャットします。\n" +
             "・おしゃべり: Baseとおしゃべり相手が交互に会話します。\n" +
             "・おしゃべり間隔で発話間隔（秒）を設定します。\n\n" +
             "■ 設定タブ\n" +
             "・Base/おしゃべり相手のタブで各モデル設定を切り替えます。\n" +
-            "・Model/Name/System Prompt/Speech Language/Rate/Pitchを設定できます。\n\n" +
+            "・Model/Name/System Prompt/Speech Language/Rate/Pitchを設定できます。\n" +
+            "・秘書セクション: 記憶機能・お知らせ・ニュース・アバター（ノーマルモード時のみ）。\n" +
+            "・エキスパートセクション: Web検索・ルーティング・デバッグなどの高度な設定。\n\n" +
             "■ 応答\n" +
             "・Streaming: 応答をリアルタイム表示します。\n" +
             "・Text-to-Speech: 応答を音声で読み上げます。\n" +
-            "・History Limitで送信する履歴数を調整します。\n\n" +
+            "・History Limitで送信する履歴数を調整します。\n" +
+            "・各メッセージのバブルには発話者名の横にタイムスタンプ（HH:mm）が表示されます。\n" +
+            "・思考中の表示には経過秒数が表示されます。\n" +
+            "・古いメッセージが削除される際、LLMで要約してシステムプロンプトに「過去の会話の要約」として挿入されます。\n\n" +
             "■ フロートオーバーレイ\n" +
             "・「Float Overlay」ボタンで他のアプリの上に重なるフローティングチャットを起動します。\n" +
             "・Float Displayで「アバター」（全画面顔）か「アイコン」（コンパクト）を選べます。\n" +
             "・フロートウィンドウはメイン画面と会話履歴を共有します。\n\n" +
-            "■ 記憶機能\n" +
-            "・設定で「記憶機能」をオンにすると、AIが会話をまたいで情報を記憶します。\n" +
-            "・「覚えておいて」「メモして」「記録して」などで記憶を保存します。\n" +
-            "・3種類のカテゴリで保存されます：メモ（メモ書き）、ToDo（期限付きタスク）、予定（日時・場所付きのイベント）。\n" +
-            "・「思い出して」「覚えてる？」「記録を見せて」などで記憶を呼び出せます。\n" +
-            "・「○○を××に変更して」と伝えると、最も近い既存レコードを上書き更新します。\n" +
-            "・「記憶マネージャー」から保存済みの記憶を一覧・編集・削除できます。\n\n" +
-            "■ 予定のお知らせ\n" +
-            "・「予定のお知らせ」を有効にすると、記憶機能の予定・ToDoをフロート経由で通知します。\n" +
-            "・朝のブリーフィング：設定した時刻（例: 07:00）に当日の予定とやり残しToDoをお知らせします。\n" +
-            "・直近リマインダー：1時間ごとにチェックし、60分以内に来る予定・期限をお知らせします。\n\n" +
-            "■ ニュースモード\n" +
-            "・「ニュースモード」を有効にすると、指定した時刻（例: 08:00, 12:00, 18:00）にウェブ検索でニュースを配信します。\n" +
-            "・Web SearchとフロートON時に動作します。\n\n" +
+            "■ 秘書モード\n" +
+            "・設定の「秘書」セクションをタップして展開します。\n" +
+            "・アバター: 背景/基本/まばたき/会話中の画像を設定（ノーマルモード時のみ表示）。\n" +
+            "・記憶機能: オンにするとAIが会話をまたいで情報を記憶します。\n" +
+            "  - 「覚えておいて」「メモして」で保存、「思い出して」で呼び出し。\n" +
+            "  - メモ（メモ書き）・ToDo（期限付きタスク）・予定（日時・場所付きイベント）の3種類。\n" +
+            "  - 「記憶マネージャー」から保存済みの記憶を一覧・編集・削除できます。\n" +
+            "・予定のお知らせ: フロートON時に朝のブリーフィングと直近リマインダーを通知します。\n" +
+            "・ニュースモード: 指定時刻にWeb検索でニュースを配信。Web SearchとフロートON時に動作。\n\n" +
             "■ エキスパート設定\n" +
             "・Web Search: 有効にすると検索APIを使います。\n" +
             "・WikipediaモードはLLMが抽出した1つの主要キーワードで検索します。\n" +
@@ -616,16 +626,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             "・複数のエキスパートキーワードが含まれる場合は、登場順に処理します。\n" +
             "・Brave URLの場合はBrave向けに最適化した検索処理を使います。\n" +
             "・Debug Modeで通信ログを表示します。\n\n" +
-            "■ アバター\n" +
-            "・c0: 背景\n" +
-            "・c1: 基本表情\n" +
-            "・c2: まばたき\n" +
-            "・c3: 会話中\n" +
-            "・Baseとおしゃべり相手で別々に設定できます。\n" +
-            "・Clearでデフォルトに戻します。\n\n" +
             "■ その他\n" +
             "・設定、テンプレート、ポップアップ表示設定、画像は端末内に保存されます。\n" +
-            "・現在の日時はすべてのAIリクエストに自動的に含まれます。";
+            "・現在の日時はすべてのAIリクエストに自動的に含まれます。\n" +
+            "・バックアップ: 設定とアバター画像をDownloads/LlamaChatに保存。リストア: 読み込み。";
 
     private static final String PRIVACY_TEXT_EN =
             "Dual AI Chat — Privacy Policy\n\n" +
@@ -809,6 +813,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         btnHelp = findViewById(R.id.btnHelp);
         btnPrivacy = findViewById(R.id.btnPrivacy);
         btnRights = findViewById(R.id.btnRights);
+        btnBackup = findViewById(R.id.btnBackup);
+        btnRestore = findViewById(R.id.btnRestore);
+        btnResetInline = findViewById(R.id.btnResetInline);
         etWikiArticleLimit = findViewById(R.id.etWikiArticleLimit);
         etBraveResultCount = findViewById(R.id.etBraveResultCount);
         etSearchTextLength = findViewById(R.id.etSearchTextLength);
@@ -915,9 +922,13 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         sectionGeneralHeader = findViewById(R.id.sectionGeneralHeader);
         sectionChatHeader = findViewById(R.id.sectionChatHeader);
         sectionExpertHeader = findViewById(R.id.sectionExpertHeader);
+        sectionSecretaryHeader = findViewById(R.id.sectionSecretaryHeader);
         sectionGeneralContent = findViewById(R.id.sectionGeneralContent);
         sectionChatContent = findViewById(R.id.sectionChatContent);
         sectionExpertContent = findViewById(R.id.sectionExpertContent);
+        sectionSecretaryContent = (LinearLayout) findViewById(R.id.sectionSecretaryContent);
+        layoutSecretaryAvatar = (LinearLayout) findViewById(R.id.layoutSecretaryAvatar);
+        tvSectionSecretary = findViewById(R.id.tvSectionSecretary);
         tvSettingsTitle = findViewById(R.id.tvSettingsTitle);
         tvSectionGeneral = findViewById(R.id.tvSectionGeneral);
         tvSectionChat = findViewById(R.id.tvSectionChat);
@@ -1100,6 +1111,13 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 tvSectionExpert.setText((sectionExpertExpanded ? "▼ " : "▶ ") + t("Expert", "エキスパート"));
             });
         }
+        if (sectionSecretaryHeader != null) {
+            sectionSecretaryHeader.setOnClickListener(v -> {
+                sectionSecretaryExpanded = !sectionSecretaryExpanded;
+                sectionSecretaryContent.setVisibility(sectionSecretaryExpanded ? View.VISIBLE : View.GONE);
+                tvSectionSecretary.setText((sectionSecretaryExpanded ? "▼ " : "▶ ") + t("Secretary", "秘書"));
+            });
+        }
         if (spinnerLanguage != null) {
             spinnerLanguage.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
                 @Override
@@ -1230,6 +1248,11 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         btnRights.setOnClickListener(v -> showInfoDialog(
                 t("Rights", "権利情報"),
                 "ja".equals(appLanguage) ? RIGHTS_TEXT_JA : RIGHTS_TEXT_EN));
+        if (btnBackup != null) btnBackup.setOnClickListener(v -> backupToDownloads());
+        if (btnRestore != null) btnRestore.setOnClickListener(v -> restoreFromDownloads());
+        if (btnResetInline != null) {
+            btnResetInline.setOnClickListener(v -> resetConversationLogs());
+        }
         updateOverlayEntryUi();
     }
 
@@ -1489,6 +1512,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (btnHelp != null) btnHelp.setText(t("Help", "ヘルプ"));
         if (btnPrivacy != null) btnPrivacy.setText(t("Privacy", "プライバシー"));
         if (btnRights != null) btnRights.setText(t("Rights", "権利情報"));
+        if (btnBackup != null) btnBackup.setText(t("Backup", "バックアップ"));
+        if (btnRestore != null) btnRestore.setText(t("Restore", "リストア"));
         if (switchStreaming != null) switchStreaming.setText("Streaming");
         if (switchTts != null) switchTts.setText(t("Text-to-Speech", "音声読み上げ"));
         if (switchVoiceInput != null) switchVoiceInput.setText(t("Voice Input (on empty send)", "音声入力（空送信）"));
@@ -1515,6 +1540,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         if (sectionGeneralContent != null) sectionGeneralContent.setVisibility(sectionGeneralExpanded ? View.VISIBLE : View.GONE);
         if (sectionChatContent != null) sectionChatContent.setVisibility(sectionChatExpanded ? View.VISIBLE : View.GONE);
         if (sectionExpertContent != null) sectionExpertContent.setVisibility(sectionExpertExpanded ? View.VISIBLE : View.GONE);
+        if (sectionSecretaryContent != null) sectionSecretaryContent.setVisibility(sectionSecretaryExpanded ? View.VISIBLE : View.GONE);
+        if (tvSectionSecretary != null) tvSectionSecretary.setText((sectionSecretaryExpanded ? "▼ " : "▶ ") + t("Secretary", "秘書"));
         updateSendButton();
         updateOverlayEntryUi();
     }
@@ -1774,6 +1801,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         setStreamingResponse(false, null);
         pendingAutoVoiceStart = false;
         pendingAutoChatterAfterTts = false;
+        compressedContextSummary = "";
         runOnUiThread(() -> {
             if (messageContainer != null) {
                 messageContainer.removeAllViews();
@@ -2308,6 +2336,88 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                     if (autoChatterEnabled) scheduleAutoChatter();
                 });
             }
+        }
+    }
+
+    // ========== Backup / Restore ==========
+
+    private static final String BACKUP_DIR_NAME = "LlamaChat";
+
+    private void backupToDownloads() {
+        try {
+            java.io.File downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(
+                    android.os.Environment.DIRECTORY_DOWNLOADS);
+            java.io.File backupDir = new java.io.File(downloadsDir, BACKUP_DIR_NAME);
+            if (!backupDir.exists()) backupDir.mkdirs();
+            // Settings JSON
+            copyFileSafe(new java.io.File(getFilesDir(), SETTINGS_FILE), new java.io.File(backupDir, SETTINGS_FILE));
+            // Profiles directory
+            java.io.File profileSrcDir = new java.io.File(getFilesDir(), SETTINGS_PROFILE_DIR);
+            java.io.File profileDstDir = new java.io.File(backupDir, SETTINGS_PROFILE_DIR);
+            if (profileSrcDir.exists() && profileSrcDir.isDirectory()) {
+                profileDstDir.mkdirs();
+                java.io.File[] files = profileSrcDir.listFiles();
+                if (files != null) for (java.io.File f : files)
+                    copyFileSafe(f, new java.io.File(profileDstDir, f.getName()));
+            }
+            // Avatar files (stored in getExternalFilesDir)
+            java.io.File avatarDir = getExternalFilesDir(null);
+            if (avatarDir != null) {
+                String[] avatarFiles = { AVATAR_C0_FILE, AVATAR_C1_FILE, AVATAR_C2_FILE, AVATAR_C3_FILE,
+                        AVATAR_CHATTER_C0_FILE, AVATAR_CHATTER_C1_FILE, AVATAR_CHATTER_C2_FILE, AVATAR_CHATTER_C3_FILE };
+                for (String name : avatarFiles)
+                    copyFileSafe(new java.io.File(avatarDir, name), new java.io.File(backupDir, name));
+            }
+            Toast.makeText(this, t("Backed up to Downloads/LlamaChat", "Downloads/LlamaChat にバックアップしました"), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "backupToDownloads error", e);
+            Toast.makeText(this, t("Backup failed: " + e.getMessage(), "バックアップ失敗: " + e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void restoreFromDownloads() {
+        try {
+            java.io.File downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(
+                    android.os.Environment.DIRECTORY_DOWNLOADS);
+            java.io.File backupDir = new java.io.File(downloadsDir, BACKUP_DIR_NAME);
+            if (!backupDir.exists()) {
+                Toast.makeText(this, t("No backup found in Downloads/LlamaChat", "Downloads/LlamaChat にバックアップが見つかりません"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            java.io.File settingsSrc = new java.io.File(backupDir, SETTINGS_FILE);
+            if (settingsSrc.exists()) copyFileSafe(settingsSrc, new java.io.File(getFilesDir(), SETTINGS_FILE));
+            java.io.File profileSrcDir = new java.io.File(backupDir, SETTINGS_PROFILE_DIR);
+            java.io.File profileDstDir = new java.io.File(getFilesDir(), SETTINGS_PROFILE_DIR);
+            if (profileSrcDir.exists() && profileSrcDir.isDirectory()) {
+                profileDstDir.mkdirs();
+                java.io.File[] files = profileSrcDir.listFiles();
+                if (files != null) for (java.io.File f : files)
+                    copyFileSafe(f, new java.io.File(profileDstDir, f.getName()));
+            }
+            java.io.File avatarDir = getExternalFilesDir(null);
+            if (avatarDir != null) {
+                String[] avatarFiles = { AVATAR_C0_FILE, AVATAR_C1_FILE, AVATAR_C2_FILE, AVATAR_C3_FILE,
+                        AVATAR_CHATTER_C0_FILE, AVATAR_CHATTER_C1_FILE, AVATAR_CHATTER_C2_FILE, AVATAR_CHATTER_C3_FILE };
+                for (String name : avatarFiles)
+                    copyFileSafe(new java.io.File(backupDir, name), new java.io.File(avatarDir, name));
+            }
+            loadSettings();
+            initAvatarAssets();
+            applySettingsToUi();
+            Toast.makeText(this, t("Restored from Downloads/LlamaChat", "Downloads/LlamaChat からリストアしました"), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "restoreFromDownloads error", e);
+            Toast.makeText(this, t("Restore failed: " + e.getMessage(), "リストア失敗: " + e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void copyFileSafe(java.io.File src, java.io.File dst) throws java.io.IOException {
+        if (!src.exists()) return;
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(src);
+             java.io.FileOutputStream fos = new java.io.FileOutputStream(dst)) {
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = fis.read(buf)) > 0) fos.write(buf, 0, n);
         }
     }
 
@@ -2980,6 +3090,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             pendingAutoChatterAfterTts = false;
             updateCounterpartMiniAvatar();
         }
+        if (layoutSecretaryAvatar != null) {
+            layoutSecretaryAvatar.setVisibility(autoChatterEnabled ? View.GONE : View.VISIBLE);
+        }
         updateOverlayEntryUi();
     }
 
@@ -3352,31 +3465,85 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 now.getYear(), now.getMonthValue(), now.getDayOfMonth(), dow, now.getHour(), now.getMinute());
         if (result.length() > 0) result.append("\n");
         result.append(isJapanese ? "現在日時: " : "Current datetime: ").append(stamp);
+        String summary = compressedContextSummary;
+        if (!summary.isEmpty()) {
+            if (result.length() > 0) result.append("\n");
+            result.append(isJapanese ? "過去の会話の要約:\n" : "Past conversation summary:\n").append(summary);
+        }
         return result.toString();
     }
 
     private void addToHistory(List<JSONObject> history, String role, String content) {
+        List<JSONObject> trimmed = new ArrayList<>();
         try {
             JSONObject msg = new JSONObject();
             msg.put("role", role);
             msg.put("content", content);
             synchronized (historyLock) {
                 history.add(msg);
-                trimHistoryLocked(history);
+                trimmed = trimHistoryLocked(history);
             }
         } catch (Exception e) {
             Log.e(TAG, "addToHistory error", e);
         }
+        if (!trimmed.isEmpty()) {
+            final List<JSONObject> toCompress = new ArrayList<>(trimmed);
+            compressExecutor.submit(() -> compressAndStore(toCompress));
+        }
     }
 
-    private void trimHistoryLocked(List<JSONObject> history) {
-        if (history == null || history.isEmpty()) {
-            return;
-        }
+    private List<JSONObject> trimHistoryLocked(List<JSONObject> history) {
+        List<JSONObject> trimmed = new ArrayList<>();
+        if (history == null || history.isEmpty()) return trimmed;
         int keepStart = "system".equals(history.get(0).optString("role")) ? 1 : 0;
         int maxMessages = Math.max(MIN_RETAINED_HISTORY_MESSAGES, historyLimit * 4);
         while (history.size() - keepStart > maxMessages) {
+            JSONObject removed = history.get(keepStart);
+            if (!"system".equals(removed.optString("role"))) trimmed.add(removed);
             history.remove(keepStart);
+        }
+        return trimmed;
+    }
+
+    private void compressAndStore(List<JSONObject> messages) {
+        StringBuilder dialog = new StringBuilder();
+        boolean isJa = "ja".equals(appLanguage);
+        for (JSONObject m : messages) {
+            String role = m.optString("role", "");
+            String content = m.optString("content", "");
+            if ("user".equals(role)) dialog.append(isJa ? "ユーザ: " : "User: ").append(content).append("\n");
+            else if ("assistant".equals(role)) dialog.append("AI: ").append(content).append("\n");
+        }
+        if (dialog.length() == 0) return;
+        String summary = callLLMForCompression(dialog.toString(), isJa);
+        if (summary != null && !summary.trim().isEmpty()) {
+            String prev = compressedContextSummary;
+            compressedContextSummary = prev.isEmpty() ? summary.trim() : prev + "\n" + summary.trim();
+        }
+    }
+
+    private String callLLMForCompression(String dialogText, boolean isJa) {
+        try {
+            String prompt = isJa
+                    ? "以下の会話を200文字以内の日本語で簡潔に要約してください。重要な事実と文脈のみを保持してください。\n\n" + dialogText
+                    : "Summarize the following conversation in under 150 words. Keep only key facts and context.\n\n" + dialogText;
+            JSONObject body = new JSONObject();
+            body.put("model", (selectedModel == null || selectedModel.isEmpty()) ? "default" : selectedModel);
+            body.put("prompt", prompt);
+            body.put("stream", false);
+            body.put("options", new JSONObject().put("num_predict", 300));
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(ollamaBaseUrl + "/api/generate")
+                    .post(okhttp3.RequestBody.create(body.toString(), okhttp3.MediaType.get("application/json; charset=utf-8")))
+                    .build();
+            try (okhttp3.Response resp = client.newCall(request).execute()) {
+                if (!resp.isSuccessful()) return null;
+                String rb = resp.body() != null ? resp.body().string() : "";
+                return new JSONObject(rb).optString("response", "").trim();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "callLLMForCompression error", e);
+            return null;
         }
     }
 
@@ -4654,6 +4821,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             currentThinkingBubble = createMessageBubble(getSpeakerName(speaker), isUserSideForSpeaker(speaker));
             currentThinkingLabel = "Thinking";
             thinkingDotStep = 0;
+            thinkingStartMs = android.os.SystemClock.uptimeMillis();
             updateThinkingBubbleText();
             uiHandler.removeCallbacks(thinkingAnimationRunnable);
             uiHandler.postDelayed(thinkingAnimationRunnable, THINKING_ANIMATION_INTERVAL_MS);
@@ -4668,10 +4836,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         String base = (currentThinkingLabel == null || currentThinkingLabel.trim().isEmpty())
                 ? "Thinking"
                 : currentThinkingLabel.trim();
+        long elapsedSec = thinkingStartMs > 0 ? (android.os.SystemClock.uptimeMillis() - thinkingStartMs) / 1000 : 0;
         StringBuilder body = new StringBuilder(base);
-        for (int i = 0; i < dots; i++) {
-            body.append('.');
-        }
+        for (int i = 0; i < dots; i++) body.append('.');
+        if (elapsedSec > 0) body.append(" (").append(elapsedSec).append("s)");
         String header = getSpeakerName(currentThinkingSpeaker);
         renderPlainMessageBubble(currentThinkingBubble, header, body.toString());
         currentThinkingBubble.requestLayout();
@@ -4711,6 +4879,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             if (token != activeStreamingToken) return;
             boolean shouldScroll = isNearBottom();
             currentStreamingSpeaker = speaker;
+            currentStreamingStartTime = getTimestampString();
             currentStreamingBubble = createMessageBubble(getSpeakerName(speaker), isUserSideForSpeaker(speaker));
             String header = getSpeakerName(speaker);
             streamingTextBuffer.setLength(0);
@@ -4759,9 +4928,10 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             if (token != activeStreamingToken) return;
             boolean shouldScroll = isNearBottom();
             if (currentStreamingBubble != null) {
+                String header = getSpeakerName(currentStreamingSpeaker) + "  " + currentStreamingStartTime;
                 renderMessageBubble(
                         currentStreamingBubble,
-                        getSpeakerName(currentStreamingSpeaker),
+                        header,
                         finalText
                 );
             }
@@ -4772,11 +4942,17 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         });
     }
 
+    private String getTimestampString() {
+        LocalDateTime now = LocalDateTime.now();
+        return String.format(Locale.US, "%02d:%02d", now.getHour(), now.getMinute());
+    }
+
     private void appendMessage(String name, String text, boolean isUserSide, boolean forceScroll) {
+        String nameWithTime = name + "  " + getTimestampString();
         runOnUiThread(() -> {
             boolean shouldScroll = forceScroll || isNearBottom();
-            TextView bubble = createMessageBubble(name, isUserSide);
-            renderMessageBubble(bubble, name, text);
+            TextView bubble = createMessageBubble(nameWithTime, isUserSide);
+            renderMessageBubble(bubble, nameWithTime, text);
             requestChatLayoutUpdate();
             maybeScrollToBottom(shouldScroll);
         });
