@@ -210,7 +210,6 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private View sectionGeneralHeader, sectionChatHeader, sectionExpertHeader;
     private View sectionSecretaryHeader;
     private LinearLayout sectionSecretaryContent;
-    private LinearLayout layoutSecretaryAvatar;
     private TextView tvSectionSecretary;
     private boolean sectionSecretaryExpanded = false;
     private Switch switchStreaming, switchTts, switchVoiceInput, switchAutoVoiceInput, switchWebSearch, switchDebug, switchJsonMode, switchBraveBoost;
@@ -927,7 +926,6 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         sectionChatContent = findViewById(R.id.sectionChatContent);
         sectionExpertContent = findViewById(R.id.sectionExpertContent);
         sectionSecretaryContent = (LinearLayout) findViewById(R.id.sectionSecretaryContent);
-        layoutSecretaryAvatar = (LinearLayout) findViewById(R.id.layoutSecretaryAvatar);
         tvSectionSecretary = findViewById(R.id.tvSectionSecretary);
         tvSettingsTitle = findViewById(R.id.tvSettingsTitle);
         tvSectionGeneral = findViewById(R.id.tvSectionGeneral);
@@ -3090,8 +3088,13 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             pendingAutoChatterAfterTts = false;
             updateCounterpartMiniAvatar();
         }
-        if (layoutSecretaryAvatar != null) {
-            layoutSecretaryAvatar.setVisibility(autoChatterEnabled ? View.GONE : View.VISIBLE);
+        if (sectionSecretaryHeader != null) {
+            sectionSecretaryHeader.setVisibility(autoChatterEnabled ? View.GONE : View.VISIBLE);
+        }
+        if (sectionSecretaryContent != null) {
+            sectionSecretaryContent.setVisibility(
+                    autoChatterEnabled ? View.GONE
+                    : (sectionSecretaryExpanded ? View.VISIBLE : View.GONE));
         }
         updateOverlayEntryUi();
     }
@@ -3467,6 +3470,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         result.append(isJapanese ? "現在日時: " : "Current datetime: ").append(stamp);
         String summary = compressedContextSummary;
         if (!summary.isEmpty()) {
+            Log.d(TAG, "buildSystemPromptWithName: injecting history summary, " + summary.length() + " chars");
             if (result.length() > 0) result.append("\n");
             result.append(isJapanese ? "過去の会話の要約:\n" : "Past conversation summary:\n").append(summary);
         }
@@ -3506,6 +3510,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     }
 
     private void compressAndStore(List<JSONObject> messages) {
+        Log.d(TAG, "compressAndStore: start, messages=" + messages.size());
         StringBuilder dialog = new StringBuilder();
         boolean isJa = "ja".equals(appLanguage);
         for (JSONObject m : messages) {
@@ -3514,11 +3519,14 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
             if ("user".equals(role)) dialog.append(isJa ? "ユーザ: " : "User: ").append(content).append("\n");
             else if ("assistant".equals(role)) dialog.append("AI: ").append(content).append("\n");
         }
-        if (dialog.length() == 0) return;
+        if (dialog.length() == 0) { Log.d(TAG, "compressAndStore: no dialog, skip"); return; }
+        Log.d(TAG, "compressAndStore: calling LLM, dialog=" + dialog.length() + " chars");
         String summary = callLLMForCompression(dialog.toString(), isJa);
+        Log.d(TAG, "compressAndStore: summary=" + (summary != null ? summary.length() + " chars" : "null"));
         if (summary != null && !summary.trim().isEmpty()) {
             String prev = compressedContextSummary;
             compressedContextSummary = prev.isEmpty() ? summary.trim() : prev + "\n" + summary.trim();
+            Log.d(TAG, "compressAndStore: stored, total summary=" + compressedContextSummary.length() + " chars");
         }
     }
 
