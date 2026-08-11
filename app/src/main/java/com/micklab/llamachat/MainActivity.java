@@ -3518,6 +3518,18 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
         final List<JSONObject> targetHistory = history;
         compressExecutor.submit(() -> {
             try {
+                // LLM API は同時1リクエストしか処理できないため、
+                // メイン応答が完了（isProcessing = false）するまで待機する。
+                // 最大 90 秒待って解放されなければこのラウンドをスキップ。
+                long waitDeadline = System.currentTimeMillis() + 90_000L;
+                while (isProcessing && System.currentTimeMillis() < waitDeadline) {
+                    try { Thread.sleep(300); } catch (InterruptedException e) { Thread.currentThread().interrupt(); break; }
+                }
+                if (isProcessing) {
+                    Log.d(TAG, "compressHistory: LLM still busy after timeout, skip this round");
+                    return;
+                }
+
                 Log.d(TAG, "compressHistory: start, messages=" + toProcess.size());
                 boolean isJa = "ja".equals(appLanguage);
                 StringBuilder dialog = new StringBuilder();
