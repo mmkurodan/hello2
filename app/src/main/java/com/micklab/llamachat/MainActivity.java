@@ -293,6 +293,8 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private volatile String compressedContextSummary = "";
     private final java.util.concurrent.ExecutorService compressExecutor =
             java.util.concurrent.Executors.newSingleThreadExecutor();
+    private final java.util.concurrent.atomic.AtomicBoolean compressionPending =
+            new java.util.concurrent.atomic.AtomicBoolean(false);
     private boolean refreshModelsOnResume = false;
     private boolean pendingOverlayLaunch = false;
     private boolean isFloatOverlayActive = false;
@@ -3480,56 +3482,93 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     }
 
     private void addToHistory(List<JSONObject> history, String role, String content) {
-        List<JSONObject> trimmed = new ArrayList<>();
         try {
             JSONObject msg = new JSONObject();
             msg.put("role", role);
             msg.put("content", content);
             synchronized (historyLock) {
                 history.add(msg);
-                trimmed = trimHistoryLocked(history);
             }
         } catch (Exception e) {
             Log.e(TAG, "addToHistory error", e);
+            return;
         }
-        if (!trimmed.isEmpty()) {
-            final List<JSONObject> toCompress = new ArrayList<>(trimmed);
-            compressExecutor.submit(() -> compressAndStore(toCompress));
-        }
+        // 圧縮が必要か確認してスケジュール（削除は圧縮完了後に行う）
+        scheduleCompressionIfNeeded(history);
     }
 
-    private List<JSONObject> trimHistoryLocked(List<JSONObject> history) {
-        List<JSONObject> trimmed = new ArrayList<>();
-        if (history == null || history.isEmpty()) return trimmed;
+    /**
+     * historyLimit を超えた古いメッセージを特定し、圧縮ジョブをスケジュールする。
+     * 圧縮完了後にメッセージを削除することで、削除前に必ず要約が保存される。
+     * AtomicBoolean で多重起動を防ぎ、完了後に再チェックして積み残しを処理する。
+     */
+    private void scheduleCompressionIfNeeded(List<JSONObject> history) {
+        if (!compressionPending.compareAndSet(false, true)) return;
+
+        List<JSONObject> candidates;
+        synchronized (historyLock) {
+            candidates = getCompressableCandidates(history);
+        }
+        if (candidates.isEmpty()) {
+            compressionPending.set(false);
+            return;
+        }
+
+        final List<JSONObject> toProcess = new ArrayList<>(candidates);
+        final List<JSONObject> targetHistory = history;
+        compressExecutor.submit(() -> {
+            try {
+                Log.d(TAG, "compressHistory: start, messages=" + toProcess.size());
+                boolean isJa = "ja".equals(appLanguage);
+                StringBuilder dialog = new StringBuilder();
+                for (JSONObject m : toProcess) {
+                    String r = m.optString("role", "");
+                    String c = m.optString("content", "");
+                    if ("user".equals(r)) dialog.append(isJa ? "ユーザ: " : "User: ").append(c).append("\n");
+                    else if ("assistant".equals(r)) dialog.append("AI: ").append(c).append("\n");
+                }
+                if (dialog.length() > 0) {
+                    Log.d(TAG, "compressHistory: calling LLM, dialog=" + dialog.length() + " chars");
+                    String summary = callLLMForCompression(dialog.toString(), isJa);
+                    Log.d(TAG, "compressHistory: summary=" + (summary != null ? summary.length() + " chars" : "null"));
+                    if (summary != null && !summary.trim().isEmpty()) {
+                        String prev = compressedContextSummary;
+                        compressedContextSummary = prev.isEmpty() ? summary.trim() : prev + "\n" + summary.trim();
+                    }
+                }
+                // 圧縮完了（成否問わず）後にメッセージを削除
+                synchronized (historyLock) {
+                    removeOldMessages(targetHistory, toProcess.size());
+                }
+                runOnUiThread(this::reinitSystemPrompts);
+                Log.d(TAG, "compressHistory: done, summary=" + compressedContextSummary.length() + " chars");
+            } finally {
+                compressionPending.set(false);
+                // 圧縮中に追加されたメッセージが閾値を超えていれば再スケジュール
+                scheduleCompressionIfNeeded(targetHistory);
+            }
+        });
+    }
+
+    /** historyLimit を超えている古いメッセージを返す（削除はしない）。 */
+    private List<JSONObject> getCompressableCandidates(List<JSONObject> history) {
+        List<JSONObject> result = new ArrayList<>();
+        if (history == null || history.isEmpty()) return result;
         int keepStart = "system".equals(history.get(0).optString("role")) ? 1 : 0;
-        // historyLimit を超えたメッセージを圧縮対象とする（旧: historyLimit * 4 で殆どトリガーされなかった）
         int maxMessages = Math.max(2, historyLimit);
-        while (history.size() - keepStart > maxMessages) {
-            JSONObject removed = history.get(keepStart);
-            if (!"system".equals(removed.optString("role"))) trimmed.add(removed);
-            history.remove(keepStart);
+        int excess = history.size() - keepStart - maxMessages;
+        for (int i = 0; i < excess; i++) {
+            JSONObject msg = history.get(keepStart + i);
+            if (!"system".equals(msg.optString("role"))) result.add(msg);
         }
-        return trimmed;
+        return result;
     }
 
-    private void compressAndStore(List<JSONObject> messages) {
-        Log.d(TAG, "compressAndStore: start, messages=" + messages.size());
-        StringBuilder dialog = new StringBuilder();
-        boolean isJa = "ja".equals(appLanguage);
-        for (JSONObject m : messages) {
-            String role = m.optString("role", "");
-            String content = m.optString("content", "");
-            if ("user".equals(role)) dialog.append(isJa ? "ユーザ: " : "User: ").append(content).append("\n");
-            else if ("assistant".equals(role)) dialog.append("AI: ").append(content).append("\n");
-        }
-        if (dialog.length() == 0) { Log.d(TAG, "compressAndStore: no dialog, skip"); return; }
-        Log.d(TAG, "compressAndStore: calling LLM, dialog=" + dialog.length() + " chars");
-        String summary = callLLMForCompression(dialog.toString(), isJa);
-        Log.d(TAG, "compressAndStore: summary=" + (summary != null ? summary.length() + " chars" : "null"));
-        if (summary != null && !summary.trim().isEmpty()) {
-            String prev = compressedContextSummary;
-            compressedContextSummary = prev.isEmpty() ? summary.trim() : prev + "\n" + summary.trim();
-            Log.d(TAG, "compressAndStore: stored, total summary=" + compressedContextSummary.length() + " chars");
+    /** 圧縮済みの古いメッセージを履歴から削除する（圧縮完了後のみ呼ぶ）。 */
+    private void removeOldMessages(List<JSONObject> history, int count) {
+        int keepStart = !history.isEmpty() && "system".equals(history.get(0).optString("role")) ? 1 : 0;
+        for (int i = 0; i < count && history.size() > keepStart + 1; i++) {
+            history.remove(keepStart);
         }
     }
 
