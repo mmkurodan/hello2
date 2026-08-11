@@ -24,7 +24,61 @@ public final class WikipediaSearchHelper {
     private WikipediaSearchHelper() {}
 
     /**
-     * ユーザー発話から Wikipedia 検索用の主要キーワードを 1 つ LLM で抽出する（翻訳なし）。
+     * Web 検索 API（Brave 等）向け: 複数キーワードをスペース区切りで抽出する。
+     * 失敗時は原文をそのまま返す。
+     */
+    public static String extractKeywordsMulti(OkHttpClient client, String baseUrl,
+                                               String model, String userInput) {
+        if (TextUtils.isEmpty(userInput)) return userInput;
+        if (client == null || TextUtils.isEmpty(baseUrl)) return userInput;
+        try {
+            JSONObject body = new JSONObject();
+            body.put("model", TextUtils.isEmpty(model) ? "default" : model);
+            JSONArray messages = new JSONArray();
+            messages.put(new JSONObject()
+                    .put("role", "system")
+                    .put("content",
+                            "ユーザーのメッセージから検索エンジン向けのキーワードを抽出してください。\n"
+                            + "ルール:\n"
+                            + "- 固有名詞・専門用語を個別に分解してスペース区切りで並べる\n"
+                            + "- 「AとBの違い」→「A B 違い」のように比較対象を個別キーワードに分解する\n"
+                            + "- 「〜を教えて」「〜を調べて」「〜を検索して」などの指示語は含めない\n"
+                            + "- 翻訳しない（元の言語のまま）\n"
+                            + "出力形式（どちらか一方のみ）:\n"
+                            + "SEARCH: <キーワード1 キーワード2 ...>\n"
+                            + "NONE\n"
+                            + "説明・余計な出力は不要。"));
+            messages.put(new JSONObject()
+                    .put("role", "user")
+                    .put("content", userInput));
+            body.put("messages", messages);
+            body.put("stream", false);
+            body.put("options", new JSONObject().put("temperature", 0).put("num_predict", 80));
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/api/chat")
+                    .post(RequestBody.create(body.toString(), JSON_MEDIA))
+                    .build();
+            try (Response resp = client.newCall(request).execute()) {
+                if (!resp.isSuccessful()) return userInput;
+                String respBody = resp.body() != null ? resp.body().string() : "";
+                JSONObject json = new JSONObject(respBody);
+                String content = json.has("message")
+                        ? json.getJSONObject("message").optString("content", "").trim() : "";
+                content = content.replaceAll("<think>[\\s\\S]*?</think>", "").trim();
+                if (content.startsWith("SEARCH:")) {
+                    String kw = content.substring("SEARCH:".length()).trim();
+                    return kw.isEmpty() ? userInput : kw;
+                }
+                return userInput;
+            }
+        } catch (Exception e) {
+            return userInput;
+        }
+    }
+
+    /**
+     * Wikipedia 向け: 最も重要な 1 語（または自然な複合名詞）を抽出する。
      * 失敗時は原文をそのまま返す。
      */
     public static String extractKeywords(OkHttpClient client, String baseUrl,
@@ -89,22 +143,10 @@ public final class WikipediaSearchHelper {
         if (articleLimit < 1) articleLimit = 1;
         if (extractLength < 100) extractLength = 100;
         try {
-            boolean cjk = hasCjkChars(query);
-            String primary = cjk ? "ja" : "en";
-            String secondary = cjk ? "en" : "ja";
-
-            String primaryPart = searchWikipedia(client, primary, query, articleLimit, extractLength);
-            String secondaryPart = searchWikipedia(client, secondary, query, articleLimit, extractLength);
-
-            StringBuilder combined = new StringBuilder();
-            if (primaryPart != null) combined.append(primaryPart);
-            if (secondaryPart != null) {
-                if (combined.length() > 0) combined.append("\n");
-                combined.append(secondaryPart);
-            }
-
-            String result = combined.toString().trim();
-            return result.isEmpty() ? null : "SEARCH_RESULTS:\n" + result;
+            String lang = hasCjkChars(query) ? "ja" : "en";
+            String result = searchWikipedia(client, lang, query, articleLimit, extractLength);
+            if (result == null || result.isEmpty()) return null;
+            return "SEARCH_RESULTS:\n" + result;
         } catch (Exception e) {
             return null;
         }

@@ -258,7 +258,7 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
     private boolean braveBoostEnabled = false;
     private int wikiArticleLimit = 2;
     private int braveResultCount = 8;
-    private int searchTextLength = 1500;
+    private int searchTextLength = 5000;
     private String expertModel = "default";
     private String embeddingModel = "default";
     private String structuredOutputMode = "OFF"; // OFF / SCHEMA / GBNF（StructuredOutput.Mode）
@@ -3793,8 +3793,9 @@ public class MainActivity extends ComponentActivity implements TextToSpeech.OnIn
                 if (keywords != null && !keywords.isEmpty()) {
                     runOnUiThread(() -> setThinkingIndicatorLabel(
                             t("Extracting keywords...", "キーワードを抽出中..."), webSearchToken));
-                    String extracted = WikipediaSearchHelper.extractKeywords(
-                            client, ollamaBaseUrl, expertModel, userMsg);
+                    String extracted = WEB_MODE_WIKIPEDIA.equals(webSearchMode)
+                            ? WikipediaSearchHelper.extractKeywords(client, ollamaBaseUrl, expertModel, userMsg)
+                            : WikipediaSearchHelper.extractKeywordsMulti(client, ollamaBaseUrl, expertModel, userMsg);
                     final String searchQuery_ = extracted;
                     String keywordText = extracted.length() > 80 ? extracted.substring(0, 80) + "..." : extracted;
                     runOnUiThread(() -> setThinkingIndicatorLabel(

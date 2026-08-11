@@ -178,7 +178,7 @@ public class FloatOverlayService extends Service {
     private boolean braveBoostEnabled = false;
     private int wikiArticleLimit = 2;
     private int braveResultCount = 8;
-    private int searchTextLength = 1500;
+    private int searchTextLength = 5000;
     private String webSearchMode = "WIKIPEDIA";
     private String embeddingModel = "default";
     private String expertModel = "default";
@@ -1111,8 +1111,9 @@ public class FloatOverlayService extends Service {
                 String keywords = searchKeywords == null ? null : searchKeywords.trim();
                 if (!TextUtils.isEmpty(keywords)) {
                     updateThinkingLabel(t("Extracting keywords...", "キーワードを抽出中..."), requestToken);
-                    String extracted = WikipediaSearchHelper.extractKeywords(
-                            client, ollamaBaseUrl, expertModel, userMsg);
+                    String extracted = "WIKIPEDIA".equals(webSearchMode)
+                            ? WikipediaSearchHelper.extractKeywords(client, ollamaBaseUrl, expertModel, userMsg)
+                            : WikipediaSearchHelper.extractKeywordsMulti(client, ollamaBaseUrl, expertModel, userMsg);
                     String keywordText = extracted.length() > 80 ? extracted.substring(0, 80) + "..." : extracted;
                     updateThinkingLabel(t("Web searching: ", "Web検索中: ") + keywordText, requestToken);
                     String searchResults = callWebSearchApi(extracted);
